@@ -1,7 +1,8 @@
 package se.umu.cs.ads.fildil;
 
-import java.io.IOException;
-import java.io.InputStream;
+import org.apache.commons.io.IOUtils;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,39 +34,33 @@ public class Main {
         command.add("asf");  //- video format (TEMP!)
         command.add("-");
 
-        Process process = null;
+        Process processFFmpeg = null;
         try {
-
-//            process = new ProcessBuilder("ffmpeg", "-i " + video, "-vcodec " +
-//                "mpeg2video", "-acodec mp2", "-b:v", "3M", "-b:a 192k", "-muxrate 10M",
-//                "-f mpegts" , "-").start();
-
-            process = new ProcessBuilder(command).start();
+            processFFmpeg = new ProcessBuilder(command).start();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(2);
         }
 
-
-
-        //Reads from STDERR
-        //TODO: read from STDOUT to get stream
-//        InputStream inputStream = process.getErrorStream();
-        InputStream inputStream = process.getInputStream();
-        byte[] buf = new byte[1024];
-        int nRead;
-
+        Process processVLC = null;
         try {
-            inputStream.read();
-            System.out.println(inputStream.available());
-            while ((nRead = inputStream.read(buf, 0, buf.length)) != -1) {
-                System.out.println("Read " + nRead + "bytes");
-                String str = new String(buf, "UTF-8");
-                System.out.println(str);
+                processVLC = new ProcessBuilder("vlc","-").start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int n;
+        InputStream input = processFFmpeg.getInputStream();
+        OutputStream out = processVLC.getOutputStream();
+        byte[] buf = new byte[1024];
+        try {
+            while((n=input.read(buf)) > -1) {
+                out.write(buf,0,n);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         System.out.println("Done");
     }
 }
