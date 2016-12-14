@@ -42,20 +42,13 @@ public class Main {
             System.exit(2);
         }
 
-        Process processVLC = null;
-        try {
-                processVLC = new ProcessBuilder("vlc","-").start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         int n;
         InputStream input = processFFmpeg.getInputStream();
-        OutputStream out = processVLC.getOutputStream();
         byte[] buf = new byte[1024];
         try {
             while((n=input.read(buf)) > -1) {
-                out.write(buf,0,n);
+                System.out.write(buf,0,n);
             }
         } catch (IOException e) {
             e.printStackTrace();
