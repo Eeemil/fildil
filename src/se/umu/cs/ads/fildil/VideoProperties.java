@@ -1,12 +1,7 @@
 package se.umu.cs.ads.fildil;
 
-import org.apache.commons.io.IOUtils;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,59 +53,6 @@ public class VideoProperties {
             e.printStackTrace();
         }
 
-
         return chunks;
     }
-
-//    /**
-//     *
-//     * @param input
-//     * @return
-//     * @throws IOException
-//     */
-//    private static ByteArrayInputStream toByteArrayInputStream(InputStream input)
-//            throws IOException {
-//
-//        System.out.println("starting to write bytes");
-//        int l;
-//        byte[]buf = new byte[1024];
-//        ByteArrayOutputStream out = new ByteArrayOutputStream();
-//        while((l=input.read(buf)) != -1) {
-////            System.out.println("asdads");
-//            out.write(buf,0,l);
-//        }
-//
-//        System.out.println("Size " + out.size());
-//        return new ByteArrayInputStream(out.toByteArray());
-//    }
-
-
-//    /**
-//     * @param src is the address for the video
-//     * @return time in seconds of a video
-//     */
-//    public static int getTime(String src) {
-//        int time = 0;
-//        Process p = null;
-//        try {
-//            p  = new ProcessBuilder("ffprobe","-v","error",
-//                                            "-show_entries","format=duration",
-//                                            "-of","default=noprint_wrappers=1:"
-//                                            + "nokey=1",src).start();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            String s = IOUtils.toString(p.getInputStream());
-//            s = s.replace("\n","");
-//            time = (int) Double.parseDouble(s);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return time;
-//    }
-
-
 }

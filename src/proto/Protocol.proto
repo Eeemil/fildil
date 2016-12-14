@@ -1,0 +1,14 @@
+syntax="proto2";
+option java_package ="se.umu.cs.ads.fildil.messages";
+option java_multiple_files = true;
+option java_outer_classname = "Protocol";
+
+message Chunk {
+    required string id = 1;
+    required bytes buf = 2;
+    required bytes mac = 3;
+}
+
+message RequestChunk {
+    required string id = 1;
+}
