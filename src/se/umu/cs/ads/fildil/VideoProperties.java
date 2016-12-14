@@ -43,8 +43,8 @@ public class VideoProperties {
         command.add("-");
 
         Process  p = new ProcessBuilder(command).start();
-        InputStream in = p.getInputStream();
 
+        InputStream in = p.getInputStream();
         int n;
         byte[] buf = new byte[size];
         try {
@@ -56,11 +56,11 @@ public class VideoProperties {
                                     .setBuf(bytes)
                                     .setId(""+cnt).build();
                 chunks.add(chunk);
+
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
 
         return chunks;

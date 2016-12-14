@@ -10,55 +10,62 @@ import java.util.ArrayList;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        if (args.length > 1) {
+        if (args.length < 2) {
+            System.err.println("Usage: address port [video]");
+        }
+
+        String address = args[0];
+        int port = Integer.parseInt(args[1]);
+
+
+        UDPNet udpNet = null;
+
+        try {
+            udpNet = new UDPNet(address, port);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+
+        if (args.length > 2) {
+            String video = args[2];
             System.err.println("Starting as supplier, chopping chunks.");
-            UDPNet udpNet = null;
-            try {
-                udpNet = new UDPNet(args[1]);
-            } catch (SocketException e) {
-                e.printStackTrace();
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            }
 
             ArrayList<Chunk> chunks = null;
             try {
-                chunks = VideoProperties.toChunks(args[0],1024);
+                chunks = VideoProperties.toChunks(video, 1024);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             System.err.println("Sending chunks.");
 
-            for(int i = 0; i < 11540; i++ ) {
-                System.err.println("Sending chunk: "+ i);
-                udpNet.sendChunk(chunks.get(i));
+            for (int i = 0; i < chunks.size(); i++) {
+                udpNet.sendChunk(chunks.get(i), 1338);
             }
 
         } else {
             System.err.println("Starting as receiver, awaiting chunks.");
-            UDPNet udpNet = null;
-            try {
-                udpNet = new UDPNet("localhost");
-            } catch (SocketException e) {
-                e.printStackTrace();
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            }
+            ArrayList<Chunk> chunks = new ArrayList<Chunk>();
+            int cnt = 0;
+            while (true) {
+//                try {
+                Chunk chunk = udpNet.getChunk();
+
+//                if(cnt == chunk.getId())
 
 
-            while(true) {
-                try {
-                    Chunk chunk = udpNet.getChunk();
-                    System.out.write(chunk.getBuf().toByteArray());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                System.out.write(chunk.getBuf().toByteArray());
+////                    break;
+
             }
         }
 
-        System.out.println("Done");
+//        System.out.println("Done");
     }
-}
+
+}//}
