@@ -1,5 +1,8 @@
 package se.umu.cs.ads.fildil;
 
+import com.google.protobuf.ByteString;
+import se.umu.cs.ads.fildil.messages.Chunk;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -17,24 +20,24 @@ public class VideoProperties {
      * @return split parts of the video.
      * @throws Exception
      */
-    public static ArrayList<byte[]> toChunks(String src, int size)
+    public static ArrayList<Chunk> toChunks(String src, int size)
             throws Exception {
 
-        ArrayList<byte[]> chunks = new ArrayList<byte[]>();
+        ArrayList<Chunk> chunks = new ArrayList<Chunk>();
         List<String> command = new ArrayList<String>();
         command.add("ffmpeg");
         command.add("-i");
         command.add(src);
-        command.add("-vcodec");
-        command.add("mpeg2video");
-        command.add("-acodec");
-        command.add("mp2");
-        command.add("-b:v");
-        command.add("3M");
-        command.add("-b:a");
-        command.add("192k");
-        command.add("-muxrate");
-        command.add("10M");
+//        command.add("-vcodec");
+//        command.add("mpeg2video");
+//        command.add("-acodec");
+//        command.add("mp2");
+//        command.add("-b:v");
+//        command.add("3M");
+//        command.add("-b:a");
+//        command.add("192k");
+//        command.add("-muxrate");
+//        command.add("10M");
         command.add("-f");
         command.add("asf");  //- video format (TEMP!)
         command.add("-");
@@ -45,13 +48,20 @@ public class VideoProperties {
         int n;
         byte[] buf = new byte[size];
         try {
-            while((n=in.read(buf)) > -1) {
-                byte[] chunk = Arrays.copyOfRange(buf,0,n);
+            for(int cnt = 0; (n=in.read(buf)) > -1;) {
+                buf = Arrays.copyOfRange(buf,0,n);
+
+                ByteString bytes = ByteString.copyFrom(buf);
+                Chunk chunk = Chunk.newBuilder()
+                                    .setBuf(bytes)
+                                    .setId(""+cnt).build();
                 chunks.add(chunk);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
 
         return chunks;
     }

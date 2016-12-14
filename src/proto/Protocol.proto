@@ -6,7 +6,8 @@ option java_outer_classname = "Protocol";
 message Chunk {
     required string id = 1;
     required bytes buf = 2;
-    required bytes mac = 3;
+//    required bytes checksum = 3;
+//    required bytes sign = 4;
 }
 
 message RequestChunk {
