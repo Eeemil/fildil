@@ -8,27 +8,30 @@ import java.net.*;
 /**
  * Created by c12ton on 12/14/16.
  */
-public class ServerTest {
+public class UDPNet {
     public static final int CHUNK_SIZE= 1024;
     private InetAddress ipAddress;
-    private int port = 1337;
+    private static final int PORT= 1337;
+    private static final int TIME_OUT = 500;
 
     private DatagramSocket socket;
 
     /**
-     * @param IPAddress recievers address
+     * @param address the recievers address
      * @throws SocketException
      */
-    public ServerTest(InetAddress IPAddress) throws SocketException {
+    public UDPNet(String address) throws SocketException, UnknownHostException {
+        ipAddress = InetAddress.getByName(address);
         setup();
     }
 
     private void setup() throws SocketException {
-        socket = new DatagramSocket(1337);
+        socket = new DatagramSocket(PORT);
+        socket.setSoTimeout(TIME_OUT);
     }
 
     public void sendChunk(byte[] bytes) {
-       DatagramPacket sendPacket = new DatagramPacket(bytes,bytes.length,ipAddress,port);
+       DatagramPacket sendPacket = new DatagramPacket(bytes,bytes.length,ipAddress,PORT);
         try {
             socket.send(sendPacket);
         } catch (IOException e) {
@@ -44,10 +47,17 @@ public class ServerTest {
         byte[] data = new byte[CHUNK_SIZE];
         DatagramPacket receivePacket = new DatagramPacket(data,data.length);
         try {
-            socket.receive(receivePacket);
+            boolean empty = true;
+            while(empty) {
+                try {
+                    socket.receive(receivePacket);
+                    empty = false;
+                } catch (SocketTimeoutException e) {}
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return  null;
+
+        return  receivePacket.getData();
     }
 }
