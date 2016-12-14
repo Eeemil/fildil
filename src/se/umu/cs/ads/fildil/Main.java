@@ -1,10 +1,7 @@
 package se.umu.cs.ads.fildil;
 
-import org.apache.commons.io.IOUtils;
-
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
 
@@ -15,43 +12,19 @@ public class Main {
             System.exit(1);
         }
 
-        String video = args[0];
-        List<String> command = new ArrayList<String>();
-        command.add("ffmpeg");
-        command.add("-i");
-        command.add(video);
-        command.add("-vcodec");
-        command.add("mpeg2video");
-        command.add("-acodec");
-        command.add("mp2");
-        command.add("-b:v");
-        command.add("3M");
-        command.add("-b:a");
-        command.add("192k");
-        command.add("-muxrate");
-        command.add("10M");
-        command.add("-f");
-        command.add("asf");  //- video format (TEMP!)
-        command.add("-");
-
-        Process processFFmpeg = null;
+        ArrayList<byte[]> chunks = null;
         try {
-            processFFmpeg = new ProcessBuilder(command).start();
-        } catch (IOException e) {
+            chunks = VideoProperties.toChunks(args[0],1024);
+        } catch (Exception e) {
             e.printStackTrace();
-            System.exit(2);
         }
 
-
-        int n;
-        InputStream input = processFFmpeg.getInputStream();
-        byte[] buf = new byte[1024];
-        try {
-            while((n=input.read(buf)) > -1) {
-                System.out.write(buf,0,n);
+        for(byte[] c:chunks) {
+            try {
+                System.out.write(c);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         System.out.println("Done");
