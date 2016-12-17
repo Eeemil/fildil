@@ -8,18 +8,13 @@ public interface ChunkOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>required string id = 1;</code>
+   * <code>required int32 id = 1;</code>
    */
   boolean hasId();
   /**
-   * <code>required string id = 1;</code>
+   * <code>required int32 id = 1;</code>
    */
-  java.lang.String getId();
-  /**
-   * <code>required string id = 1;</code>
-   */
-  com.google.protobuf.ByteString
-      getIdBytes();
+  int getId();
 
   /**
    * <code>required bytes buf = 2;</code>

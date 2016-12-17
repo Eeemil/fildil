@@ -55,10 +55,9 @@ public final class Chunk extends
             }
             break;
           }
-          case 10: {
-            com.google.protobuf.ByteString bs = input.readBytes();
+          case 8: {
             bitField0_ |= 0x00000001;
-            id_ = bs;
+            id_ = input.readInt32();
             break;
           }
           case 18: {
@@ -107,45 +106,18 @@ public final class Chunk extends
 
   private int bitField0_;
   public static final int ID_FIELD_NUMBER = 1;
-  private java.lang.Object id_;
+  private int id_;
   /**
-   * <code>required string id = 1;</code>
+   * <code>required int32 id = 1;</code>
    */
   public boolean hasId() {
     return ((bitField0_ & 0x00000001) == 0x00000001);
   }
   /**
-   * <code>required string id = 1;</code>
+   * <code>required int32 id = 1;</code>
    */
-  public java.lang.String getId() {
-    java.lang.Object ref = id_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      if (bs.isValidUtf8()) {
-        id_ = s;
-      }
-      return s;
-    }
-  }
-  /**
-   * <code>required string id = 1;</code>
-   */
-  public com.google.protobuf.ByteString
-      getIdBytes() {
-    java.lang.Object ref = id_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      id_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+  public int getId() {
+    return id_;
   }
 
   public static final int BUF_FIELD_NUMBER = 2;
@@ -174,7 +146,7 @@ public final class Chunk extends
   }
 
   private void initFields() {
-    id_ = "";
+    id_ = 0;
     buf_ = com.google.protobuf.ByteString.EMPTY;
   }
   private byte memoizedIsInitialized = -1;
@@ -199,7 +171,7 @@ public final class Chunk extends
                       throws java.io.IOException {
     getSerializedSize();
     if (((bitField0_ & 0x00000001) == 0x00000001)) {
-      output.writeBytes(1, getIdBytes());
+      output.writeInt32(1, id_);
     }
     if (((bitField0_ & 0x00000002) == 0x00000002)) {
       output.writeBytes(2, buf_);
@@ -215,7 +187,7 @@ public final class Chunk extends
     size = 0;
     if (((bitField0_ & 0x00000001) == 0x00000001)) {
       size += com.google.protobuf.CodedOutputStream
-        .computeBytesSize(1, getIdBytes());
+        .computeInt32Size(1, id_);
     }
     if (((bitField0_ & 0x00000002) == 0x00000002)) {
       size += com.google.protobuf.CodedOutputStream
@@ -338,7 +310,7 @@ public final class Chunk extends
 
     public Builder clear() {
       super.clear();
-      id_ = "";
+      id_ = 0;
       bitField0_ = (bitField0_ & ~0x00000001);
       buf_ = com.google.protobuf.ByteString.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000002);
@@ -395,9 +367,7 @@ public final class Chunk extends
     public Builder mergeFrom(se.umu.cs.ads.fildil.messages.Chunk other) {
       if (other == se.umu.cs.ads.fildil.messages.Chunk.getDefaultInstance()) return this;
       if (other.hasId()) {
-        bitField0_ |= 0x00000001;
-        id_ = other.id_;
-        onChanged();
+        setId(other.getId());
       }
       if (other.hasBuf()) {
         setBuf(other.getBuf());
@@ -437,78 +407,34 @@ public final class Chunk extends
     }
     private int bitField0_;
 
-    private java.lang.Object id_ = "";
+    private int id_ ;
     /**
-     * <code>required string id = 1;</code>
+     * <code>required int32 id = 1;</code>
      */
     public boolean hasId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required string id = 1;</code>
+     * <code>required int32 id = 1;</code>
      */
-    public java.lang.String getId() {
-      java.lang.Object ref = id_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          id_ = s;
-        }
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
+    public int getId() {
+      return id_;
     }
     /**
-     * <code>required string id = 1;</code>
+     * <code>required int32 id = 1;</code>
      */
-    public com.google.protobuf.ByteString
-        getIdBytes() {
-      java.lang.Object ref = id_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        id_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>required string id = 1;</code>
-     */
-    public Builder setId(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+    public Builder setId(int value) {
+      bitField0_ |= 0x00000001;
       id_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>required string id = 1;</code>
+     * <code>required int32 id = 1;</code>
      */
     public Builder clearId() {
       bitField0_ = (bitField0_ & ~0x00000001);
-      id_ = getDefaultInstance().getId();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>required string id = 1;</code>
-     */
-    public Builder setIdBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-      id_ = value;
+      id_ = 0;
       onChanged();
       return this;
     }
