@@ -1,4 +1,4 @@
-package se.umu.cs.ads.fildil;
+package se.umu.cs.ads.fildil.Network;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.apache.commons.lang.ArrayUtils;
@@ -13,7 +13,7 @@ import java.util.Arrays;
 /**
  * Created by c12ton on 12/14/16.
  */
-public class UDPNet {
+public class UDP {
     private static final int TIME_OUT = 500;
     private static final int PACKET_SIZE = 65507;
     private static final int PACKET_HEADER_SIZE = 4;
@@ -26,7 +26,7 @@ public class UDPNet {
      * @param address the recievers address
      * @throws SocketException
      */
-    public UDPNet(String address, int port) throws SocketException, UnknownHostException {
+    public UDP(String address, int port) throws SocketException, UnknownHostException {
         ipAddress = InetAddress.getByName(address);
         this.port = port;
         setup();
@@ -39,15 +39,20 @@ public class UDPNet {
 
     public void sendChunk(Chunk chunk, int port) {
 
-        byte[] header = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(chunk.toByteArray().length).array();
+        byte[] header = ByteBuffer.allocate(PACKET_HEADER_SIZE)
+                                    .order(ByteOrder.LITTLE_ENDIAN)
+                                        .putInt(chunk.toByteArray()
+                                                    .length).array();
 
-        System.out.println("Sending size: " + chunk.toByteArray().length);
         byte[] data = ArrayUtils.addAll(header,chunk.toByteArray());
         DatagramPacket sendPacket = new DatagramPacket(data, data.length,
                                                        ipAddress,port);
         try {
             socket.send(sendPacket);
+            Thread.sleep(25);
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -77,11 +82,10 @@ public class UDPNet {
     }
 
     private byte[] parseRecievedPacket(byte[] data) {
-        byte[] header = Arrays.copyOfRange(data,0,4);
+        byte[] header = Arrays.copyOfRange(data,0,PACKET_HEADER_SIZE);
         int chunkSize = ByteBuffer.wrap(header).order(ByteOrder.LITTLE_ENDIAN).getInt();
-        System.out.println("Got size: " + chunkSize);
-        byte[] chunkData = Arrays.copyOfRange(data,4,chunkSize+4);
+        byte[] chunkData = Arrays.copyOfRange(data,PACKET_HEADER_SIZE,
+                                              chunkSize+PACKET_HEADER_SIZE);
         return chunkData;
     }
-
 }
