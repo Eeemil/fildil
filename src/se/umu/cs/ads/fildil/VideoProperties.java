@@ -16,13 +16,14 @@ public class VideoProperties {
 
     /**
      * Split video into byteArray streams by given time
-     * @param src
+     * @param src video to split to chunks
+     * @param chunksize size of each chunk
      * @return split parts of the video.
      * @throws Exception
      */
-    public static ArrayList<Chunk> toChunks(String src, int size)
+    public static ArrayList<Chunk> toChunks(String src, int chunksize)
             throws Exception {
-
+        //TODO: maybe we should just return the inputstream? If we are to build a complete byte array in memory, stuff may get ugly...
         ArrayList<Chunk> chunks = new ArrayList<Chunk>();
         List<String> command = new ArrayList<String>();
         command.add("ffmpeg");
@@ -49,7 +50,7 @@ public class VideoProperties {
 
         InputStream in = p.getInputStream();
         int n;
-        byte[] buf = new byte[size];
+        byte[] buf = new byte[chunksize];
         try {
             for(int cnt = 0; (n=in.read(buf)) > -1;cnt++) {
                 buf = Arrays.copyOfRange(buf,0,n);
