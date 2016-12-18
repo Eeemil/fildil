@@ -4,7 +4,7 @@ option java_multiple_files = true;
 option java_outer_classname = "Protocol";
 
 message Chunk {
-    required string id = 1;
+    required int32 id = 1;
     required bytes buf = 2;
 //    required bytes checksum = 3;
 //    required bytes sign = 4;

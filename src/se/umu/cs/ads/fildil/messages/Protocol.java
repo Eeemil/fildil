@@ -28,7 +28,7 @@ public final class Protocol {
   static {
     java.lang.String[] descriptorData = {
       "\n\024proto/Protocol.proto\" \n\005Chunk\022\n\n\002id\030\001 " +
-      "\002(\t\022\013\n\003buf\030\002 \002(\014\"\032\n\014RequestChunk\022\n\n\002id\030\001" +
+      "\002(\005\022\013\n\003buf\030\002 \002(\014\"\032\n\014RequestChunk\022\n\n\002id\030\001" +
       " \002(\tB+\n\035se.umu.cs.ads.fildil.messagesB\010P" +
       "rotocolP\001"
     };

@@ -28,6 +28,9 @@ public class VideoProperties {
         command.add("ffmpeg");
         command.add("-i");
         command.add(src);
+        command.add("-f");
+        command.add("asf");
+
 //        command.add("-vcodec");
 //        command.add("mpeg2video");
 //        command.add("-acodec");
@@ -38,31 +41,39 @@ public class VideoProperties {
 //        command.add("192k");
 //        command.add("-muxrate");
 //        command.add("10M");
-        command.add("-f");
-        command.add("asf");  //- video format (TEMP!)
+//        command.add("-f");
+//        command.add("asf");  //- video format (TEMP!)
         command.add("-");
-
+//-segment_format mpegts -segment_list_flags +live
         Process  p = new ProcessBuilder(command).start();
-        InputStream in = p.getInputStream();
 
+        InputStream in = p.getInputStream();
         int n;
         byte[] buf = new byte[size];
         try {
-            for(int cnt = 0; (n=in.read(buf)) > -1;) {
+            for(int cnt = 0; (n=in.read(buf)) > -1;cnt++) {
                 buf = Arrays.copyOfRange(buf,0,n);
 
                 ByteString bytes = ByteString.copyFrom(buf);
                 Chunk chunk = Chunk.newBuilder()
                                     .setBuf(bytes)
-                                    .setId(""+cnt).build();
+                                    .setId(cnt).build();
                 chunks.add(chunk);
+
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        in = p.getErrorStream();
+        while((n=in.read(buf)) > -1) {
+            buf = Arrays.copyOfRange(buf,0,n);
+            String str = new String(buf, "UTF-8");
+            System.out.println(str);
+        }
 
 
         return chunks;
     }
+
 }
