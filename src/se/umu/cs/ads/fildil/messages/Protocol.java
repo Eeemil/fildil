@@ -6,31 +6,45 @@ package se.umu.cs.ads.fildil.messages;
 public final class Protocol {
   private Protocol() {}
   public static void registerAllExtensions(
+      com.google.protobuf.ExtensionRegistryLite registry) {
+  }
+
+  public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
+    registerAllExtensions(
+        (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_Chunk_descriptor;
-  static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_Chunk_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_RequestChunk_descriptor;
-  static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_RequestChunk_fieldAccessorTable;
+    internal_static_ChunkRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_ChunkRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_SendChunkReply_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_SendChunkReply_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
     return descriptor;
   }
-  private static com.google.protobuf.Descriptors.FileDescriptor
+  private static  com.google.protobuf.Descriptors.FileDescriptor
       descriptor;
   static {
     java.lang.String[] descriptorData = {
       "\n\024proto/Protocol.proto\" \n\005Chunk\022\n\n\002id\030\001 " +
-      "\002(\005\022\013\n\003buf\030\002 \002(\014\"\032\n\014RequestChunk\022\n\n\002id\030\001" +
-      " \002(\tB+\n\035se.umu.cs.ads.fildil.messagesB\010P" +
-      "rotocolP\001"
+      "\001(\005\022\013\n\003buf\030\002 \001(\014\"\032\n\014ChunkRequest\022\n\n\002id\030\001" +
+      " \001(\t\"\020\n\016SendChunkReply2W\n\010Streamer\022%\n\014re" +
+      "questChunk\022\r.ChunkRequest\032\006.Chunk\022$\n\tsen" +
+      "dChunk\022\006.Chunk\032\017.SendChunkReplyB+\n\035se.um" +
+      "u.cs.ads.fildil.messagesB\010ProtocolP\001b\006pr" +
+      "oto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -47,15 +61,21 @@ public final class Protocol {
     internal_static_Chunk_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_Chunk_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Chunk_descriptor,
         new java.lang.String[] { "Id", "Buf", });
-    internal_static_RequestChunk_descriptor =
+    internal_static_ChunkRequest_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_RequestChunk_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RequestChunk_descriptor,
+    internal_static_ChunkRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_ChunkRequest_descriptor,
         new java.lang.String[] { "Id", });
+    internal_static_SendChunkReply_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_SendChunkReply_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_SendChunkReply_descriptor,
+        new java.lang.String[] { });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

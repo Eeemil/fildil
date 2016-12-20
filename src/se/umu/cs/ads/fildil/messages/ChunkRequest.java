@@ -4,19 +4,18 @@
 package se.umu.cs.ads.fildil.messages;
 
 /**
- * Protobuf type {@code Chunk}
+ * Protobuf type {@code ChunkRequest}
  */
-public  final class Chunk extends
+public  final class ChunkRequest extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:Chunk)
-    ChunkOrBuilder {
-  // Use Chunk.newBuilder() to construct.
-  private Chunk(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // @@protoc_insertion_point(message_implements:ChunkRequest)
+    ChunkRequestOrBuilder {
+  // Use ChunkRequest.newBuilder() to construct.
+  private ChunkRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private Chunk() {
-    id_ = 0;
-    buf_ = com.google.protobuf.ByteString.EMPTY;
+  private ChunkRequest() {
+    id_ = "";
   }
 
   @java.lang.Override
@@ -24,7 +23,7 @@ public  final class Chunk extends
   getUnknownFields() {
     return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
   }
-  private Chunk(
+  private ChunkRequest(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -44,14 +43,10 @@ public  final class Chunk extends
             }
             break;
           }
-          case 8: {
+          case 10: {
+            java.lang.String s = input.readStringRequireUtf8();
 
-            id_ = input.readInt32();
-            break;
-          }
-          case 18: {
-
-            buf_ = input.readBytes();
+            id_ = s;
             break;
           }
         }
@@ -67,37 +62,48 @@ public  final class Chunk extends
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return se.umu.cs.ads.fildil.messages.Protocol.internal_static_Chunk_descriptor;
+    return se.umu.cs.ads.fildil.messages.Protocol.internal_static_ChunkRequest_descriptor;
   }
 
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return se.umu.cs.ads.fildil.messages.Protocol.internal_static_Chunk_fieldAccessorTable
+    return se.umu.cs.ads.fildil.messages.Protocol.internal_static_ChunkRequest_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            se.umu.cs.ads.fildil.messages.Chunk.class, se.umu.cs.ads.fildil.messages.Chunk.Builder.class);
+            se.umu.cs.ads.fildil.messages.ChunkRequest.class, se.umu.cs.ads.fildil.messages.ChunkRequest.Builder.class);
   }
 
   public static final int ID_FIELD_NUMBER = 1;
-  private int id_;
+  private volatile java.lang.Object id_;
   /**
-   * <code>optional int32 id = 1;</code>
+   * <code>optional string id = 1;</code>
    */
-  public int getId() {
-    return id_;
+  public java.lang.String getId() {
+    java.lang.Object ref = id_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      id_ = s;
+      return s;
+    }
   }
-
-  public static final int BUF_FIELD_NUMBER = 2;
-  private com.google.protobuf.ByteString buf_;
   /**
-   * <pre>
-   *    required bytes checksum = 3;
-   *    required bytes sign = 4;
-   * </pre>
-   *
-   * <code>optional bytes buf = 2;</code>
+   * <code>optional string id = 1;</code>
    */
-  public com.google.protobuf.ByteString getBuf() {
-    return buf_;
+  public com.google.protobuf.ByteString
+      getIdBytes() {
+    java.lang.Object ref = id_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      id_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   private byte memoizedIsInitialized = -1;
@@ -112,11 +118,8 @@ public  final class Chunk extends
 
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (id_ != 0) {
-      output.writeInt32(1, id_);
-    }
-    if (!buf_.isEmpty()) {
-      output.writeBytes(2, buf_);
+    if (!getIdBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
     }
   }
 
@@ -125,13 +128,8 @@ public  final class Chunk extends
     if (size != -1) return size;
 
     size = 0;
-    if (id_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, id_);
-    }
-    if (!buf_.isEmpty()) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeBytesSize(2, buf_);
+    if (!getIdBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
     }
     memoizedSize = size;
     return size;
@@ -143,16 +141,14 @@ public  final class Chunk extends
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof se.umu.cs.ads.fildil.messages.Chunk)) {
+    if (!(obj instanceof se.umu.cs.ads.fildil.messages.ChunkRequest)) {
       return super.equals(obj);
     }
-    se.umu.cs.ads.fildil.messages.Chunk other = (se.umu.cs.ads.fildil.messages.Chunk) obj;
+    se.umu.cs.ads.fildil.messages.ChunkRequest other = (se.umu.cs.ads.fildil.messages.ChunkRequest) obj;
 
     boolean result = true;
-    result = result && (getId()
-        == other.getId());
-    result = result && getBuf()
-        .equals(other.getBuf());
+    result = result && getId()
+        .equals(other.getId());
     return result;
   }
 
@@ -164,66 +160,64 @@ public  final class Chunk extends
     int hash = 41;
     hash = (19 * hash) + getDescriptorForType().hashCode();
     hash = (37 * hash) + ID_FIELD_NUMBER;
-    hash = (53 * hash) + getId();
-    hash = (37 * hash) + BUF_FIELD_NUMBER;
-    hash = (53 * hash) + getBuf().hashCode();
+    hash = (53 * hash) + getId().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static se.umu.cs.ads.fildil.messages.Chunk parseFrom(
+  public static se.umu.cs.ads.fildil.messages.ChunkRequest parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static se.umu.cs.ads.fildil.messages.Chunk parseFrom(
+  public static se.umu.cs.ads.fildil.messages.ChunkRequest parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static se.umu.cs.ads.fildil.messages.Chunk parseFrom(byte[] data)
+  public static se.umu.cs.ads.fildil.messages.ChunkRequest parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static se.umu.cs.ads.fildil.messages.Chunk parseFrom(
+  public static se.umu.cs.ads.fildil.messages.ChunkRequest parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static se.umu.cs.ads.fildil.messages.Chunk parseFrom(java.io.InputStream input)
+  public static se.umu.cs.ads.fildil.messages.ChunkRequest parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static se.umu.cs.ads.fildil.messages.Chunk parseFrom(
+  public static se.umu.cs.ads.fildil.messages.ChunkRequest parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static se.umu.cs.ads.fildil.messages.Chunk parseDelimitedFrom(java.io.InputStream input)
+  public static se.umu.cs.ads.fildil.messages.ChunkRequest parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static se.umu.cs.ads.fildil.messages.Chunk parseDelimitedFrom(
+  public static se.umu.cs.ads.fildil.messages.ChunkRequest parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static se.umu.cs.ads.fildil.messages.Chunk parseFrom(
+  public static se.umu.cs.ads.fildil.messages.ChunkRequest parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static se.umu.cs.ads.fildil.messages.Chunk parseFrom(
+  public static se.umu.cs.ads.fildil.messages.ChunkRequest parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -235,7 +229,7 @@ public  final class Chunk extends
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(se.umu.cs.ads.fildil.messages.Chunk prototype) {
+  public static Builder newBuilder(se.umu.cs.ads.fildil.messages.ChunkRequest prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   public Builder toBuilder() {
@@ -250,25 +244,25 @@ public  final class Chunk extends
     return builder;
   }
   /**
-   * Protobuf type {@code Chunk}
+   * Protobuf type {@code ChunkRequest}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:Chunk)
-      se.umu.cs.ads.fildil.messages.ChunkOrBuilder {
+      // @@protoc_insertion_point(builder_implements:ChunkRequest)
+      se.umu.cs.ads.fildil.messages.ChunkRequestOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return se.umu.cs.ads.fildil.messages.Protocol.internal_static_Chunk_descriptor;
+      return se.umu.cs.ads.fildil.messages.Protocol.internal_static_ChunkRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return se.umu.cs.ads.fildil.messages.Protocol.internal_static_Chunk_fieldAccessorTable
+      return se.umu.cs.ads.fildil.messages.Protocol.internal_static_ChunkRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              se.umu.cs.ads.fildil.messages.Chunk.class, se.umu.cs.ads.fildil.messages.Chunk.Builder.class);
+              se.umu.cs.ads.fildil.messages.ChunkRequest.class, se.umu.cs.ads.fildil.messages.ChunkRequest.Builder.class);
     }
 
-    // Construct using se.umu.cs.ads.fildil.messages.Chunk.newBuilder()
+    // Construct using se.umu.cs.ads.fildil.messages.ChunkRequest.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -285,34 +279,31 @@ public  final class Chunk extends
     }
     public Builder clear() {
       super.clear();
-      id_ = 0;
-
-      buf_ = com.google.protobuf.ByteString.EMPTY;
+      id_ = "";
 
       return this;
     }
 
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return se.umu.cs.ads.fildil.messages.Protocol.internal_static_Chunk_descriptor;
+      return se.umu.cs.ads.fildil.messages.Protocol.internal_static_ChunkRequest_descriptor;
     }
 
-    public se.umu.cs.ads.fildil.messages.Chunk getDefaultInstanceForType() {
-      return se.umu.cs.ads.fildil.messages.Chunk.getDefaultInstance();
+    public se.umu.cs.ads.fildil.messages.ChunkRequest getDefaultInstanceForType() {
+      return se.umu.cs.ads.fildil.messages.ChunkRequest.getDefaultInstance();
     }
 
-    public se.umu.cs.ads.fildil.messages.Chunk build() {
-      se.umu.cs.ads.fildil.messages.Chunk result = buildPartial();
+    public se.umu.cs.ads.fildil.messages.ChunkRequest build() {
+      se.umu.cs.ads.fildil.messages.ChunkRequest result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    public se.umu.cs.ads.fildil.messages.Chunk buildPartial() {
-      se.umu.cs.ads.fildil.messages.Chunk result = new se.umu.cs.ads.fildil.messages.Chunk(this);
+    public se.umu.cs.ads.fildil.messages.ChunkRequest buildPartial() {
+      se.umu.cs.ads.fildil.messages.ChunkRequest result = new se.umu.cs.ads.fildil.messages.ChunkRequest(this);
       result.id_ = id_;
-      result.buf_ = buf_;
       onBuilt();
       return result;
     }
@@ -344,21 +335,19 @@ public  final class Chunk extends
       return (Builder) super.addRepeatedField(field, value);
     }
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof se.umu.cs.ads.fildil.messages.Chunk) {
-        return mergeFrom((se.umu.cs.ads.fildil.messages.Chunk)other);
+      if (other instanceof se.umu.cs.ads.fildil.messages.ChunkRequest) {
+        return mergeFrom((se.umu.cs.ads.fildil.messages.ChunkRequest)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(se.umu.cs.ads.fildil.messages.Chunk other) {
-      if (other == se.umu.cs.ads.fildil.messages.Chunk.getDefaultInstance()) return this;
-      if (other.getId() != 0) {
-        setId(other.getId());
-      }
-      if (other.getBuf() != com.google.protobuf.ByteString.EMPTY) {
-        setBuf(other.getBuf());
+    public Builder mergeFrom(se.umu.cs.ads.fildil.messages.ChunkRequest other) {
+      if (other == se.umu.cs.ads.fildil.messages.ChunkRequest.getDefaultInstance()) return this;
+      if (!other.getId().isEmpty()) {
+        id_ = other.id_;
+        onChanged();
       }
       onChanged();
       return this;
@@ -372,11 +361,11 @@ public  final class Chunk extends
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      se.umu.cs.ads.fildil.messages.Chunk parsedMessage = null;
+      se.umu.cs.ads.fildil.messages.ChunkRequest parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (se.umu.cs.ads.fildil.messages.Chunk) e.getUnfinishedMessage();
+        parsedMessage = (se.umu.cs.ads.fildil.messages.ChunkRequest) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -386,72 +375,71 @@ public  final class Chunk extends
       return this;
     }
 
-    private int id_ ;
+    private java.lang.Object id_ = "";
     /**
-     * <code>optional int32 id = 1;</code>
+     * <code>optional string id = 1;</code>
      */
-    public int getId() {
-      return id_;
+    public java.lang.String getId() {
+      java.lang.Object ref = id_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        id_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
     }
     /**
-     * <code>optional int32 id = 1;</code>
+     * <code>optional string id = 1;</code>
      */
-    public Builder setId(int value) {
-      
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      java.lang.Object ref = id_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        id_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>optional string id = 1;</code>
+     */
+    public Builder setId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
       id_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>optional int32 id = 1;</code>
+     * <code>optional string id = 1;</code>
      */
     public Builder clearId() {
       
-      id_ = 0;
+      id_ = getDefaultInstance().getId();
       onChanged();
       return this;
     }
-
-    private com.google.protobuf.ByteString buf_ = com.google.protobuf.ByteString.EMPTY;
     /**
-     * <pre>
-     *    required bytes checksum = 3;
-     *    required bytes sign = 4;
-     * </pre>
-     *
-     * <code>optional bytes buf = 2;</code>
+     * <code>optional string id = 1;</code>
      */
-    public com.google.protobuf.ByteString getBuf() {
-      return buf_;
-    }
-    /**
-     * <pre>
-     *    required bytes checksum = 3;
-     *    required bytes sign = 4;
-     * </pre>
-     *
-     * <code>optional bytes buf = 2;</code>
-     */
-    public Builder setBuf(com.google.protobuf.ByteString value) {
+    public Builder setIdBytes(
+        com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
-  
-      buf_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     *    required bytes checksum = 3;
-     *    required bytes sign = 4;
-     * </pre>
-     *
-     * <code>optional bytes buf = 2;</code>
-     */
-    public Builder clearBuf() {
+  checkByteStringIsUtf8(value);
       
-      buf_ = getDefaultInstance().getBuf();
+      id_ = value;
       onChanged();
       return this;
     }
@@ -466,39 +454,39 @@ public  final class Chunk extends
     }
 
 
-    // @@protoc_insertion_point(builder_scope:Chunk)
+    // @@protoc_insertion_point(builder_scope:ChunkRequest)
   }
 
-  // @@protoc_insertion_point(class_scope:Chunk)
-  private static final se.umu.cs.ads.fildil.messages.Chunk DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:ChunkRequest)
+  private static final se.umu.cs.ads.fildil.messages.ChunkRequest DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new se.umu.cs.ads.fildil.messages.Chunk();
+    DEFAULT_INSTANCE = new se.umu.cs.ads.fildil.messages.ChunkRequest();
   }
 
-  public static se.umu.cs.ads.fildil.messages.Chunk getDefaultInstance() {
+  public static se.umu.cs.ads.fildil.messages.ChunkRequest getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<Chunk>
-      PARSER = new com.google.protobuf.AbstractParser<Chunk>() {
-    public Chunk parsePartialFrom(
+  private static final com.google.protobuf.Parser<ChunkRequest>
+      PARSER = new com.google.protobuf.AbstractParser<ChunkRequest>() {
+    public ChunkRequest parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Chunk(input, extensionRegistry);
+        return new ChunkRequest(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<Chunk> parser() {
+  public static com.google.protobuf.Parser<ChunkRequest> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<Chunk> getParserForType() {
+  public com.google.protobuf.Parser<ChunkRequest> getParserForType() {
     return PARSER;
   }
 
-  public se.umu.cs.ads.fildil.messages.Chunk getDefaultInstanceForType() {
+  public se.umu.cs.ads.fildil.messages.ChunkRequest getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

@@ -9,15 +9,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/apacheds-all-1.5.4.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="library" name="Maven: io.grpc:grpc-all:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: io.grpc:grpc-auth:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.auth:google-auth-library-credentials:0.4.0" level="project" />

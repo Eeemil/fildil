@@ -3,20 +3,16 @@
 
 package se.umu.cs.ads.fildil.messages;
 
-public interface RequestChunkOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:RequestChunk)
+public interface ChunkRequestOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:ChunkRequest)
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>required string id = 1;</code>
-   */
-  boolean hasId();
-  /**
-   * <code>required string id = 1;</code>
+   * <code>optional string id = 1;</code>
    */
   java.lang.String getId();
   /**
-   * <code>required string id = 1;</code>
+   * <code>optional string id = 1;</code>
    */
   com.google.protobuf.ByteString
       getIdBytes();
