@@ -132,10 +132,9 @@ public class Node {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                for(int i = 0;isStreaming; i++) {
+                while(isStreaming){
                     Empty request = Empty.newBuilder().build();
                     proto.Chunk chunk = streamerStub.poll(request);
-//                    System.out.println("Polling and shit");
                     blockingQueueClient.add(chunk);
                 }
             }
@@ -145,7 +144,6 @@ public class Node {
 
 
     public byte[] getChunk() throws InterruptedException {
-//        System.out.println("Okay waiting!!!");
         proto.Chunk chunk = blockingQueueClient.take();
         return chunk.getBuf().toByteArray();
     }

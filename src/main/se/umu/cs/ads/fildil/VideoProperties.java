@@ -89,15 +89,15 @@ public class VideoProperties {
         Process  p = new ProcessBuilder(command).start();
 
         InputStream in = p.getInputStream();
-        InputStream inerr = p.getErrorStream();
-
-        byte[] buf = new byte[1024];
-        int n;
-
+//        InputStream inerr = p.getErrorStream();
+//
+//        byte[] buf = new byte[1024];
+//        int n;
+//
 //        while((n=inerr.read(buf)) > -1) {
 //            buf = Arrays.copyOfRange(buf,0,n);
 //            String str = new String(buf, "UTF-8");
-//            System.out.print(str);
+//            System.err.print(str);
 //        }
 
         return in;
