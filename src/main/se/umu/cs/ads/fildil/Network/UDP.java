@@ -1,7 +1,7 @@
 package se.umu.cs.ads.fildil.Network;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import org.apache.commons.lang.ArrayUtils;
+//import org.apache.commons.lang.ArrayUtils;
 import se.umu.cs.ads.fildil.messages.Chunk;
 
 import java.io.IOException;
@@ -43,15 +43,15 @@ public class UDP {
                                     .order(ByteOrder.LITTLE_ENDIAN)
                                         .putInt(chunk.toByteArray()
                                                     .length).array();
-
-        byte[] data = ArrayUtils.addAll(header,chunk.toByteArray());
-        DatagramPacket sendPacket = new DatagramPacket(data, data.length,
-                                                       ipAddress,port);
+//
+//        byte[] data = ArrayUtils.addAll(header,chunk.toByteArray());
+//        DatagramPacket sendPacket = new DatagramPacket(data, data.length,
+//                                                       ipAddress,port);
         try {
-            socket.send(sendPacket);
+//            socket.send(sendPacket);
             Thread.sleep(25);
-        } catch (IOException e) {
-            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

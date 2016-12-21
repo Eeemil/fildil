@@ -77,4 +77,30 @@ public class VideoProperties {
         return chunks;
     }
 
+    public static InputStream getStream(String src) throws IOException {
+        List<String> command = new ArrayList<String>();
+        command.add("ffmpeg");
+        command.add("-i");
+        command.add(src);
+        command.add("-f");
+        command.add("asf");
+        command.add("-");
+
+        Process  p = new ProcessBuilder(command).start();
+
+        InputStream in = p.getInputStream();
+        InputStream inerr = p.getErrorStream();
+
+        byte[] buf = new byte[1024];
+        int n;
+
+//        while((n=inerr.read(buf)) > -1) {
+//            buf = Arrays.copyOfRange(buf,0,n);
+//            String str = new String(buf, "UTF-8");
+//            System.out.print(str);
+//        }
+
+        return in;
+    }
+
 }
