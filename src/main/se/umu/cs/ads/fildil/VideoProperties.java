@@ -1,7 +1,7 @@
 package se.umu.cs.ads.fildil;
 
 import com.google.protobuf.ByteString;
-import se.umu.cs.ads.fildil.messages.Chunk;
+import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 
 import java.io.IOException;
 import java.io.InputStream;

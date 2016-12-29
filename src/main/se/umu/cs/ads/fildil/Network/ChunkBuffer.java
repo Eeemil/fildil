@@ -1,9 +1,8 @@
 package se.umu.cs.ads.fildil.Network;
 
-import se.umu.cs.ads.fildil.messages.Chunk;
+import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 
 import java.util.ArrayList;
-import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 

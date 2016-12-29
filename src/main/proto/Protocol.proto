@@ -1,5 +1,5 @@
 syntax="proto3";
-option java_package ="proto";
+option java_package ="se.umu.cs.ads.fildil.proto.autogen";
 option java_multiple_files = true;
 option java_outer_classname = "Protocol";
 

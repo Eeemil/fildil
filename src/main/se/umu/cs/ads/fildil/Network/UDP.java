@@ -2,7 +2,7 @@ package se.umu.cs.ads.fildil.Network;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 //import org.apache.commons.lang.ArrayUtils;
-import se.umu.cs.ads.fildil.messages.Chunk;
+import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 
 import java.io.IOException;
 import java.net.*;

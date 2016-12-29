@@ -6,12 +6,7 @@ import io.grpc.ManagedChannelBuilder;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
-import proto.*;
-import proto.Chunk;
-import proto.ChunkRequest;
-import proto.Empty;
-import proto.SendChunkReply;
-import proto.StreamerGrpc;
+import se.umu.cs.ads.fildil.proto.autogen.*;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -28,8 +23,8 @@ public class Node {
     private Server server;
     private ManagedChannel channel;
     private StreamerGrpc.StreamerBlockingStub streamerStub;
-    private BlockingQueue<proto.Chunk> blockingQueueClient;
-    private BlockingQueue<proto.Chunk> blockingQueueServer;
+    private BlockingQueue<Chunk> blockingQueueClient;
+    private BlockingQueue<Chunk> blockingQueueServer;
 
     public void startServer(int port ) throws IOException, InterruptedException {
 
@@ -79,7 +74,7 @@ public class Node {
     public void sendChunk(byte[] data, int i) {
 
         ByteString byteString = ByteString.copyFrom(data);
-        proto.Chunk chunk = proto.Chunk.newBuilder()
+        Chunk chunk = Chunk.newBuilder()
                                         .setBuf(byteString)
                                         .setId(i).build();
 
@@ -120,7 +115,7 @@ public class Node {
                                         .build();
 
         streamerStub = StreamerGrpc.newBlockingStub(channel);
-        blockingQueueClient = new LinkedBlockingDeque<proto.Chunk>();
+        blockingQueueClient = new LinkedBlockingDeque<Chunk>();
         LOGGER.info("Starting Client!!!");
         readStream();
 
@@ -134,7 +129,7 @@ public class Node {
             public void run() {
                 while(isStreaming){
                     Empty request = Empty.newBuilder().build();
-                    proto.Chunk chunk = streamerStub.poll(request);
+                    Chunk chunk = streamerStub.poll(request);
                     blockingQueueClient.add(chunk);
                 }
             }
@@ -144,7 +139,7 @@ public class Node {
 
 
     public byte[] getChunk() throws InterruptedException {
-        proto.Chunk chunk = blockingQueueClient.take();
+        Chunk chunk = blockingQueueClient.take();
         return chunk.getBuf().toByteArray();
     }
 
