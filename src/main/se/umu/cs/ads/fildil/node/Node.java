@@ -6,18 +6,23 @@ import io.grpc.ManagedChannelBuilder;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
+import se.umu.cs.ads.fildil.Network.ChunkBuffer;
+import se.umu.cs.ads.fildil.VideoProperties;
 import se.umu.cs.ads.fildil.proto.autogen.*;
 
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * Created by emil on 2016-12-20.
+ * //TODO: Use executorservice instead of ordinary threads
  */
-public class Node {
+public abstract class Node {
     private static final Logger LOGGER = Logger.getLogger(Node.class.getName());
     private final UUID uuid = UUID.randomUUID();
     private Server server;
@@ -26,49 +31,46 @@ public class Node {
     private BlockingQueue<Chunk> blockingQueueClient;
     private BlockingQueue<Chunk> blockingQueueServer;
 
-    public void startServer(int port ) throws IOException, InterruptedException {
+    protected final DataManager dataManager = new DataManager();
 
-        Thread t = new Thread(() -> {
-            blockingQueueServer = new LinkedBlockingDeque<>();
-            try {
-                DataManager dataManager = new DataManager();
-                server = ServerBuilder.forPort(port)
-                        .addService(new PeerManager(dataManager))
-                        .build()
-                        .start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        t.start();
+    public Node(int port) {
+        server = ServerBuilder.forPort(port)
+                .addService(new PeerManager(dataManager))
+                .build();
 
-        LOGGER.info("Started server at port: " + port);
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                System.err.println("*** DERP SHUTTING DOWN!");
-                Node.this.stopServer();
-                System.err.println("*** Server is killed");
-            }
-        });
-        blockUntilShutdown();
+    }
+
+    public void start() throws IOException {
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> stopServer()));
+        LOGGER.info("Starting node server...");
+        server.start();
     }
 
     public void stopServer() {
-        if(server != null) {
+        if(!server.isShutdown()) {
+            LOGGER.info("Shutting down server...");
             server.shutdown();
+            try {
+                if (!server.awaitTermination(10, TimeUnit.SECONDS)) {
+                    LOGGER.warning("Server did not shut down in 10 seconds, shutting down forcefully");
+                    server.shutdownNow();
+                    Thread.sleep(10);
+                }
+            } catch (InterruptedException e) {
+                LOGGER.log(Level.WARNING,"Interrupted while waiting for server termination, shutting down forcefully", e);
+                server.shutdownNow();
+            }
         }
+        if(server.isShutdown()) {
+            LOGGER.info("Server has been shut down");
+        } else {
+            LOGGER.severe("Shutdown request has been sent but server has not properly shut down yet");
+        }
+
     }
 
-    /**
-     * Await termination on the main thread since the grpc library uses daemon threads.
-     */
-    private void blockUntilShutdown() throws InterruptedException {
-        if (server != null) {
-            server.awaitTermination();
-        }
-    }
-
+    @Deprecated
     public void sendChunk(byte[] data, int i) {
 
         ByteString byteString = ByteString.copyFrom(data);
@@ -80,6 +82,7 @@ public class Node {
 
     }
 
+    @Deprecated
     public void startClient(String host, int port) {
         channel = ManagedChannelBuilder.forAddress(host,port)
                                         .usePlaintext(true)
@@ -92,6 +95,7 @@ public class Node {
 
     }
 
+    @Deprecated
     private void readStream() {
         boolean isStreaming = true; //Implement stop function...
 
@@ -105,7 +109,7 @@ public class Node {
         t.start();
     }
 
-
+    @Deprecated
     public byte[] getChunk() throws InterruptedException {
         Chunk chunk = blockingQueueClient.take();
         return chunk.getBuf().toByteArray();
