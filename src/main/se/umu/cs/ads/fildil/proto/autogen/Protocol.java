@@ -44,10 +44,10 @@ public final class Protocol {
   static {
     java.lang.String[] descriptorData = {
       "\n\016Protocol.proto\" \n\005Chunk\022\n\n\002id\030\001 \001(\005\022\013\n" +
-      "\003buf\030\002 \001(\014\"\032\n\014ChunkRequest\022\n\n\002id\030\001 \001(\t\"\007" +
+      "\003buf\030\002 \001(\014\"\032\n\014ChunkRequest\022\n\n\002id\030\001 \001(\005\"\007" +
       "\n\005Empty\"\020\n\016SendChunkReply2u\n\010Streamer\022\'\n" +
       "\014requestChunk\022\r.ChunkRequest\032\006.Chunk\"\000\022\030" +
-      "\n\004poll\022\006.Empty\032\006.Chunk\"\000\022&\n\tsendChunk\022\006." +
+      "\n\004poll\022\006.Empty\032\006.Chunk\"\000\022&\n\treceiveChunk\022\006." +
       "Chunk\032\017.SendChunkReply\"\000B0\n\"se.umu.cs.ad" +
       "s.fildil.proto.autogenB\010ProtocolP\001b\006prot" +
       "o3"

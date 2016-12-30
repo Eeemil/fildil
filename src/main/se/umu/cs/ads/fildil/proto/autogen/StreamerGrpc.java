@@ -1,19 +1,12 @@
 package se.umu.cs.ads.fildil.proto.autogen;
 
 import static io.grpc.stub.ClientCalls.asyncUnaryCall;
-import static io.grpc.stub.ClientCalls.asyncServerStreamingCall;
-import static io.grpc.stub.ClientCalls.asyncClientStreamingCall;
-import static io.grpc.stub.ClientCalls.asyncBidiStreamingCall;
 import static io.grpc.stub.ClientCalls.blockingUnaryCall;
 import static io.grpc.stub.ClientCalls.blockingServerStreamingCall;
 import static io.grpc.stub.ClientCalls.futureUnaryCall;
 import static io.grpc.MethodDescriptor.generateFullMethodName;
 import static io.grpc.stub.ServerCalls.asyncUnaryCall;
-import static io.grpc.stub.ServerCalls.asyncServerStreamingCall;
-import static io.grpc.stub.ServerCalls.asyncClientStreamingCall;
-import static io.grpc.stub.ServerCalls.asyncBidiStreamingCall;
 import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
-import static io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall;
 
 /**
  */
@@ -47,13 +40,13 @@ public class StreamerGrpc {
           io.grpc.protobuf.ProtoUtils.marshaller(se.umu.cs.ads.fildil.proto.autogen.Chunk.getDefaultInstance()));
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static final io.grpc.MethodDescriptor<se.umu.cs.ads.fildil.proto.autogen.Chunk,
-      se.umu.cs.ads.fildil.proto.autogen.SendChunkReply> METHOD_SEND_CHUNK =
+          ReceiveChunkReply> METHOD_SEND_CHUNK =
       io.grpc.MethodDescriptor.create(
           io.grpc.MethodDescriptor.MethodType.UNARY,
           generateFullMethodName(
-              "Streamer", "sendChunk"),
+              "Streamer", "receiveChunk"),
           io.grpc.protobuf.ProtoUtils.marshaller(se.umu.cs.ads.fildil.proto.autogen.Chunk.getDefaultInstance()),
-          io.grpc.protobuf.ProtoUtils.marshaller(se.umu.cs.ads.fildil.proto.autogen.SendChunkReply.getDefaultInstance()));
+          io.grpc.protobuf.ProtoUtils.marshaller(ReceiveChunkReply.getDefaultInstance()));
 
   /**
    * Creates a new async stub that supports all call types for the service
@@ -83,6 +76,9 @@ public class StreamerGrpc {
   public static abstract class StreamerImplBase implements io.grpc.BindableService {
 
     /**
+     * <pre>
+     *Request a specific chunk
+     * </pre>
      */
     public void requestChunk(se.umu.cs.ads.fildil.proto.autogen.ChunkRequest request,
         io.grpc.stub.StreamObserver<se.umu.cs.ads.fildil.proto.autogen.Chunk> responseObserver) {
@@ -90,6 +86,9 @@ public class StreamerGrpc {
     }
 
     /**
+     * <pre>
+     *Return the highest numbered chunk the node has received
+     * </pre>
      */
     public void poll(se.umu.cs.ads.fildil.proto.autogen.Empty request,
         io.grpc.stub.StreamObserver<se.umu.cs.ads.fildil.proto.autogen.Chunk> responseObserver) {
@@ -97,9 +96,12 @@ public class StreamerGrpc {
     }
 
     /**
+     * <pre>
+     *Send a specific chunk
+     * </pre>
      */
-    public void sendChunk(se.umu.cs.ads.fildil.proto.autogen.Chunk request,
-        io.grpc.stub.StreamObserver<se.umu.cs.ads.fildil.proto.autogen.SendChunkReply> responseObserver) {
+    public void receiveChunk(se.umu.cs.ads.fildil.proto.autogen.Chunk request,
+                             io.grpc.stub.StreamObserver<ReceiveChunkReply> responseObserver) {
       asyncUnimplementedUnaryCall(METHOD_SEND_CHUNK, responseObserver);
     }
 
@@ -124,7 +126,7 @@ public class StreamerGrpc {
             asyncUnaryCall(
               new MethodHandlers<
                 se.umu.cs.ads.fildil.proto.autogen.Chunk,
-                se.umu.cs.ads.fildil.proto.autogen.SendChunkReply>(
+                      ReceiveChunkReply>(
                   this, METHODID_SEND_CHUNK)))
           .build();
     }
@@ -149,6 +151,9 @@ public class StreamerGrpc {
     }
 
     /**
+     * <pre>
+     *Request a specific chunk
+     * </pre>
      */
     public void requestChunk(se.umu.cs.ads.fildil.proto.autogen.ChunkRequest request,
         io.grpc.stub.StreamObserver<se.umu.cs.ads.fildil.proto.autogen.Chunk> responseObserver) {
@@ -157,6 +162,9 @@ public class StreamerGrpc {
     }
 
     /**
+     * <pre>
+     *Return the highest numbered chunk the node has received
+     * </pre>
      */
     public void poll(se.umu.cs.ads.fildil.proto.autogen.Empty request,
         io.grpc.stub.StreamObserver<se.umu.cs.ads.fildil.proto.autogen.Chunk> responseObserver) {
@@ -165,9 +173,12 @@ public class StreamerGrpc {
     }
 
     /**
+     * <pre>
+     *Send a specific chunk
+     * </pre>
      */
     public void sendChunk(se.umu.cs.ads.fildil.proto.autogen.Chunk request,
-        io.grpc.stub.StreamObserver<se.umu.cs.ads.fildil.proto.autogen.SendChunkReply> responseObserver) {
+        io.grpc.stub.StreamObserver<ReceiveChunkReply> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(METHOD_SEND_CHUNK, getCallOptions()), request, responseObserver);
     }
@@ -192,6 +203,9 @@ public class StreamerGrpc {
     }
 
     /**
+     * <pre>
+     *Request a specific chunk
+     * </pre>
      */
     public se.umu.cs.ads.fildil.proto.autogen.Chunk requestChunk(se.umu.cs.ads.fildil.proto.autogen.ChunkRequest request) {
       return blockingUnaryCall(
@@ -199,6 +213,9 @@ public class StreamerGrpc {
     }
 
     /**
+     * <pre>
+     *Return the highest numbered chunk the node has received
+     * </pre>
      */
     public se.umu.cs.ads.fildil.proto.autogen.Chunk poll(se.umu.cs.ads.fildil.proto.autogen.Empty request) {
       return blockingUnaryCall(
@@ -206,8 +223,11 @@ public class StreamerGrpc {
     }
 
     /**
+     * <pre>
+     *Send a specific chunk
+     * </pre>
      */
-    public se.umu.cs.ads.fildil.proto.autogen.SendChunkReply sendChunk(se.umu.cs.ads.fildil.proto.autogen.Chunk request) {
+    public ReceiveChunkReply sendChunk(se.umu.cs.ads.fildil.proto.autogen.Chunk request) {
       return blockingUnaryCall(
           getChannel(), METHOD_SEND_CHUNK, getCallOptions(), request);
     }
@@ -232,6 +252,9 @@ public class StreamerGrpc {
     }
 
     /**
+     * <pre>
+     *Request a specific chunk
+     * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<se.umu.cs.ads.fildil.proto.autogen.Chunk> requestChunk(
         se.umu.cs.ads.fildil.proto.autogen.ChunkRequest request) {
@@ -240,6 +263,9 @@ public class StreamerGrpc {
     }
 
     /**
+     * <pre>
+     *Return the highest numbered chunk the node has received
+     * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<se.umu.cs.ads.fildil.proto.autogen.Chunk> poll(
         se.umu.cs.ads.fildil.proto.autogen.Empty request) {
@@ -248,8 +274,11 @@ public class StreamerGrpc {
     }
 
     /**
+     * <pre>
+     *Send a specific chunk
+     * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<se.umu.cs.ads.fildil.proto.autogen.SendChunkReply> sendChunk(
+    public com.google.common.util.concurrent.ListenableFuture<ReceiveChunkReply> sendChunk(
         se.umu.cs.ads.fildil.proto.autogen.Chunk request) {
       return futureUnaryCall(
           getChannel().newCall(METHOD_SEND_CHUNK, getCallOptions()), request);
@@ -286,8 +315,8 @@ public class StreamerGrpc {
               (io.grpc.stub.StreamObserver<se.umu.cs.ads.fildil.proto.autogen.Chunk>) responseObserver);
           break;
         case METHODID_SEND_CHUNK:
-          serviceImpl.sendChunk((se.umu.cs.ads.fildil.proto.autogen.Chunk) request,
-              (io.grpc.stub.StreamObserver<se.umu.cs.ads.fildil.proto.autogen.SendChunkReply>) responseObserver);
+          serviceImpl.receiveChunk((se.umu.cs.ads.fildil.proto.autogen.Chunk) request,
+              (io.grpc.stub.StreamObserver<ReceiveChunkReply>) responseObserver);
           break;
         default:
           throw new AssertionError();

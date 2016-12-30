@@ -31,8 +31,9 @@ public class Node {
         Thread t = new Thread(() -> {
             blockingQueueServer = new LinkedBlockingDeque<>();
             try {
+                DataManager dataManager = new DataManager();
                 server = ServerBuilder.forPort(port)
-                        .addService(new Streamer())
+                        .addService(new PeerManager(dataManager))
                         .build()
                         .start();
             } catch (IOException e) {
@@ -77,33 +78,6 @@ public class Node {
 
         blockingQueueServer.add(chunk);
 
-    }
-
-
-    public class Streamer extends StreamerGrpc.StreamerImplBase {
-        @Override
-        public void poll(Empty request, StreamObserver<Chunk> responseObserver) {
-
-            try {
-                Chunk chunk = blockingQueueServer.take();
-                responseObserver.onNext(chunk);
-                responseObserver.onCompleted();
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-//        @Override
-//        public void requestChunk(ChunkRequest request, StreamObserver<Chunk> responseObserver) {
-//            super.requestChunk(request, responseObserver);
-//        }
-//
-//        @Override
-//        public void sendChunk(Chunk request, StreamObserver<SendChunkReply> responseObserver) {
-//            super.sendChunk(request, responseObserver);
-//        }
     }
 
     public void startClient(String host, int port) {

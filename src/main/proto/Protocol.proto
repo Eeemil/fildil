@@ -8,8 +8,8 @@ service Streamer {
     rpc requestChunk(ChunkRequest) returns (Chunk){}
     //Return the highest numbered chunk the node has received
     rpc poll(Empty) returns (Chunk){}
-    //Send a specific chunk
-    rpc sendChunk(Chunk) returns (SendChunkReply){}
+    //Force-feed a specific chunk
+    rpc receiveChunk(Chunk) returns (ReceiveChunkReply){}
 }
 
 message Chunk {
@@ -18,10 +18,10 @@ message Chunk {
 }
 
 message ChunkRequest {
-    string id = 1;
+    int32 id = 1;
 }
 
 message Empty{}
 
-message SendChunkReply {}
+message ReceiveChunkReply {}
 
