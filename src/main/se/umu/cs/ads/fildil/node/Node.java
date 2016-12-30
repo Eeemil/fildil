@@ -33,7 +33,7 @@ public abstract class Node {
 
     protected final DataManager dataManager = new DataManager();
 
-    public Node(int port) {
+    protected Node(int port) {
         server = ServerBuilder.forPort(port)
                 .addService(new PeerManager(dataManager))
                 .build();
