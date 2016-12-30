@@ -1,4 +1,4 @@
-package se.umu.cs.ads.fildil;
+package se.umu.cs.ads.fildil.node;
 
 import com.google.protobuf.ByteString;
 import io.grpc.ManagedChannel;
@@ -28,18 +28,15 @@ public class Node {
 
     public void startServer(int port ) throws IOException, InterruptedException {
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                blockingQueueServer = new LinkedBlockingDeque<>();
-                try {
-                    server = ServerBuilder.forPort(port)
-                            .addService(new Streamer())
-                            .build()
-                            .start();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        Thread t = new Thread(() -> {
+            blockingQueueServer = new LinkedBlockingDeque<>();
+            try {
+                server = ServerBuilder.forPort(port)
+                        .addService(new Streamer())
+                        .build()
+                        .start();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
         t.start();
@@ -124,14 +121,11 @@ public class Node {
     private void readStream() {
         boolean isStreaming = true; //Implement stop function...
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(isStreaming){
-                    Empty request = Empty.newBuilder().build();
-                    Chunk chunk = streamerStub.poll(request);
-                    blockingQueueClient.add(chunk);
-                }
+        Thread t = new Thread(() -> {
+            while(isStreaming){
+                Empty request = Empty.newBuilder().build();
+                Chunk chunk = streamerStub.poll(request);
+                blockingQueueClient.add(chunk);
             }
         });
         t.start();

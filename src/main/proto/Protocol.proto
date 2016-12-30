@@ -4,8 +4,11 @@ option java_multiple_files = true;
 option java_outer_classname = "Protocol";
 
 service Streamer {
+    //Request a specific chunk
     rpc requestChunk(ChunkRequest) returns (Chunk){}
+    //Return the highest numbered chunk the node has received
     rpc poll(Empty) returns (Chunk){}
+    //Send a specific chunk
     rpc sendChunk(Chunk) returns (SendChunkReply){}
 }
 
