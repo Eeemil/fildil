@@ -30,10 +30,10 @@ public final class Protocol {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_Empty_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_SendChunkReply_descriptor;
+    internal_static_ReceiveChunkReply_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_SendChunkReply_fieldAccessorTable;
+      internal_static_ReceiveChunkReply_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -45,12 +45,12 @@ public final class Protocol {
     java.lang.String[] descriptorData = {
       "\n\016Protocol.proto\" \n\005Chunk\022\n\n\002id\030\001 \001(\005\022\013\n" +
       "\003buf\030\002 \001(\014\"\032\n\014ChunkRequest\022\n\n\002id\030\001 \001(\005\"\007" +
-      "\n\005Empty\"\020\n\016SendChunkReply2u\n\010Streamer\022\'\n" +
-      "\014requestChunk\022\r.ChunkRequest\032\006.Chunk\"\000\022\030" +
-      "\n\004poll\022\006.Empty\032\006.Chunk\"\000\022&\n\treceiveChunk\022\006." +
-      "Chunk\032\017.SendChunkReply\"\000B0\n\"se.umu.cs.ad" +
-      "s.fildil.proto.autogenB\010ProtocolP\001b\006prot" +
-      "o3"
+      "\n\005Empty\"\023\n\021ReceiveChunkReply2{\n\010Streamer" +
+      "\022\'\n\014requestChunk\022\r.ChunkRequest\032\006.Chunk\"" +
+      "\000\022\030\n\004poll\022\006.Empty\032\006.Chunk\"\000\022,\n\014receiveCh" +
+      "unk\022\006.Chunk\032\022.ReceiveChunkReply\"\000B0\n\"se." +
+      "umu.cs.ads.fildil.proto.autogenB\010Protoco" +
+      "lP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -82,11 +82,11 @@ public final class Protocol {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Empty_descriptor,
         new java.lang.String[] { });
-    internal_static_SendChunkReply_descriptor =
+    internal_static_ReceiveChunkReply_descriptor =
       getDescriptor().getMessageTypes().get(3);
-    internal_static_SendChunkReply_fieldAccessorTable = new
+    internal_static_ReceiveChunkReply_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_SendChunkReply_descriptor,
+        internal_static_ReceiveChunkReply_descriptor,
         new java.lang.String[] { });
   }
 

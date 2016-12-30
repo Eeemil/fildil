@@ -3,7 +3,7 @@
 
 package se.umu.cs.ads.fildil.proto.autogen;
 
-public interface SendChunkReplyOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:SendChunkReply)
+public interface ReceiveChunkReplyOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:ReceiveChunkReply)
     com.google.protobuf.MessageOrBuilder {
 }

@@ -4,13 +4,13 @@
 package se.umu.cs.ads.fildil.proto.autogen;
 
 /**
- * Protobuf type {@code SendChunkReply}
+ * Protobuf type {@code ReceiveChunkReply}
  */
 public  final class ReceiveChunkReply extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:SendChunkReply)
-    SendChunkReplyOrBuilder {
-  // Use SendChunkReply.newBuilder() to construct.
+    // @@protoc_insertion_point(message_implements:ReceiveChunkReply)
+    ReceiveChunkReplyOrBuilder {
+  // Use ReceiveChunkReply.newBuilder() to construct.
   private ReceiveChunkReply(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
@@ -54,14 +54,14 @@ public  final class ReceiveChunkReply extends
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return se.umu.cs.ads.fildil.proto.autogen.Protocol.internal_static_SendChunkReply_descriptor;
+    return se.umu.cs.ads.fildil.proto.autogen.Protocol.internal_static_ReceiveChunkReply_descriptor;
   }
 
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return se.umu.cs.ads.fildil.proto.autogen.Protocol.internal_static_SendChunkReply_fieldAccessorTable
+    return se.umu.cs.ads.fildil.proto.autogen.Protocol.internal_static_ReceiveChunkReply_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            ReceiveChunkReply.class, ReceiveChunkReply.Builder.class);
+            se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply.class, se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply.Builder.class);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -93,10 +93,10 @@ public  final class ReceiveChunkReply extends
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof ReceiveChunkReply)) {
+    if (!(obj instanceof se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply)) {
       return super.equals(obj);
     }
-    ReceiveChunkReply other = (ReceiveChunkReply) obj;
+    se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply other = (se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply) obj;
 
     boolean result = true;
     return result;
@@ -114,58 +114,58 @@ public  final class ReceiveChunkReply extends
     return hash;
   }
 
-  public static ReceiveChunkReply parseFrom(
+  public static se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static ReceiveChunkReply parseFrom(
+  public static se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static ReceiveChunkReply parseFrom(byte[] data)
+  public static se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static ReceiveChunkReply parseFrom(
+  public static se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static ReceiveChunkReply parseFrom(java.io.InputStream input)
+  public static se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static ReceiveChunkReply parseFrom(
+  public static se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static ReceiveChunkReply parseDelimitedFrom(java.io.InputStream input)
+  public static se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static ReceiveChunkReply parseDelimitedFrom(
+  public static se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static ReceiveChunkReply parseFrom(
+  public static se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static ReceiveChunkReply parseFrom(
+  public static se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -177,7 +177,7 @@ public  final class ReceiveChunkReply extends
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(ReceiveChunkReply prototype) {
+  public static Builder newBuilder(se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   public Builder toBuilder() {
@@ -192,25 +192,25 @@ public  final class ReceiveChunkReply extends
     return builder;
   }
   /**
-   * Protobuf type {@code SendChunkReply}
+   * Protobuf type {@code ReceiveChunkReply}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:SendChunkReply)
-      se.umu.cs.ads.fildil.proto.autogen.SendChunkReplyOrBuilder {
+      // @@protoc_insertion_point(builder_implements:ReceiveChunkReply)
+      se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReplyOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return se.umu.cs.ads.fildil.proto.autogen.Protocol.internal_static_SendChunkReply_descriptor;
+      return se.umu.cs.ads.fildil.proto.autogen.Protocol.internal_static_ReceiveChunkReply_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return se.umu.cs.ads.fildil.proto.autogen.Protocol.internal_static_SendChunkReply_fieldAccessorTable
+      return se.umu.cs.ads.fildil.proto.autogen.Protocol.internal_static_ReceiveChunkReply_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              ReceiveChunkReply.class, ReceiveChunkReply.Builder.class);
+              se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply.class, se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply.Builder.class);
     }
 
-    // Construct using se.umu.cs.ads.fildil.proto.autogen.SendChunkReply.newBuilder()
+    // Construct using se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -232,23 +232,23 @@ public  final class ReceiveChunkReply extends
 
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return se.umu.cs.ads.fildil.proto.autogen.Protocol.internal_static_SendChunkReply_descriptor;
+      return se.umu.cs.ads.fildil.proto.autogen.Protocol.internal_static_ReceiveChunkReply_descriptor;
     }
 
-    public ReceiveChunkReply getDefaultInstanceForType() {
-      return ReceiveChunkReply.getDefaultInstance();
+    public se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply getDefaultInstanceForType() {
+      return se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply.getDefaultInstance();
     }
 
-    public ReceiveChunkReply build() {
-      ReceiveChunkReply result = buildPartial();
+    public se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply build() {
+      se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    public ReceiveChunkReply buildPartial() {
-      ReceiveChunkReply result = new ReceiveChunkReply(this);
+    public se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply buildPartial() {
+      se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply result = new se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply(this);
       onBuilt();
       return result;
     }
@@ -280,16 +280,16 @@ public  final class ReceiveChunkReply extends
       return (Builder) super.addRepeatedField(field, value);
     }
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof ReceiveChunkReply) {
-        return mergeFrom((ReceiveChunkReply)other);
+      if (other instanceof se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply) {
+        return mergeFrom((se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(ReceiveChunkReply other) {
-      if (other == ReceiveChunkReply.getDefaultInstance()) return this;
+    public Builder mergeFrom(se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply other) {
+      if (other == se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply.getDefaultInstance()) return this;
       onChanged();
       return this;
     }
@@ -302,11 +302,11 @@ public  final class ReceiveChunkReply extends
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      ReceiveChunkReply parsedMessage = null;
+      se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (ReceiveChunkReply) e.getUnfinishedMessage();
+        parsedMessage = (se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -326,16 +326,16 @@ public  final class ReceiveChunkReply extends
     }
 
 
-    // @@protoc_insertion_point(builder_scope:SendChunkReply)
+    // @@protoc_insertion_point(builder_scope:ReceiveChunkReply)
   }
 
-  // @@protoc_insertion_point(class_scope:SendChunkReply)
-  private static final ReceiveChunkReply DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:ReceiveChunkReply)
+  private static final se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new ReceiveChunkReply();
+    DEFAULT_INSTANCE = new se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply();
   }
 
-  public static ReceiveChunkReply getDefaultInstance() {
+  public static se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
@@ -358,7 +358,7 @@ public  final class ReceiveChunkReply extends
     return PARSER;
   }
 
-  public ReceiveChunkReply getDefaultInstanceForType() {
+  public se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 
