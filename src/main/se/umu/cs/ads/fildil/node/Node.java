@@ -5,9 +5,6 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import io.grpc.stub.StreamObserver;
-import se.umu.cs.ads.fildil.Network.ChunkBuffer;
-import se.umu.cs.ads.fildil.VideoProperties;
 import se.umu.cs.ads.fildil.proto.autogen.*;
 
 import java.io.IOException;
@@ -40,14 +37,21 @@ public abstract class Node {
 
     }
 
-    public void start() throws IOException {
+    /**
+     * Starts streaming collaboration
+     * @throws IOException
+     */
+    public void startStreaming() throws IOException {
 
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> stopServer()));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> stopStreaming()));
         LOGGER.info("Starting node server...");
         server.start();
     }
 
-    public void stopServer() {
+    /**
+     * Stops streaming traffic
+     */
+    public void stopStreaming() {
         if(!server.isShutdown()) {
             LOGGER.info("Shutting down server...");
             server.shutdown();
@@ -97,7 +101,7 @@ public abstract class Node {
 
     @Deprecated
     private void readStream() {
-        boolean isStreaming = true; //Implement stop function...
+        boolean isStreaming = true; //Implement stopStreaming function...
 
         Thread t = new Thread(() -> {
             while(isStreaming){

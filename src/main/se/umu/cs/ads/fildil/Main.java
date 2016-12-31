@@ -14,19 +14,22 @@ public class Main {
             System.err.println("Usage: video");
         }
 
-        Node node = new Node();
+        System.err.println("Sorry, not implemented yet.");
+        System.exit(1);
+
+        //Node node = new Node();
 
         try {
-            node.startServer(1337);
+            //node.startStreaming();
             Thread.sleep(1000);
-            node.startClient("localhost",1337);
+            //node.startClient("localhost",1337);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        serverSendChunksThread(node,args[0]);
+        //serverSendChunksThread(node,args[0]);
 
-        clientReadChunksThread(node);
+        //clientReadChunksThread(node);
 
     }
 
