@@ -51,7 +51,7 @@ public abstract class Node {
     /**
      * Stops streaming traffic
      */
-    public void stopStreaming() {
+    protected void stopStreaming() {
         if(!server.isShutdown()) {
             LOGGER.info("Shutting down server...");
             server.shutdown();

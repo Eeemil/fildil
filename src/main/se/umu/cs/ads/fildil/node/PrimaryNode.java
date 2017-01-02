@@ -23,11 +23,15 @@ public class PrimaryNode extends Node {
      */
     public PrimaryNode (Path source, int port) {
         super(port);
-        Thread t = new Thread(() -> readPath(source));
+        Thread t = new Thread(() -> fillStream(source));
         t.start();
     }
 
-    private void readPath(Path path) {
+    /**
+     * Fills stream for distributing content
+     * @param path path to content
+     */
+    private void fillStream(Path path) {
         try {
             Chunk.Builder chunkBuilder = Chunk.newBuilder();
             byte[] buf = new byte[1024];
@@ -52,6 +56,7 @@ public class PrimaryNode extends Node {
      */
     private void abort() {
         LOGGER.severe("Aborting...");
+        stopStreaming();
         //Todo: implement
     }
 }
