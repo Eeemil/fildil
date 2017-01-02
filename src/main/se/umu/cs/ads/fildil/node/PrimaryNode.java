@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class PrimaryNode extends Node {
     private static final Logger LOGGER = Logger.getLogger(PrimaryNode.class.getName());
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String DEFAULT_PATH = "movie/valve.mp4";
         String uri;
         if (args.length == 0) {
@@ -26,10 +26,19 @@ public class PrimaryNode extends Node {
         } else {
             uri = args[0];
         }
-
         Path path = FileSystems.getDefault().getPath("movie/valve.mp4");
-        System.out.println("Path: " + path.toString());
+        LOGGER.info("Path: " + path.toString());
         PrimaryNode node = new PrimaryNode(path, 8100);
+        node.startStreaming();
+        System.err.println("Running...");
+        while (true) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                System.err.println("Exiting...");
+                return;
+            }
+        }
     }
     /**
      * Primary node, fetching from primary source
@@ -95,7 +104,7 @@ public class PrimaryNode extends Node {
      */
     private void abort() {
         LOGGER.severe("Aborting...");
-        stopStreaming();
+        server.stop();
         //Todo: implement
     }
 }

@@ -22,56 +22,24 @@ import java.util.logging.Logger;
 public abstract class Node {
     private static final Logger LOGGER = Logger.getLogger(Node.class.getName());
     private final UUID uuid = UUID.randomUUID();
-    private Server server;
+    protected final StreamerServer server;
     private ManagedChannel channel;
-    private StreamerGrpc.StreamerBlockingStub streamerStub;
+    protected StreamerGrpc.StreamerBlockingStub streamerStub;
     private BlockingQueue<Chunk> blockingQueueClient;
     private BlockingQueue<Chunk> blockingQueueServer;
 
     protected final DataManager dataManager = new DataManager();
 
     protected Node(int port) {
-        server = ServerBuilder.forPort(port)
-                .addService(new PeerManager(dataManager))
-                .build();
-
+        server = new StreamerServer(dataManager,port);
     }
 
-    /**
-     * Starts streaming collaboration
-     * @throws IOException
-     */
     public void startStreaming() throws IOException {
-
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> stopStreaming()));
-        LOGGER.info("Starting node server...");
         server.start();
     }
 
-    /**
-     * Stops streaming traffic
-     */
-    protected void stopStreaming() {
-        if(!server.isShutdown()) {
-            LOGGER.info("Shutting down server...");
-            server.shutdown();
-            try {
-                if (!server.awaitTermination(10, TimeUnit.SECONDS)) {
-                    LOGGER.warning("Server did not shut down in 10 seconds, shutting down forcefully");
-                    server.shutdownNow();
-                    Thread.sleep(10);
-                }
-            } catch (InterruptedException e) {
-                LOGGER.log(Level.WARNING,"Interrupted while waiting for server termination, shutting down forcefully", e);
-                server.shutdownNow();
-            }
-        }
-        if(server.isShutdown()) {
-            LOGGER.info("Server has been shut down");
-        } else {
-            LOGGER.severe("Shutdown request has been sent but server has not properly shut down yet");
-        }
-
+    public void stopStreaming() {
+        server.stop();
     }
 
     @Deprecated
@@ -93,6 +61,7 @@ public abstract class Node {
                                         .build();
 
         streamerStub = StreamerGrpc.newBlockingStub(channel);
+
         blockingQueueClient = new LinkedBlockingDeque<Chunk>();
         LOGGER.info("Starting Client!!!");
         readStream();
