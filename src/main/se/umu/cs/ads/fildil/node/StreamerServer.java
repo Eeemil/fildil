@@ -17,10 +17,12 @@ public class StreamerServer extends StreamerGrpc.StreamerImplBase {
     private final DataManager dataManager;
     private final Server server;
     private static final Logger LOGGER = Logger.getLogger(StreamerServer.class.getName());
+    private final PeerManager peerManager;
 
-    public StreamerServer(DataManager dataManager, int port) {
+    public StreamerServer(DataManager dataManager, PeerManager peerManager) {
         this.dataManager = dataManager;
-        this.server = ServerBuilder.forPort(port).addService(this).build();
+        this.peerManager = peerManager;
+        this.server = ServerBuilder.forPort(peerManager.port).addService(this).build();
 
     }
 
@@ -54,9 +56,9 @@ public class StreamerServer extends StreamerGrpc.StreamerImplBase {
     }
 
     @Override
-    public void poll(Empty request, StreamObserver<Chunk> responseObserver) {
-        Chunk ret = dataManager.getHighestChunk();
-        responseObserver.onNext(ret);
+    public void poll(PeerInfo request, StreamObserver<PeerInfo> responseObserver) {
+        peerManager.addPeer(request);
+        responseObserver.onNext(peerManager.toPeerInfo());
         responseObserver.onCompleted();
     }
 

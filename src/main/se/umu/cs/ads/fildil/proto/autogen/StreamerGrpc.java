@@ -37,14 +37,14 @@ public class StreamerGrpc {
           io.grpc.protobuf.ProtoUtils.marshaller(se.umu.cs.ads.fildil.proto.autogen.ChunkRequest.getDefaultInstance()),
           io.grpc.protobuf.ProtoUtils.marshaller(se.umu.cs.ads.fildil.proto.autogen.Chunk.getDefaultInstance()));
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
-  public static final io.grpc.MethodDescriptor<se.umu.cs.ads.fildil.proto.autogen.Empty,
-      se.umu.cs.ads.fildil.proto.autogen.Chunk> METHOD_POLL =
+  public static final io.grpc.MethodDescriptor<se.umu.cs.ads.fildil.proto.autogen.PeerInfo,
+      se.umu.cs.ads.fildil.proto.autogen.PeerInfo> METHOD_POLL =
       io.grpc.MethodDescriptor.create(
           io.grpc.MethodDescriptor.MethodType.UNARY,
           generateFullMethodName(
               "Streamer", "poll"),
-          io.grpc.protobuf.ProtoUtils.marshaller(se.umu.cs.ads.fildil.proto.autogen.Empty.getDefaultInstance()),
-          io.grpc.protobuf.ProtoUtils.marshaller(se.umu.cs.ads.fildil.proto.autogen.Chunk.getDefaultInstance()));
+          io.grpc.protobuf.ProtoUtils.marshaller(se.umu.cs.ads.fildil.proto.autogen.PeerInfo.getDefaultInstance()),
+          io.grpc.protobuf.ProtoUtils.marshaller(se.umu.cs.ads.fildil.proto.autogen.PeerInfo.getDefaultInstance()));
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static final io.grpc.MethodDescriptor<se.umu.cs.ads.fildil.proto.autogen.Chunk,
       se.umu.cs.ads.fildil.proto.autogen.ReceiveChunkReply> METHOD_RECEIVE_CHUNK =
@@ -94,11 +94,11 @@ public class StreamerGrpc {
 
     /**
      * <pre>
-     *Return the highest numbered chunk the node has received
+     *Exchange peer information
      * </pre>
      */
-    public void poll(se.umu.cs.ads.fildil.proto.autogen.Empty request,
-        io.grpc.stub.StreamObserver<se.umu.cs.ads.fildil.proto.autogen.Chunk> responseObserver) {
+    public void poll(se.umu.cs.ads.fildil.proto.autogen.PeerInfo request,
+        io.grpc.stub.StreamObserver<se.umu.cs.ads.fildil.proto.autogen.PeerInfo> responseObserver) {
       asyncUnimplementedUnaryCall(METHOD_POLL, responseObserver);
     }
 
@@ -125,8 +125,8 @@ public class StreamerGrpc {
             METHOD_POLL,
             asyncUnaryCall(
               new MethodHandlers<
-                se.umu.cs.ads.fildil.proto.autogen.Empty,
-                se.umu.cs.ads.fildil.proto.autogen.Chunk>(
+                se.umu.cs.ads.fildil.proto.autogen.PeerInfo,
+                se.umu.cs.ads.fildil.proto.autogen.PeerInfo>(
                   this, METHODID_POLL)))
           .addMethod(
             METHOD_RECEIVE_CHUNK,
@@ -170,11 +170,11 @@ public class StreamerGrpc {
 
     /**
      * <pre>
-     *Return the highest numbered chunk the node has received
+     *Exchange peer information
      * </pre>
      */
-    public void poll(se.umu.cs.ads.fildil.proto.autogen.Empty request,
-        io.grpc.stub.StreamObserver<se.umu.cs.ads.fildil.proto.autogen.Chunk> responseObserver) {
+    public void poll(se.umu.cs.ads.fildil.proto.autogen.PeerInfo request,
+        io.grpc.stub.StreamObserver<se.umu.cs.ads.fildil.proto.autogen.PeerInfo> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(METHOD_POLL, getCallOptions()), request, responseObserver);
     }
@@ -221,10 +221,10 @@ public class StreamerGrpc {
 
     /**
      * <pre>
-     *Return the highest numbered chunk the node has received
+     *Exchange peer information
      * </pre>
      */
-    public se.umu.cs.ads.fildil.proto.autogen.Chunk poll(se.umu.cs.ads.fildil.proto.autogen.Empty request) {
+    public se.umu.cs.ads.fildil.proto.autogen.PeerInfo poll(se.umu.cs.ads.fildil.proto.autogen.PeerInfo request) {
       return blockingUnaryCall(
           getChannel(), METHOD_POLL, getCallOptions(), request);
     }
@@ -271,11 +271,11 @@ public class StreamerGrpc {
 
     /**
      * <pre>
-     *Return the highest numbered chunk the node has received
+     *Exchange peer information
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<se.umu.cs.ads.fildil.proto.autogen.Chunk> poll(
-        se.umu.cs.ads.fildil.proto.autogen.Empty request) {
+    public com.google.common.util.concurrent.ListenableFuture<se.umu.cs.ads.fildil.proto.autogen.PeerInfo> poll(
+        se.umu.cs.ads.fildil.proto.autogen.PeerInfo request) {
       return futureUnaryCall(
           getChannel().newCall(METHOD_POLL, getCallOptions()), request);
     }
@@ -318,8 +318,8 @@ public class StreamerGrpc {
               (io.grpc.stub.StreamObserver<se.umu.cs.ads.fildil.proto.autogen.Chunk>) responseObserver);
           break;
         case METHODID_POLL:
-          serviceImpl.poll((se.umu.cs.ads.fildil.proto.autogen.Empty) request,
-              (io.grpc.stub.StreamObserver<se.umu.cs.ads.fildil.proto.autogen.Chunk>) responseObserver);
+          serviceImpl.poll((se.umu.cs.ads.fildil.proto.autogen.PeerInfo) request,
+              (io.grpc.stub.StreamObserver<se.umu.cs.ads.fildil.proto.autogen.PeerInfo>) responseObserver);
           break;
         case METHODID_RECEIVE_CHUNK:
           serviceImpl.receiveChunk((se.umu.cs.ads.fildil.proto.autogen.Chunk) request,

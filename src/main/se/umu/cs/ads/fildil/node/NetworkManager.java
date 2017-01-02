@@ -13,11 +13,13 @@ public class NetworkManager {
     private final DataManager dataManager;
     private final StreamerServer server;
     private final Hashtable<UUID,PeerManager> peers;
-
+    private final PeerManager peerManager;
 
     public NetworkManager(DataManager dataManager, int port) {
-        this.server = new StreamerServer(dataManager,port);
         this.dataManager = dataManager;
+        this.peerManager = new PeerManager(dataManager,port);
+        this.server = new StreamerServer(dataManager,peerManager);
+
         peers = new Hashtable<>();
     }
 

@@ -23,10 +23,13 @@ public class DataManager {
      */
     public Chunk getHighestChunk() {
         int highest;
+        return getChunk(getHighestId());
+    }
+
+    protected int getHighestId() {
         synchronized (data) {
-            highest = data.size()-1;
+            return data.size()-1;
         }
-        return getChunk(highest);
     }
 
     public Chunk getChunk(int id) {

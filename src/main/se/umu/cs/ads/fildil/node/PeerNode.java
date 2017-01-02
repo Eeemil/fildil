@@ -16,7 +16,6 @@ public class PeerNode extends Node {
      */
     public PeerNode (List<InetAddress> addresses, int port) {
         super(port);
-
     }
 
 

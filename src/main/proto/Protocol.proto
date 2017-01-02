@@ -6,8 +6,8 @@ option java_outer_classname = "Protocol";
 service Streamer {
     //Request a specific chunk
     rpc requestChunk(ChunkRequest) returns (Chunk){}
-    //Return the highest numbered chunk the node has received
-    rpc poll(Empty) returns (Chunk){}
+    //Exchange peer information
+    rpc poll(PeerInfo) returns (PeerInfo){}
     //Force-feed a specific chunk
     rpc receiveChunk(Chunk) returns (ReceiveChunkReply){}
 }
@@ -15,6 +15,13 @@ service Streamer {
 message Chunk {
     int32 id = 1;
     bytes buf = 2;
+}
+
+message PeerInfo {
+    int32 highestChunk= 1;
+    string uuid = 2;
+    //address:port
+    map<string, int32> peers = 3;
 }
 
 message ChunkRequest {
