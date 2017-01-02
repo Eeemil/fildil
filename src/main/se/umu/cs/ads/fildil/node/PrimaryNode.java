@@ -29,7 +29,7 @@ public class PrimaryNode extends Node {
         Path path = FileSystems.getDefault().getPath("movie/valve.mp4");
         LOGGER.info("Path: " + path.toString());
         PrimaryNode node = new PrimaryNode(path, 8100);
-        node.startStreaming();
+        node.start();
         System.err.println("Running...");
         while (true) {
             try {
@@ -93,18 +93,8 @@ public class PrimaryNode extends Node {
 
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE,"Could not read path " + path.toString(),e);
-            abort();
+            stop();
         }
     }
 
-    /**
-     * Aborts everything in a suitable manner
-     *
-     * To be used in severe crashes and such
-     */
-    private void abort() {
-        LOGGER.severe("Aborting...");
-        server.stop();
-        //Todo: implement
-    }
 }

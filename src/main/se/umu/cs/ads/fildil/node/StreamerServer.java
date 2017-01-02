@@ -28,7 +28,7 @@ public class StreamerServer extends StreamerGrpc.StreamerImplBase {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> stop()));
         LOGGER.info("Starting node server...");
         server.start();
-        LOGGER.info("Server started.");
+        LOGGER.info("Node server started.");
     }
 
     public void stop() {
