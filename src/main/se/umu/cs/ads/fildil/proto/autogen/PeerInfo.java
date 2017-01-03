@@ -61,7 +61,7 @@ public  final class PeerInfo extends
                   PeersDefaultEntryHolder.defaultEntry);
               mutable_bitField0_ |= 0x00000004;
             }
-            com.google.protobuf.MapEntry<java.lang.String, java.lang.Integer>
+            com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
             peers__ = input.readMessage(
                 PeersDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
             peers_.getMutableMap().put(
@@ -149,18 +149,18 @@ public  final class PeerInfo extends
   public static final int PEERS_FIELD_NUMBER = 3;
   private static final class PeersDefaultEntryHolder {
     static final com.google.protobuf.MapEntry<
-        java.lang.String, java.lang.Integer> defaultEntry =
+        java.lang.String, java.lang.String> defaultEntry =
             com.google.protobuf.MapEntry
-            .<java.lang.String, java.lang.Integer>newDefaultInstance(
+            .<java.lang.String, java.lang.String>newDefaultInstance(
                 se.umu.cs.ads.fildil.proto.autogen.Protocol.internal_static_PeerInfo_PeersEntry_descriptor, 
                 com.google.protobuf.WireFormat.FieldType.STRING,
                 "",
-                com.google.protobuf.WireFormat.FieldType.INT32,
-                0);
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "");
   }
   private com.google.protobuf.MapField<
-      java.lang.String, java.lang.Integer> peers_;
-  private com.google.protobuf.MapField<java.lang.String, java.lang.Integer>
+      java.lang.String, java.lang.String> peers_;
+  private com.google.protobuf.MapField<java.lang.String, java.lang.String>
   internalGetPeers() {
     if (peers_ == null) {
       return com.google.protobuf.MapField.emptyMapField(
@@ -174,10 +174,10 @@ public  final class PeerInfo extends
   }
   /**
    * <pre>
-   *address:port
+   *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, int32&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 3;</code>
    */
 
   public boolean containsPeers(
@@ -189,48 +189,48 @@ public  final class PeerInfo extends
    * Use {@link #getPeersMap()} instead.
    */
   @java.lang.Deprecated
-  public java.util.Map<java.lang.String, java.lang.Integer> getPeers() {
+  public java.util.Map<java.lang.String, java.lang.String> getPeers() {
     return getPeersMap();
   }
   /**
    * <pre>
-   *address:port
+   *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, int32&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 3;</code>
    */
 
-  public java.util.Map<java.lang.String, java.lang.Integer> getPeersMap() {
+  public java.util.Map<java.lang.String, java.lang.String> getPeersMap() {
     return internalGetPeers().getMap();
   }
   /**
    * <pre>
-   *address:port
+   *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, int32&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 3;</code>
    */
 
-  public int getPeersOrDefault(
+  public java.lang.String getPeersOrDefault(
       java.lang.String key,
-      int defaultValue) {
+      java.lang.String defaultValue) {
     if (key == null) { throw new java.lang.NullPointerException(); }
-    java.util.Map<java.lang.String, java.lang.Integer> map =
+    java.util.Map<java.lang.String, java.lang.String> map =
         internalGetPeers().getMap();
     return map.containsKey(key) ? map.get(key) : defaultValue;
   }
   /**
    * <pre>
-   *address:port
+   *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, int32&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 3;</code>
    */
 
-  public int getPeersOrThrow(
+  public java.lang.String getPeersOrThrow(
       java.lang.String key) {
     if (key == null) { throw new java.lang.NullPointerException(); }
-    java.util.Map<java.lang.String, java.lang.Integer> map =
+    java.util.Map<java.lang.String, java.lang.String> map =
         internalGetPeers().getMap();
     if (!map.containsKey(key)) {
       throw new java.lang.IllegalArgumentException();
@@ -276,9 +276,9 @@ public  final class PeerInfo extends
     if (!getUuidBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, uuid_);
     }
-    for (java.util.Map.Entry<java.lang.String, java.lang.Integer> entry
+    for (java.util.Map.Entry<java.lang.String, java.lang.String> entry
          : internalGetPeers().getMap().entrySet()) {
-      com.google.protobuf.MapEntry<java.lang.String, java.lang.Integer>
+      com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
       peers__ = PeersDefaultEntryHolder.defaultEntry.newBuilderForType()
           .setKey(entry.getKey())
           .setValue(entry.getValue())
@@ -673,8 +673,8 @@ public  final class PeerInfo extends
     }
 
     private com.google.protobuf.MapField<
-        java.lang.String, java.lang.Integer> peers_;
-    private com.google.protobuf.MapField<java.lang.String, java.lang.Integer>
+        java.lang.String, java.lang.String> peers_;
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
     internalGetPeers() {
       if (peers_ == null) {
         return com.google.protobuf.MapField.emptyMapField(
@@ -682,7 +682,7 @@ public  final class PeerInfo extends
       }
       return peers_;
     }
-    private com.google.protobuf.MapField<java.lang.String, java.lang.Integer>
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
     internalGetMutablePeers() {
       onChanged();;
       if (peers_ == null) {
@@ -700,10 +700,10 @@ public  final class PeerInfo extends
     }
     /**
      * <pre>
-     *address:port
+     *&lt;uuid, address:port&gt;
      * </pre>
      *
-     * <code>map&lt;string, int32&gt; peers = 3;</code>
+     * <code>map&lt;string, string&gt; peers = 3;</code>
      */
 
     public boolean containsPeers(
@@ -715,48 +715,48 @@ public  final class PeerInfo extends
      * Use {@link #getPeersMap()} instead.
      */
     @java.lang.Deprecated
-    public java.util.Map<java.lang.String, java.lang.Integer> getPeers() {
+    public java.util.Map<java.lang.String, java.lang.String> getPeers() {
       return getPeersMap();
     }
     /**
      * <pre>
-     *address:port
+     *&lt;uuid, address:port&gt;
      * </pre>
      *
-     * <code>map&lt;string, int32&gt; peers = 3;</code>
+     * <code>map&lt;string, string&gt; peers = 3;</code>
      */
 
-    public java.util.Map<java.lang.String, java.lang.Integer> getPeersMap() {
+    public java.util.Map<java.lang.String, java.lang.String> getPeersMap() {
       return internalGetPeers().getMap();
     }
     /**
      * <pre>
-     *address:port
+     *&lt;uuid, address:port&gt;
      * </pre>
      *
-     * <code>map&lt;string, int32&gt; peers = 3;</code>
+     * <code>map&lt;string, string&gt; peers = 3;</code>
      */
 
-    public int getPeersOrDefault(
+    public java.lang.String getPeersOrDefault(
         java.lang.String key,
-        int defaultValue) {
+        java.lang.String defaultValue) {
       if (key == null) { throw new java.lang.NullPointerException(); }
-      java.util.Map<java.lang.String, java.lang.Integer> map =
+      java.util.Map<java.lang.String, java.lang.String> map =
           internalGetPeers().getMap();
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
      * <pre>
-     *address:port
+     *&lt;uuid, address:port&gt;
      * </pre>
      *
-     * <code>map&lt;string, int32&gt; peers = 3;</code>
+     * <code>map&lt;string, string&gt; peers = 3;</code>
      */
 
-    public int getPeersOrThrow(
+    public java.lang.String getPeersOrThrow(
         java.lang.String key) {
       if (key == null) { throw new java.lang.NullPointerException(); }
-      java.util.Map<java.lang.String, java.lang.Integer> map =
+      java.util.Map<java.lang.String, java.lang.String> map =
           internalGetPeers().getMap();
       if (!map.containsKey(key)) {
         throw new java.lang.IllegalArgumentException();
@@ -770,10 +770,10 @@ public  final class PeerInfo extends
     }
     /**
      * <pre>
-     *address:port
+     *&lt;uuid, address:port&gt;
      * </pre>
      *
-     * <code>map&lt;string, int32&gt; peers = 3;</code>
+     * <code>map&lt;string, string&gt; peers = 3;</code>
      */
 
     public Builder removePeers(
@@ -786,35 +786,35 @@ public  final class PeerInfo extends
      * Use alternate mutation accessors instead.
      */
     @java.lang.Deprecated
-    public java.util.Map<java.lang.String, java.lang.Integer>
+    public java.util.Map<java.lang.String, java.lang.String>
     getMutablePeers() {
       return internalGetMutablePeers().getMutableMap();
     }
     /**
      * <pre>
-     *address:port
+     *&lt;uuid, address:port&gt;
      * </pre>
      *
-     * <code>map&lt;string, int32&gt; peers = 3;</code>
+     * <code>map&lt;string, string&gt; peers = 3;</code>
      */
     public Builder putPeers(
         java.lang.String key,
-        int value) {
+        java.lang.String value) {
       if (key == null) { throw new java.lang.NullPointerException(); }
-      
+      if (value == null) { throw new java.lang.NullPointerException(); }
       getMutablePeers().put(key, value);
       return this;
     }
     /**
      * <pre>
-     *address:port
+     *&lt;uuid, address:port&gt;
      * </pre>
      *
-     * <code>map&lt;string, int32&gt; peers = 3;</code>
+     * <code>map&lt;string, string&gt; peers = 3;</code>
      */
 
     public Builder putAllPeers(
-        java.util.Map<java.lang.String, java.lang.Integer> values) {
+        java.util.Map<java.lang.String, java.lang.String> values) {
       getMutablePeers().putAll(values);
       return this;
     }

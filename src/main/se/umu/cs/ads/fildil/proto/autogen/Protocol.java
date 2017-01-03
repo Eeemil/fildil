@@ -57,7 +57,7 @@ public final class Protocol {
       "\003buf\030\002 \001(\014\"\201\001\n\010PeerInfo\022\024\n\014highestChunk\030" +
       "\001 \001(\005\022\014\n\004uuid\030\002 \001(\t\022#\n\005peers\030\003 \003(\0132\024.Pee" +
       "rInfo.PeersEntry\032,\n\nPeersEntry\022\013\n\003key\030\001 " +
-      "\001(\t\022\r\n\005value\030\002 \001(\005:\0028\001\"\032\n\014ChunkRequest\022\n" +
+      "\001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"\032\n\014ChunkRequest\022\n" +
       "\n\002id\030\001 \001(\005\"\007\n\005Empty\"\023\n\021ReceiveChunkReply" +
       "2\201\001\n\010Streamer\022\'\n\014requestChunk\022\r.ChunkReq" +
       "uest\032\006.Chunk\"\000\022\036\n\004poll\022\t.PeerInfo\032\t.Peer" +

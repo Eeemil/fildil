@@ -57,8 +57,9 @@ public class StreamerServer extends StreamerGrpc.StreamerImplBase {
 
     @Override
     public void poll(PeerInfo request, StreamObserver<PeerInfo> responseObserver) {
-        peerManager.addPeer(request);
-        responseObserver.onNext(peerManager.toPeerInfo());
+        //todo: not sure if it is sane to add every peer
+        //peerManager.addPeer(request);
+        responseObserver.onNext(peerManager.getPeerInfo());
         responseObserver.onCompleted();
     }
 

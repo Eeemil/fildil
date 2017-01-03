@@ -1,17 +1,60 @@
 package se.umu.cs.ads.fildil.node;
 
 import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import se.umu.cs.ads.fildil.proto.autogen.PeerInfo;
+import se.umu.cs.ads.fildil.proto.autogen.StreamerGrpc;
+
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 /**
- * Container class for information specific to a certain peer
+ * Container class for information specific for one peer.
  */
 public class StreamerClient {
-    public final String address;
-    public final int port;
-    private ManagedChannel channel = null;
-    public StreamerClient(String address, int port) {
-        this.address = address;
-        this.port = port;
+    private static final Logger LOGGER = Logger.getLogger(StreamerClient.class.getName());
+    public final String uri;
+    private final ManagedChannel channel;
+    private int highestChunk;
+    public final UUID uuid;
+    private PeerInfo peerInfo;
+
+    /**
+     * Initialice a client connection
+     * @param uri address to peer, on form such as "localhost:3124"
+     * @param myInfo information corresponding to the peer contacting the other peer (for mutual exchange of information)
+     */
+    public StreamerClient(String uri, PeerInfo myInfo) {
+        this.uri = uri;
+        this.channel = ManagedChannelBuilder.forTarget(uri)
+                .usePlaintext(true)
+                .idleTimeout(10, TimeUnit.SECONDS)
+                .build();
+
+        StreamerGrpc.StreamerBlockingStub client = StreamerGrpc.newBlockingStub(channel);
+        PeerInfo otherInfo = client.poll(myInfo);
+        uuid = UUID.fromString(otherInfo.getUuid().replace("-",""));
+        this.peerInfo = otherInfo;
+        this.highestChunk = otherInfo.getHighestChunk();
+        //Todo: do anything with the returned peers?
+        //otherInfo.getPeersMap()
     }
 
+    /**
+     * Send a poll-request to the peer and update information belonging to it.
+     * @param myInfo information corresponding to the peer contacting the other peer (for mutual exchange of information)
+     * @return the updated peerInfo
+     */
+    public PeerInfo updateInfo(PeerInfo myInfo) {
+        StreamerGrpc.StreamerBlockingStub client = StreamerGrpc.newBlockingStub(channel);
+        return this.peerInfo = client.poll(myInfo);
+    }
+
+    /**
+     * @return information corresponding to a client
+     */
+    public PeerInfo getPeerInfo() {
+        return peerInfo;
+    }
 }

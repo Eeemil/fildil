@@ -73,8 +73,8 @@ public abstract class Node {
         Thread t = new Thread(() -> {
             while(isStreaming){
                 Empty request = Empty.newBuilder().build();
-                Chunk chunk = streamerStub.poll(request);
-                blockingQueueClient.add(chunk);
+                //Chunk chunk = streamerStub.poll(request);
+                //blockingQueueClient.add(chunk);
             }
         });
         t.start();

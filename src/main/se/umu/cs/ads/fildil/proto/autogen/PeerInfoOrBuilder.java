@@ -24,18 +24,18 @@ public interface PeerInfoOrBuilder extends
 
   /**
    * <pre>
-   *address:port
+   *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, int32&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 3;</code>
    */
   int getPeersCount();
   /**
    * <pre>
-   *address:port
+   *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, int32&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 3;</code>
    */
   boolean containsPeers(
       java.lang.String key);
@@ -43,36 +43,36 @@ public interface PeerInfoOrBuilder extends
    * Use {@link #getPeersMap()} instead.
    */
   @java.lang.Deprecated
-  java.util.Map<java.lang.String, java.lang.Integer>
+  java.util.Map<java.lang.String, java.lang.String>
   getPeers();
   /**
    * <pre>
-   *address:port
+   *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, int32&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 3;</code>
    */
-  java.util.Map<java.lang.String, java.lang.Integer>
+  java.util.Map<java.lang.String, java.lang.String>
   getPeersMap();
   /**
    * <pre>
-   *address:port
+   *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, int32&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 3;</code>
    */
 
-  int getPeersOrDefault(
+  java.lang.String getPeersOrDefault(
       java.lang.String key,
-      int defaultValue);
+      java.lang.String defaultValue);
   /**
    * <pre>
-   *address:port
+   *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, int32&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 3;</code>
    */
 
-  int getPeersOrThrow(
+  java.lang.String getPeersOrThrow(
       java.lang.String key);
 }
