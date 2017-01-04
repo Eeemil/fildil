@@ -1,0 +1,201 @@
+% Standard document setting, is the most appropriate output for reports that
+% are to be printed. When handing in electronically please remove the
+% "twoside" option.
+\documentclass[10pt, a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[UKenglish]{isodate}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{minted}
+
+\usepackage{graphicx}
+\usepackage{multicol}
+
+% The following package allows us to define our own macros
+% through "\LetLtxMacro\ourName\originalName"
+\usepackage{letltxmacro}
+
+% Adds vertical space between paragraphs, i.e. a clean linebreak
+\usepackage{parskip}
+\usepackage{verbatim}
+
+% Math commands
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\newtheorem{definition}{Definition}
+\usepackage{float}
+\usepackage{footmisc} % Use symbols instead of numbers for footnotes
+\usepackage{csquotes}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks = true, % Colours links instead of ugly boxes
+    urlcolor = blue, % Colour for external hyperlinks
+      linkcolor = blue, % Colour of internal links
+        citecolor = red % Colour of citations
+	}
+
+% Used to get the last page of the document, used in our document headers
+\usepackage{lastpage}
+
+% Specify date format
+\usepackage[yyyymmdd]{datetime}
+\renewcommand\dateseparator{-} % Separate date tokens with a "-"
+
+% Use fancy document headers
+\usepackage{fancyhdr}
+
+\usepackage{letltxmacro}
+\usepackage{float}
+
+% An environment for nice looking quotes
+\makeatletter
+\newenvironment{chapquote}[2][2em]
+{\setlength{\@tempdima}{#1}%
+  \def\chapquote@author{#2}%
+    \parshape 1 \@tempdima \dimexpr0.5\textwidth-2\@tempdima\relax}
+    {\par\normalfont\hfill\ \chapquote@author\hspace*{\@tempdima}\par}
+    \makeatother
+
+%
+% BibLaTeX
+%
+% Great reference system
+% Documentation:
+% http://mirrors.ctan.org/macros/latex/contrib/biblatex/doc/biblatex.pdf
+% ___________________________________________________________
+\usepackage[style = ieee, urldate =comp, backend=biber]{biblatex}
+\addbibresource{sources.bib}
+
+\newcommand{\department}{Department of Computing Science}
+\newcommand{\uni}{Ume\aa\ University}
+
+\newcommand{\authors}{Emil Marklund (\texttt{eeemil@cs.umu.se})\\Timmy Olsson(\texttt{c12ton@cs.umu.se})}
+  \newcommand{\documentTitle}{Project report -- Fildil}
+  \title{\documentTitle}
+  \author{\authors}
+  \newcommand{\coursename}{Advanced distributed systems}
+  \newcommand{\coursecode}{5DV121}
+  \newcommand{\semester}{HT16}
+  \newcommand{\credits}{7.5}
+  \newcommand{\instructors}{P-O Östberg (\texttt{p-o@cs.umu.se}), Adam Dahlgren (\texttt{dali@cs.umu.se})}
+  \pagestyle{fancy}
+
+\usepackage{color}
+\usepackage{float}
+\usepackage{fancyvrb}
+\usepackage[scaled]{beramono}
+
+\usepackage{listings}
+
+% Code snippet syntax
+\lstset{backgroundcolor=\color{GhostWhite}, basicstyle={\small\ttfamily},
+  breakatwhitespace=false, breaklines=false, captionpos=b,
+  commentstyle=\color{Green}, frame=single, keywordstyle=\color{Blue},
+  language=C, % C has somewhat similar syntax to Rust
+  morekeywords={fn, let, mut, unsafe, trait, as, macro, override, ref, type,
+    virtual, box, in, mod, priv, typeof,
+    where}, % Additional keywords used in Rust
+  rulecolor=\color{LightSteelBlue}, showspaces=false, showtabs=false,
+  showstringspaces=false, stringstyle=\color{FireBrick}, tabsize=4, float }
+\renewcommand{\lstlistingname}{Code snippet}
+
+% \BeforeBeginEnvironment{listings}{\par\noindent\begin{minipage}{\linewidth}}
+%   \AfterEndEnvironment{listings}{\end{minipage}\par\addvspace{\topskip}}
+
+\begin{document}
+
+\raggedbottom
+
+\date{}
+\begin{titlepage}
+  \maketitle
+
+   \fancyfoot{}
+
+  \thispagestyle{fancy}
+    \headheight 35pt
+
+  \lhead{\small \department \\
+      \uni} % These two are also defined in config.sty
+
+  \rhead{\small \today} %date
+
+
+
+  \cfoot{\coursename\ (\coursecode), \credits\ hp -- \semester\\
+      Supervisor(s): \instructors}
+
+\end{titlepage}
+
+% Header settings
+\fancyhead[LE,RO]{\thepage(\pageref{LastPage})}
+\fancyheadoffset[LE,RO]{12mm}
+\fancyhead[LO,RE]{\coursename}
+\fancyfoot[L,R,C]{}
+
+\tableofcontents
+
+\clearpage
+
+\pagenumbering{arabic}
+
+\setlength{\parindent}{0pt}
+
+\section{Introduction}
+
+Fildil is great
+
+\subsection{Terminology}
+
+The following terminology is used throughout the report.
+
+\begin{description}
+\item[Primary node] %todo: write
+\item[Peer node] %todo: write
+\end{description}
+
+\subsection{Build \& compilation}
+
+In project root, run \texttt{mvn package} to build jar
+
+
+\subsection{Running a primary node}
+
+Run,
+
+\subsection{Running a peer node}
+
+Forrest, run!
+
+\section{Design: decentralized peer to peer streaming}
+
+Hello
+
+\section{System architecture}
+
+It was built by using code
+
+\section{Results}
+
+The results are in
+
+\subsection{Benchmarks}
+
+Fildil scores over 9000
+
+\section{Improvements}
+
+This report could be more informative
+
+\newpage
+
+% \printbibliography
+%\begin{thebibliography}{99}
+
+%\end{thebibliography}
+
+\end{document}
+
