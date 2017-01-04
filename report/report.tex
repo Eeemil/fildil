@@ -153,8 +153,11 @@ Fildil is great
 The following terminology is used throughout the report.
 
 \begin{description}
-\item[Primary node] %todo: write
-\item[Peer node] %todo: write
+\item[Node] Any participant of the streaming network: downloading and/or
+  uploading parts of the stream
+\item[Primary node] Node reading directly from the streaming source.
+\item[Peer node] Node reading stream from other nodes
+\item[Chunk] A data packet containing a small chunk of the stream.
 \end{description}
 
 \subsection{Build \& compilation}
@@ -177,6 +180,24 @@ Hello
 \section{System architecture}
 
 It was built by using code
+
+\subsection{Managing errors}
+
+\subsubsection{Node crash}
+%Todo: Expand on this
+If a node crashes, all information about that node should be discarded from all
+other nodes. This is easy enough if a node that crashes never comes
+back. However, problems can occur if the following situation comes up:
+
+Say that Node A has highest chunk 1000 and address ``1.2.3.4:5678''. Node A
+crashes and comes back up instantly, but losing all downloaded chunks in the
+process. The node will then have a new highest chunk value of -1. However, this
+can impair the streaming logic of other nodes assuming that Node A has highest
+chunk value of 1000.
+
+This is solved by assigning a UUID to each node on startup. Nodes communicating
+with Node A will see that Node A has changed UUID, and will then dismiss all old
+information about Node A.
 
 \section{Results}
 
