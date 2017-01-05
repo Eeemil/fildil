@@ -2,8 +2,9 @@ package se.umu.cs.ads.fildil.node;
 
 import se.umu.cs.ads.fildil.proto.autogen.PeerInfo;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Map;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -55,12 +56,21 @@ public class PeerManager {
         LOGGER.info("Added peer " + peerId.toString());
     }
 
-    protected void addPeers(Map<String, String> peers) {
-        for (Map.Entry<String, String> entry :
-                peers.entrySet()) {
-            UUID id = UUID.fromString(entry.getKey().replace("-",""));
-            String uri = entry.getValue();
-            addPeer(id, uri);
+    protected void addPeers(ArrayList<String> uris) {
+        for(String uri:uris) {
+            UUID id = UUID.randomUUID();
+            addPeer(id,uri);
         }
+
+
+//        for (Map.Entry<String, String> entry :
+//                peers.entrySet()) {
+//            UUID id = UUID.fromString(entry.getKey().replace("-",""));
+//            String uri = entry.getValue();
+//            addPeer(id, uri);
+//        }
+
+
+
     }
 }

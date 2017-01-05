@@ -26,8 +26,10 @@ public abstract class Node {
     private BlockingQueue<Chunk> blockingQueueServer;
 
     protected final DataManager dataManager = new DataManager();
+    protected final PeerManager peerManager;
 
     protected Node(int port) {
+        peerManager = new PeerManager(dataManager,port);
         networkManager = new NetworkManager(dataManager,port);
     }
 
