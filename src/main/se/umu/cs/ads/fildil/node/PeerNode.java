@@ -1,6 +1,7 @@
 package se.umu.cs.ads.fildil.node;
 
 import se.umu.cs.ads.fildil.proto.autogen.Chunk;
+import se.umu.cs.ads.fildil.proto.autogen.ChunkRequest;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class PeerNode extends Node {
     private PeerManager peerManager;
     private final static String FLAG_PRIMARY_ADDR = "-prim";
     public static void main(String[] args) {
+
         if(args.length == 0) {
             System.err.println("Usage: port  [addr:port]... [addr:port]");
             System.exit(0);
@@ -50,12 +52,23 @@ public class PeerNode extends Node {
     }
 
     public void readStream() {
-
         //get a chunk from every possible server.
         //Grab 20 chunks from each.
         //If it takes to loong, it will abort and continue with another node.
 
-        Chunk chunk = dataManager.getHighestChunk();
+
+        while(true) {
+            StreamerClient[] peers = peerManager.getPeers();
+
+            for(StreamerClient peer:peers) {
+                int id = dataManager.getHighestId();
+                Chunk chunk = peer.requestChunk(id);
+                if(id != -1) {
+                    dataManager.addChunk(chunk);
+                }
+            }
+        }
+
     }
 
     public void readFromPrimary(String prim) {

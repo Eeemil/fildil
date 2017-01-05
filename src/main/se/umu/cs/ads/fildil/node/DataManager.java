@@ -2,6 +2,7 @@ package se.umu.cs.ads.fildil.node;
 
 import com.google.protobuf.ByteString;
 import se.umu.cs.ads.fildil.proto.autogen.Chunk;
+import se.umu.cs.ads.fildil.proto.autogen.ChunkRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,11 @@ public class DataManager {
         synchronized (data) {
             return data.size()-1;
         }
+    }
+
+    public ChunkRequest chunkRequest() {
+        ChunkRequest req = ChunkRequest.newBuilder().setId(getHighestId()).build();
+        return req;
     }
 
     public Chunk getChunk(int id) {

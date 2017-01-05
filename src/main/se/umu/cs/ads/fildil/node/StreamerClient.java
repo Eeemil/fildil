@@ -2,6 +2,8 @@ package se.umu.cs.ads.fildil.node;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import se.umu.cs.ads.fildil.proto.autogen.Chunk;
+import se.umu.cs.ads.fildil.proto.autogen.ChunkRequest;
 import se.umu.cs.ads.fildil.proto.autogen.PeerInfo;
 import se.umu.cs.ads.fildil.proto.autogen.StreamerGrpc;
 
@@ -16,6 +18,7 @@ public class StreamerClient {
     private static final Logger LOGGER = Logger.getLogger(StreamerClient.class.getName());
     public final String uri;
     private final ManagedChannel channel;
+    private final StreamerGrpc.StreamerBlockingStub client;
     private int highestChunk;
     public final UUID uuid;
     private PeerInfo peerInfo;
@@ -31,12 +34,13 @@ public class StreamerClient {
                 .usePlaintext(true)
                 .idleTimeout(10, TimeUnit.SECONDS)
                 .build();
-
-        StreamerGrpc.StreamerBlockingStub client = StreamerGrpc.newBlockingStub(channel);
+        client = StreamerGrpc.newBlockingStub(channel);
+//        StreamerGrpc.StreamerBlockingStub client = StreamerGrpc.newBlockingStub(channel);
         PeerInfo otherInfo = client.poll(myInfo);
         uuid = UUID.fromString(otherInfo.getUuid().replace("-",""));
         this.peerInfo = otherInfo;
         this.highestChunk = otherInfo.getHighestChunk();
+
         //Todo: do anything with the returned peers?
         //otherInfo.getPeersMap()
     }
@@ -49,6 +53,11 @@ public class StreamerClient {
     public PeerInfo updateInfo(PeerInfo myInfo) {
         StreamerGrpc.StreamerBlockingStub client = StreamerGrpc.newBlockingStub(channel);
         return this.peerInfo = client.poll(myInfo);
+    }
+
+    public Chunk requestChunk(int id) {
+        ChunkRequest request = ChunkRequest.newBuilder().setId(id).build();
+        return client.requestChunk(request);
     }
 
     /**
