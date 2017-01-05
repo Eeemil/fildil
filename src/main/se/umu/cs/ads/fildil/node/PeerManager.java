@@ -33,12 +33,19 @@ public class PeerManager {
 
     }
 
+    public StreamerClient[] getPeers() {
+        return peers.values().toArray(new StreamerClient[]{});
+    }
+
     private void addPeer(UUID peerId, String uri) {
+
         if (peers.containsKey(peerId)) {
             LOGGER.info("Trying to add already-added peer "
+
                     + peerId.toString() + ", skipping...");
             return;
         }
+
         PeerInfo myInfo = getPeerInfo();
         //Todo: for report? Maybe only send partial peer list (to minimize overhead)
         StreamerClient peer = new StreamerClient(uri, myInfo);

@@ -6,6 +6,7 @@ import io.grpc.ManagedChannelBuilder;
 import se.umu.cs.ads.fildil.proto.autogen.*;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
