@@ -35,34 +35,10 @@ public class DataManager {
 
     protected int getHighestId() {
         synchronized (data) {
-//            return data.size() == 0 ? 0:data.size() -1;
             return data.size();
         }
     }
 
-//    public Chunk getChunk(int id) {
-//        Chunk.Builder chunkBuilder = Chunk.newBuilder();
-//        byte[] buf = null;
-//        System.out.println("datasize: " + data.size());
-//        System.out.println("id: " + id);
-//
-//        synchronized (data) {
-//            if(id < data.size()) {
-//                buf = data.get(id);
-//            }
-//        }
-//
-//        if (buf == null) {
-//            LOGGER.info("Trying to retrieve non-existing chunk");
-//            chunkBuilder.setId(-1);
-//            chunkBuilder.setBuf(ByteString.EMPTY);
-//        } else {
-//            chunkBuilder.setId(id);
-//            chunkBuilder.setBuf(ByteString.copyFrom(buf));
-//        }
-//
-//        return chunkBuilder.build();
-//    }
 
     public Chunk getChunk(int id) {
         Chunk chunk = null;
@@ -106,7 +82,6 @@ public class DataManager {
             return;
         }
 
-//        byte[] dataEntry = chunk.getBuf().toByteArray();
         id = id == FLAG_END_OF_STREAM ? data.size():id;
         data.add(id,chunk.toByteArray());
 
@@ -114,28 +89,6 @@ public class DataManager {
     }
 
 
-//    public void addChunk(Chunk chunk) {
-//        int id = chunk.getId();
-//        byte[] buf;
-//        synchronized (data) {
-//            try {
-//                buf = data.get(id);
-//            } catch (IndexOutOfBoundsException e) {
-//                buf = null;
-//                //We are only checking if element exists (it shouldn't)
-//            }
-//        }
-//        if (buf != null) {
-//            LOGGER.warning("Trying to add chunk with ID " + id + ", but chunk is already added");
-//            return;
-//        }
-//
-//        byte[] dataEntry = chunk.getBuf().toByteArray();
-//        id = id == FLAG_END_OF_STREAM ? data.size():id;
-//        data.add(id,dataEntry);
-//
-//        dataSize.addAndGet(dataEntry.length);
-//    }
 
     public int getTotalDataSize() {
         return dataSize.get();
