@@ -63,10 +63,8 @@ public class PrimaryNode extends Node {
             InputStream in =  VideoProperties.getStream(path.toString());
             int bytesRead = 0;
             int cnt;
-
             for(cnt = 0; (bytesRead=in.read(buf,0,buf.length)) > -1;cnt++) {
                 int offset = bytesRead;
-
                 while ((bytesRead = in.read(buf, offset, buf.length - offset))
                         != -1) {
                     //Keep reading and move offset/limit in order to force-fill buffer.
@@ -79,6 +77,7 @@ public class PrimaryNode extends Node {
                 if (bytesRead == -1) {
                     LOGGER.info("Fully read " + path.toString() + ", total: " + (cnt*DataManager.CHUNK_SIZE+offset) + " bytes");
                 }
+
                 //Total number of bytes read == the total offset distance moved
                 //(the buffer may not be filled entirely on EOF)
                 bytesRead=offset;
@@ -90,6 +89,11 @@ public class PrimaryNode extends Node {
                     LOGGER.finer("Status: read " + (cnt*DataManager.CHUNK_SIZE+bytesRead) + " bytes...");
                 }
             }
+//            System.out.println("Done with stream!!!");
+//            System.out.printf("Size of data: " + dataManager.getHighestId());
+            chunkBuilder.setId(DataManager.FLAG_END_OF_STREAM);
+            chunkBuilder.setBuf(ByteString.EMPTY);
+            dataManager.addChunk(chunkBuilder.build());
 
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE,"Could not read path " + path.toString(),e);
