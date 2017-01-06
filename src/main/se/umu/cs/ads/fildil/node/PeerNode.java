@@ -6,6 +6,7 @@ import se.umu.cs.ads.fildil.proto.autogen.ChunkRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Stack;
 
 /**
  * Created by emil on 2016-12-30.
@@ -16,7 +17,7 @@ public class PeerNode extends Node {
     public static void main(String[] args) {
 
         if(args.length == 0) {
-            System.err.println("Usage: port  [addr:port]... [addr:port]");
+            System.err.println("Usage: port [-prim addr:port] [addr:port]... [addr:port]");
             System.exit(0);
         }
 
@@ -30,6 +31,7 @@ public class PeerNode extends Node {
 
         try {
             peerNode.start();
+            peerNode.readStream();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,6 +60,9 @@ public class PeerNode extends Node {
 
 
         while(true) {
+//            int id = dataManager.getHighestId();
+//            Stack<Integer> que = new Stack<>();
+
             StreamerClient[] peers = peerManager.getPeers();
 
             for(StreamerClient peer:peers) {
@@ -73,7 +78,6 @@ public class PeerNode extends Node {
 
     public void readFromPrimary(String prim) {
         StreamerClient streamerClient = new StreamerClient(prim,peerManager.getPeerInfo());
-
     }
 
 }

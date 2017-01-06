@@ -22,15 +22,13 @@ public abstract class Node {
     protected final NetworkManager networkManager;
     private ManagedChannel channel;
     protected StreamerGrpc.StreamerBlockingStub streamerStub;
-    private BlockingQueue<Chunk> blockingQueueClient;
-    private BlockingQueue<Chunk> blockingQueueServer;
 
     protected final DataManager dataManager = new DataManager();
     protected final PeerManager peerManager;
 
     protected Node(int port) {
         peerManager = new PeerManager(dataManager,port);
-        networkManager = new NetworkManager(dataManager,port);
+        networkManager = new NetworkManager(dataManager,peerManager);
     }
 
     public void start() throws IOException {
@@ -43,50 +41,50 @@ public abstract class Node {
         networkManager.stopStreaming();
     }
 
-    @Deprecated
-    public void sendChunk(byte[] data, int i) {
+//    @Deprecated
+//    public void sendChunk(byte[] data, int i) {
+//
+//        ByteString byteString = ByteString.copyFrom(data);
+//        Chunk chunk = Chunk.newBuilder()
+//                                        .setBuf(byteString)
+//                                        .setId(i).build();
+//
+//        blockingQueueServer.add(chunk);
+//
+//    }
 
-        ByteString byteString = ByteString.copyFrom(data);
-        Chunk chunk = Chunk.newBuilder()
-                                        .setBuf(byteString)
-                                        .setId(i).build();
+//    @Deprecated
+//    public void startClient(String host, int port) {
+//        channel = ManagedChannelBuilder.forAddress(host,port)
+//                                        .usePlaintext(true)
+//                                        .build();
+//
+//        streamerStub = StreamerGrpc.newBlockingStub(channel);
+//
+//        blockingQueueClient = new LinkedBlockingDeque<Chunk>();
+//        LOGGER.info("Starting Client!!!");
+//        readStream();
+//
+//    }
 
-        blockingQueueServer.add(chunk);
+//    @Deprecated
+//    private void readStream() {
+//        boolean isStreaming = true; //Implement stopStreaming function...
+//
+//        Thread t = new Thread(() -> {
+//            while(isStreaming){
+//                Empty request = Empty.newBuilder().build();
+//                //Chunk chunk = streamerStub.poll(request);
+//                //blockingQueueClient.add(chunk);
+//            }
+//        });
+//        t.start();
+//    }
 
-    }
-
-    @Deprecated
-    public void startClient(String host, int port) {
-        channel = ManagedChannelBuilder.forAddress(host,port)
-                                        .usePlaintext(true)
-                                        .build();
-
-        streamerStub = StreamerGrpc.newBlockingStub(channel);
-
-        blockingQueueClient = new LinkedBlockingDeque<Chunk>();
-        LOGGER.info("Starting Client!!!");
-        readStream();
-
-    }
-
-    @Deprecated
-    private void readStream() {
-        boolean isStreaming = true; //Implement stopStreaming function...
-
-        Thread t = new Thread(() -> {
-            while(isStreaming){
-                Empty request = Empty.newBuilder().build();
-                //Chunk chunk = streamerStub.poll(request);
-                //blockingQueueClient.add(chunk);
-            }
-        });
-        t.start();
-    }
-
-    @Deprecated
-    public byte[] getChunk() throws InterruptedException {
-        Chunk chunk = blockingQueueClient.take();
-        return chunk.getBuf().toByteArray();
-    }
+//    @Deprecated
+//    public byte[] getChunk() throws InterruptedException {
+//        Chunk chunk = blockingQueueClient.take();
+//        return chunk.getBuf().toByteArray();
+//    }
 
 }

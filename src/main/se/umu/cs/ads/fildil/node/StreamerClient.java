@@ -35,9 +35,10 @@ public class StreamerClient {
                 .idleTimeout(10, TimeUnit.SECONDS)
                 .build();
         client = StreamerGrpc.newBlockingStub(channel);
-//        StreamerGrpc.StreamerBlockingStub client = StreamerGrpc.newBlockingStub(channel);
         PeerInfo otherInfo = client.poll(myInfo);
-        uuid = UUID.fromString(otherInfo.getUuid().replace("-",""));
+        System.out.println("Otherinfo uuid: " + otherInfo.getUuid());
+//        uuid = UUID.fromString(otherInfo.getUuid().replace("-",""));
+        uuid = UUID.fromString(otherInfo.getUuid());
         this.peerInfo = otherInfo;
         this.highestChunk = otherInfo.getHighestChunk();
 

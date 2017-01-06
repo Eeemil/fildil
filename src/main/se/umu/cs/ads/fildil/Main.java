@@ -33,42 +33,42 @@ public class Main {
 
     }
 
-    public static void serverSendChunksThread(Node node, String src) {
-
-        Thread t = new Thread(() -> {
-            try {
-
-                byte[] buf = new byte[1024];
-                InputStream in =  VideoProperties.getStream(src);
-                int n;
-                for(int cnt = 0; (n=in.read(buf)) > -1;cnt++) {
-                    buf = Arrays.copyOfRange(buf,0,n);
-                    node.sendChunk(buf,cnt);
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        t.start();
-    }
-
-    public static void clientReadChunksThread(Node node) {
-        Thread t = new Thread(() -> {
-            try {
-                while(true) {
-                    byte[] bytes = node.getChunk();
-                    System.out.write(bytes);
-                }
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        t.start();
-    }
+//    public static void serverSendChunksThread(Node node, String src) {
+//
+//        Thread t = new Thread(() -> {
+//            try {
+//
+//                byte[] buf = new byte[1024];
+//                InputStream in =  VideoProperties.getStream(src);
+//                int n;
+//                for(int cnt = 0; (n=in.read(buf)) > -1;cnt++) {
+//                    buf = Arrays.copyOfRange(buf,0,n);
+//                    node.sendChunk(buf,cnt);
+//                }
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
+//        t.start();
+//    }
+//
+//    public static void clientReadChunksThread(Node node) {
+//        Thread t = new Thread(() -> {
+//            try {
+//                while(true) {
+//                    byte[] bytes = node.getChunk();
+//                    System.out.write(bytes);
+//                }
+//
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
+//
+//        t.start();
+//    }
 
 }
