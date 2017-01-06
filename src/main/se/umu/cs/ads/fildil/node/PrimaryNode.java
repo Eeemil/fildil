@@ -1,7 +1,7 @@
 package se.umu.cs.ads.fildil.node;
 
 import com.google.protobuf.ByteString;
-import se.umu.cs.ads.fildil.VideoProperties;
+import se.umu.cs.ads.fildil.Video;
 import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 
 import java.io.IOException;
@@ -56,11 +56,18 @@ public class PrimaryNode extends Node {
      */
     private void fillStream(Path path) {
         LOGGER.info("Reading " + path.toString() + " into chunks of size " + DataManager.CHUNK_SIZE);
-        int last = 0;
+        Video video = null;
+        try {
+            video = new Video(path.toString());
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Could not open video file stream: ", e);
+            return;
+        }
         try {
             Chunk.Builder chunkBuilder = Chunk.newBuilder();
             byte[] buf = new byte[DataManager.CHUNK_SIZE];
-            InputStream in =  VideoProperties.getStream(path.toString());
+
+            InputStream in =  video.getStream();
             int bytesRead = 0;
             int cnt;
             for(cnt = 0; (bytesRead=in.read(buf,0,buf.length)) > -1;cnt++) {
@@ -89,8 +96,7 @@ public class PrimaryNode extends Node {
                     LOGGER.finer("Status: read " + (cnt*DataManager.CHUNK_SIZE+bytesRead) + " bytes...");
                 }
             }
-//            System.out.println("Done with stream!!!");
-//            System.out.printf("Size of data: " + dataManager.getHighestId());
+
             chunkBuilder.setId(DataManager.FLAG_END_OF_STREAM);
             chunkBuilder.setBuf(ByteString.EMPTY);
             dataManager.addChunk(chunkBuilder.build());

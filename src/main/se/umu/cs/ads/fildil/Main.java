@@ -39,7 +39,7 @@ public class Main {
 //            try {
 //
 //                byte[] buf = new byte[1024];
-//                InputStream in =  VideoProperties.getStream(src);
+//                InputStream in =  Video.getStream(src);
 //                int n;
 //                for(int cnt = 0; (n=in.read(buf)) > -1;cnt++) {
 //                    buf = Arrays.copyOfRange(buf,0,n);
