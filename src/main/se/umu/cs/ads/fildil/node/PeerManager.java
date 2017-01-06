@@ -57,6 +57,7 @@ public class PeerManager {
     }
 
     protected void addPeers(ArrayList<String> uris) {
+
         for(String uri:uris) {
             UUID id = UUID.randomUUID();
             addPeer(id,uri);
