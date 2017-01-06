@@ -23,12 +23,10 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="fildil" />
-        <module name="se.umu.cs.ads" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="fildil" target="1.8" />
-      <module name="se.umu.cs.ads" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

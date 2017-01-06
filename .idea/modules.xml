@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/fildil.iml" filepath="$PROJECT_DIR$/fildil.iml" />
-      <module fileurl="file://$PROJECT_DIR$/se.umu.cs.ads.iml" filepath="$PROJECT_DIR$/se.umu.cs.ads.iml" />
     </modules>
   </component>
 </project>
