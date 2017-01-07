@@ -157,7 +157,8 @@ The following terminology is used throughout the report.
   uploading parts of the stream
 \item[Primary node] Node reading directly from the streaming source.
 \item[Peer node] Node reading stream from other nodes
-\item[Chunk] A data packet containing a small chunk of the stream.
+\item[Chunk] A data packet containing a small part of the streamed
+  content, with metadata.
 \end{description}
 
 \subsection{Build \& compilation}
@@ -209,7 +210,35 @@ Fildil scores over 9000
 
 \section{Improvements}
 
-This report could be more informative
+\subsection{Data storage}
+\label{sec:storage-improvements}
+
+In the current implementation of Fildil, the complete stream is downloaded from
+the beginning of the stream, to the end. Also, it is kept in memory for all node
+types. This may be impractical for long-running streams, where the stream could
+be very large in size:
+
+\begin{enumerate}
+\item Keeping lots of video streaming data in memory is very costly with the
+  computer hardware of today. There is a need of caching the data for any node
+  storing large parts of the stream. Caching has not been implemented in Fildil,
+  instead, we have only used streams that have been able to be kept in memory on
+  our testing equipment.
+\item Another way to deal with the large data size in a peer to peer network is
+  to split the streaming content storage on the nodes such that no node needs to
+  keep a large part by itself. This mechanism has been left out due to time
+  constraints. %TODO: has it still been left out?
+\item Downloading the stream from beginning to end is probably not a realistic
+  behavior for live streams. A more realistic behavior is to start the
+  downloading at the most recent point of the stream (as close to ``live'' as
+  possible). This would reduce the data size needed. This has been left out in
+  Fildil, as we have argued that this behavior would make benchmarking harder
+  and add complexity to our test environment, while only adding the benefit of
+  needing to store less data in memory.
+\end{enumerate}
+
+
+
 
 \newpage
 
