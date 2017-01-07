@@ -11,9 +11,9 @@ import java.util.logging.Logger;
  */
 public class PeerNode extends Node {
     private static final Logger LOGGER = Logger.getLogger(PeerNode.class.getName());
+    private final static String FLAG_PRIMARY_ADDR = "-prim";
 
     private PeerManager peerManager;
-    private final static String FLAG_PRIMARY_ADDR = "-prim";
     private String primAddr;
     private final Object cntLock = new Object();
     private int  idTaskCnt =  0;
@@ -22,7 +22,7 @@ public class PeerNode extends Node {
     public static void main(String[] args) {
 
         if(args.length == 0) {
-            System.err.println("Usage: port [-prim addr:port] [addr:port]... [addr:port]");
+            System.err.println("Usage: port ["+FLAG_PRIMARY_ADDR+" addr:port] [addr:port]... [addr:port]");
             System.exit(0);
         }
 
@@ -38,6 +38,7 @@ public class PeerNode extends Node {
 
         }
 
+        //Finding peers based on arguments
         int port = new Integer(args[0]);
         PeerNode peerNode = primAddr == null ? new PeerNode(peers,port):
                                                new PeerNode(primAddr,peers,port);
