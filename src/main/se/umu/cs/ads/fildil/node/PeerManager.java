@@ -1,11 +1,11 @@
 package se.umu.cs.ads.fildil.node;
 
+import com.google.protobuf.ByteString;
+import se.umu.cs.ads.fildil.proto.autogen.Chunk;
+import se.umu.cs.ads.fildil.proto.autogen.ChunkOrBuilder;
 import se.umu.cs.ads.fildil.proto.autogen.PeerInfo;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -31,47 +31,52 @@ public class PeerManager {
     protected PeerInfo getPeerInfo() {
         peerInfoBuilder.setHighestChunk(dataManager.getHighestId());
         return peerInfoBuilder.build();
-
     }
 
-    public StreamerClient[] getPeers() {
-        return peers.values().toArray(new StreamerClient[]{});
-    }
+    public Chunk getChunk(int id) {
 
-    private void addPeer(UUID peerId, String uri) {
+        //-------TEMP LOAD BALANCE!---------
+        ArrayList<StreamerClient> clients = new ArrayList<>(Arrays.asList(peers.values().toArray(new StreamerClient[]{})));
+        Random gen = new Random();
 
-        if (peers.containsKey(peerId)) {
-            LOGGER.info("Trying to add already-added peer "
-
-                    + peerId.toString() + ", skipping...");
-            return;
+        int idFlag = 0;
+        //find client that has chunk
+        while(!clients.isEmpty()) {
+            int index = gen.nextInt(clients.size());
+            StreamerClient client = clients.get(index);
+            clients.remove(index);
+            Chunk chunk = client.requestChunk(id);
+            if(chunk.getId()>= 0) {
+                return client.requestChunk(id);
+            } else {
+                idFlag = chunk.getId();
+            }
         }
+        //---- END OF TEMP LOAD BALANCE!----------
+
+        return Chunk.newBuilder().setBuf(ByteString.EMPTY).setId(idFlag).build();
+    }
+
+
+    public void addPeer(String uri) {
 
         PeerInfo myInfo = getPeerInfo();
         //Todo: for report? Maybe only send partial peer list (to minimize overhead)
         StreamerClient peer = new StreamerClient(uri, myInfo);
-        peers.put(peerId, peer);
-        peerInfoBuilder.putPeers(peerId.toString(),uri);
 
-        LOGGER.info("Added peer " + peerId.toString());
+        if (peers.containsKey(peer.uuid)) {
+            LOGGER.info("Trying to add already-added peer " + peer.uuid.toString() + ", skipping...");
+            return;
+        }
+
+        peers.put(peer.uuid, peer);
+        peerInfoBuilder.putPeers(peer.uuid.toString(),uri);
+        LOGGER.info("Added peer " + peer.uuid.toString());
     }
 
     protected void addPeers(ArrayList<String> uris) {
-
         for(String uri:uris) {
-            UUID id = UUID.randomUUID();
-            addPeer(id,uri);
+            addPeer(uri);
         }
-
-
-//        for (Map.Entry<String, String> entry :
-//                peers.entrySet()) {
-//            UUID id = UUID.fromString(entry.getKey().replace("-",""));
-//            String uri = entry.getValue();
-//            addPeer(id, uri);
-//        }
-
-
-
     }
 }

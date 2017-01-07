@@ -1,6 +1,5 @@
 package se.umu.cs.ads.fildil;
 
-import com.sun.deploy.util.StringUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -31,7 +30,7 @@ public class Video {
         command.add("asf");
         command.add("-");
 
-        LOGGER.info("Starting FFMPEG: \"" + StringUtils.join(command, " ") + "\"");
+        LOGGER.info("Starting FFMPEG: \"" + String.join(" ",command) + "\"");
         process = new ProcessBuilder(command).start();
         new Thread(this::exitCheck).start();
     }

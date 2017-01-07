@@ -6,6 +6,8 @@ import io.grpc.stub.StreamObserver;
 import se.umu.cs.ads.fildil.proto.autogen.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,7 +60,10 @@ public class StreamerServer extends StreamerGrpc.StreamerImplBase {
     @Override
     public void poll(PeerInfo request, StreamObserver<PeerInfo> responseObserver) {
         //todo: not sure if it is sane to add every peer
-        //peerManager.addPeer(request);
+        //TODO Might change back to the map as argument.
+        String[] uris = request.getPeersMap().values().toArray(new String[]{});
+        peerManager.addPeers(new ArrayList<String>(Arrays.asList(uris)));
+
         responseObserver.onNext(peerManager.getPeerInfo());
         responseObserver.onCompleted();
     }
