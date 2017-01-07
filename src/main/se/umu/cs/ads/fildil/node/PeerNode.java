@@ -4,11 +4,14 @@ import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * Created by emil on 2016-12-30.
  */
 public class PeerNode extends Node {
+    private static final Logger LOGGER = Logger.getLogger(PeerNode.class.getName());
+
     private PeerManager peerManager;
     private final static String FLAG_PRIMARY_ADDR = "-prim";
     private String primAddr;
@@ -113,7 +116,14 @@ public class PeerNode extends Node {
 
                 if(chunk.getId() != DataManager.FLAG_NO_CHUNK) {
                     dataManager.addChunk(chunk);
+//                    System.out.println();
+                    LOGGER.finer("Got package: " + tasks[i]);
                     i++;
+                    //DEBUG purpose
+//                    if(tasks[i] % 1000 == 0) {
+//                        LOGGER.finer("Got package: " + tasks[i]);
+//                    }
+
                 } else {
                     try {
                         Thread.sleep(100);
@@ -136,21 +146,24 @@ public class PeerNode extends Node {
      */
     private void readFromPrimary() throws InterruptedException {
         StreamerClient streamerClient = new StreamerClient(primAddr,peerManager.getPeerInfo());
-        int idChunk = 0;
-        int sleep = 1000;
+        int sleep = 100;
         int[] tasks = null;
 
-        do {
-            tasks = getTasks();
-            for(int i = 0; tasks != null && i < tasks.length;) {
+        while ((tasks = getTasks()) != null){
+            for(int i = 0; i < tasks.length;) {
                 Chunk chunk = streamerClient.requestChunk(tasks[i]);
                 if(chunk.getId() != DataManager.FLAG_NO_CHUNK) {
+//                    System.out.println("Dah!: " + tasks[i]);
+                    LOGGER.finer("Got package: " + tasks[i]);
                     dataManager.addChunk(chunk);
-                    System.out.println("Got package: " + tasks[i]);
+                    //DEBUG purpose
+                    if(tasks[i] % 1000 == 0) {
+                        LOGGER.finer("Got package: " + tasks[i]);
+                    }
+
                     i++;
                 } else {
-                    Thread.sleep(1000);
-                    //Thread.sleep(100)
+                    Thread.sleep(100);
                 }
 
                 if (chunk.getId() == DataManager.FLAG_END_OF_STREAM) {
@@ -158,23 +171,7 @@ public class PeerNode extends Node {
                     dataManager.setEndOfStream(chunk.getId());
                 }
             }
-
-        }while(tasks != null);
-
-        //        do {
-//            int nextIDChunk = dataManager.getHighestId();
-//            chunk = streamerClient.requestChunk(nextIDChunk);
-//            idChunk = chunk.getId();
-//            if(idChunk == DataManager.FLAG_NO_CHUNK) {
-//                Thread.sleep(sleep);
-//            } else if(idChunk >= 0 ) {
-//                dataManager.addChunk(chunk);
-//            }
-//
-//        }while(idChunk != DataManager.FLAG_END_OF_STREAM);
-
-        //END OF STREAM CHUNK!
-//        dataManager.addChunk(chunk);
+        }
     }
 
 
@@ -222,12 +219,5 @@ public class PeerNode extends Node {
             endOfStream = b;
         }
     }
-
-//    private int getTask() {
-//        synchronized (cntLock) {
-//            idTaskCnt += 10;
-//            return idTaskCnt;
-//        }
-//    }
 
 }

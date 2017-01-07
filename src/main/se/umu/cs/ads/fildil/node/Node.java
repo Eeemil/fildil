@@ -13,10 +13,7 @@ import java.util.logging.Logger;
  */
 public abstract class Node {
     private static final Logger LOGGER = Logger.getLogger(Node.class.getName());
-//    private final UUID uuid = UUID.randomUUID();
     protected final NetworkManager networkManager;
-//    private ManagedChannel channel;
-//    protected StreamerGrpc.StreamerBlockingStub streamerStub;
 
     protected final DataManager dataManager = new DataManager();
     protected final PeerManager peerManager;

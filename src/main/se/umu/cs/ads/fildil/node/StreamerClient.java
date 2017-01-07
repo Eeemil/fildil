@@ -37,7 +37,6 @@ public class StreamerClient {
         client = StreamerGrpc.newBlockingStub(channel);
         PeerInfo otherInfo = client.poll(myInfo);
         System.out.println("Otherinfo uuid: " + otherInfo.getUuid());
-//        uuid = UUID.fromString(otherInfo.getUuid().replace("-",""));
         uuid = UUID.fromString(otherInfo.getUuid());
         this.peerInfo = otherInfo;
         this.highestChunk = otherInfo.getHighestChunk();

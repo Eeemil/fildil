@@ -97,9 +97,6 @@ public class PrimaryNode extends Node {
                 }
             }
 
-//            chunkBuilder.setId(DataManager.FLAG_END_OF_STREAM);
-//            chunkBuilder.setBuf(ByteString.EMPTY);
-//            dataManager.addChunk(chunkBuilder.build());
             dataManager.setEndOfStream(cnt);
 
         } catch (IOException e) {
