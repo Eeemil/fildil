@@ -105,6 +105,15 @@ public class PrimaryNode extends Node {
             LOGGER.log(Level.SEVERE,"Could not read path " + path.toString(),e);
             stop();
         }
+
+        try {
+            if (!video.terminatedSuccessfully()) {
+                LOGGER.severe("Video source did not terminate successfully, aborting...");
+                stop();
+            }
+        } catch (InterruptedException e) {
+            LOGGER.log(Level.SEVERE,"Interrupted while checking exit status on video source",e);
+        }
     }
 
 }

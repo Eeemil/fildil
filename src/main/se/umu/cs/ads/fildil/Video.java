@@ -33,28 +33,39 @@ public class Video {
 
         LOGGER.info("Starting FFMPEG: \"" + StringUtils.join(command, " ") + "\"");
         process = new ProcessBuilder(command).start();
+        new Thread(this::exitCheck).start();
+    }
+
+    private void exitCheck() {
+        try {
+            process.waitFor();
+        } catch (InterruptedException e) {
+            LOGGER.log(Level.SEVERE,"Interrupted while waiting for ffmpeg to exit", e);
+            return;
+        }
+        int exitval = process.exitValue();
+        if (exitval!=0) {
+            byte[] buf = new byte[4096];
+            try {
+                process.getErrorStream().read(buf);
+                String error = new String(buf, Charset.defaultCharset());
+                LOGGER.severe("FFMPEG failed with code " + exitval + " : " +
+                        (error.length() > 0 ? error : "No error message.") );
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE,"FFMPEG file failed. Also, error message could not be read",e);
+            }
+        } else {
+            LOGGER.info("FFMPEG terminated successfully");
+        }
     }
 
     /**
      * Blocks until ffmpeg has terminated
      * @return true if ffmpeg terminated successfully
      */
-    public Boolean terminatedSuccessfully() {
-        int ret = process.exitValue();
-        if (ret != 0) {
-            byte[] buf = new byte[4096];
-            try {
-                process.getErrorStream().read(buf);
-                String error = new String(buf, Charset.defaultCharset());
-                LOGGER.severe("FFMPEG failed with code " + ret + " : " +
-                        (error.length() > 0 ? error : "No error message.") );
-            } catch (IOException e) {
-                LOGGER.log(Level.SEVERE,"FFMPEG file failed. Also, error message could not be read",e);
-            }
-            return false;
-        }
-        LOGGER.info("FFMPEG terminated successfully");
-        return true;
+    public Boolean terminatedSuccessfully() throws InterruptedException {
+        process.waitFor();
+        return process.exitValue()==0;
     }
 
     /**
