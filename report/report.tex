@@ -153,24 +153,54 @@ Fildil is great
 The following terminology is used throughout the report.
 
 \begin{description}
-\item[Node] Any participant of the streaming network: downloading and/or
-  uploading parts of the stream
-\item[Primary node] Node reading directly from the streaming source.
-\item[Peer node] Node reading stream from other nodes
+\item[Video source] the source used to generate the streaming data. For example,
+  \texttt{ffmpeg} reading a video file could be a video source.
 \item[Chunk] A data packet containing a small part of the streamed
   content, with metadata.
+\item[Node] Any participant of the \emph{streaming network}: downloading and/or
+  uploading \emph{chunks} of the stream
+\item[Streaming network] All \emph{nodes} participating in generating and
+  sharing chunks.
+\item[Primary node] \emph{Node} reading directly from the \emph{video source},
+  \emph{generating} chunks for the \emph{streaming network}.
+\item[Peer node] \emph{Node} reading from the \emph{streaming network}, sharing
+  \emph{chunks} with other nodes. Differs from \emph{primary node} in that it
+  does not generate any chunks on its own, it merely downloads chunks and
+  uploads them to other \emph{peer nodes} on request.
 \end{description}
 
-\subsection{Build \& compilation}
+\subsection{Building \& running}
 
-In project root, run \texttt{mvn package} to build jar
+\subsubsection{Prerequisites}
 
+The following prerequisites exists for building and running Fildil:
 
-\subsection{Running a primary node}
+\begin{description}
+\item[Java 1.8] Fildil is written in Java and makes use of features available
+  only in Java 8 or newer. Throughout development, \texttt{Java Runtime
+    Environment 1.8.0\_25-b17} has been used.
+\item[Maven] In order to build Fildil, Maven is required. \texttt{Maven 3.0.5}
+  has been used during development.
+\item[FFmpeg] Fildil uses FFmpeg for reading a video source. \texttt{ffmpeg
+    3.2-2~bpo8+2, built with gcc 4.9.2 (Debian 4.9.2-10)} has been used
+  during testing. \textbf{FFmpeg is only a prerequisite for primary nodes}.
+\item[POSIX-compliant OS] Pipes are used for communication between Fildil and
+  other programs (such as \emph{VLC} and \emph{FFmpeg}). Testing has been
+  performed on \texttt{Debian 3.16.36-1+deb8u2 (Linux 3.16.0-4-amd64)}.
+\item[VLC media player] In order to watch the streamed content, a media player
+  able to manage streaming needs to be used. \texttt{VLC media player 2.2.4
+    (revision 2.2.3-37-g888b7e89)} has been used during testing.
+\end{description}
+
+\subsubsection{Compiling Fildil}
+
+mvn compile
+
+\subsubsection{Running a primary node}
 
 Run,
 
-\subsection{Running a peer node}
+\subsubsection{Running a peer node}
 
 Forrest, run!
 
@@ -236,9 +266,6 @@ be very large in size:
   and add complexity to our test environment, while only adding the benefit of
   needing to store less data in memory.
 \end{enumerate}
-
-
-
 
 \newpage
 
