@@ -40,8 +40,11 @@ public class PeerNode extends Node {
 
         //Finding peers based on arguments
         int port = new Integer(args[0]);
-        PeerNode peerNode = primAddr == null ? new PeerNode(peers,port):
-                                               new PeerNode(primAddr,peers,port);
+        PeerNode peerNode = new PeerNode(peers,port);
+        if (primAddr != null) {
+            peerNode.setPrimary(primAddr);
+        }
+
         try {
             peerNode.start();
             peerNode.startReadingStream();
@@ -72,13 +75,9 @@ public class PeerNode extends Node {
         peerManager.addPeers(peers);
     }
 
-    public PeerNode (String primAddr, ArrayList<String> peers, int port) {
-        super(port);
-        peerManager = new PeerManager(dataManager,port);
-        peerManager.addPeers(peers);
-        this.primAddr = primAddr;
+    private void setPrimary(String primAddr) {
+        peerManager.setPrimary(primAddr);
     }
-
     /**
      *  Reads either the primary if given the address. Else
      *  reads from multiple known peers.
@@ -86,44 +85,35 @@ public class PeerNode extends Node {
      */
     public void startReadingStream() throws InterruptedException {
         //Multiple threads start here
-        if(primAddr != null) {
-            readFromPrimary();
-        } else {
-            //TEMP!
-            for(int i = 0; i < 3; i++) {
-            Thread t = new Thread() {
-                @Override
-                public void run() {
-                    readPeerStream();
-                }
-            };
+
+        //TEMP!
+        for(int i = 0; i < 3; i++) {
+            Thread t = new Thread(this::readStream);
             t.start();
-            }
         }
+
     }
 
     /**
      * Read stream from random peer.
      */
-    private void readPeerStream() {
+    private void readStream() {
 
-        int[] tasks = null;
+        int[] tasks;
+        while ((tasks = getTasks()) != null){
 
-        do {
-            tasks = getTasks();
 
-            for(int i = 0; tasks != null && i < tasks.length;) {
+            for(int i = 0; i < tasks.length;) {
                 Chunk chunk = peerManager.getChunk(tasks[i]);
 
                 if(chunk.getId() != DataManager.FLAG_NO_CHUNK) {
                     dataManager.addChunk(chunk);
-//                    System.out.println();
                     LOGGER.finer("Got package: " + tasks[i]);
                     i++;
-                    //DEBUG purpose
-//                    if(tasks[i] % 1000 == 0) {
-//                        LOGGER.finer("Got package: " + tasks[i]);
-//                    }
+
+                    if(tasks[i] % 1000 == 0) {
+                        LOGGER.finer("Got package: " + tasks[i]);
+                    }
 
                 } else {
                     try {
@@ -139,46 +129,11 @@ public class PeerNode extends Node {
                     break;
                 }
             }
-        } while(tasks != null);
-    }
-
-    /**
-     * Read from primary node tills there no more chunks to read.
-     */
-    private void readFromPrimary() throws InterruptedException {
-        StreamerClient streamerClient = new StreamerClient(primAddr,peerManager.getPeerInfo());
-        int sleep = 100;
-        int[] tasks = null;
-
-        while ((tasks = getTasks()) != null){
-            for(int i = 0; i < tasks.length;) {
-                Chunk chunk = streamerClient.requestChunk(tasks[i]);
-                if(chunk.getId() != DataManager.FLAG_NO_CHUNK) {
-//                    System.out.println("Dah!: " + tasks[i]);
-                    LOGGER.finer("Got package: " + tasks[i]);
-                    dataManager.addChunk(chunk);
-                    //DEBUG purpose
-                    if(tasks[i] % 1000 == 0) {
-                        LOGGER.finer("Got package: " + tasks[i]);
-                    }
-
-                    i++;
-                } else {
-                    Thread.sleep(100);
-                }
-
-                if (chunk.getId() == DataManager.FLAG_END_OF_STREAM) {
-                    setEndOfStream(true);
-                    dataManager.setEndOfStream(chunk.getId());
-                }
-            }
         }
     }
 
-
-
     /**
-     * updates the que by adding new incremented id:es if end of stream hasn't been found.
+     * updates the queue by adding new incremented id:es if end of stream hasn't been found.
      * @retrun empty if there's no more work or array of id:es.
      */
     private int[] getTasks() {

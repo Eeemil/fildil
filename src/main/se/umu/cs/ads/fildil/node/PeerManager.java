@@ -18,6 +18,7 @@ public class PeerManager {
     protected final int port;
     private PeerInfo.Builder peerInfoBuilder;
     private Hashtable<UUID, StreamerClient> peers;
+    private StreamerClient primaryNode = null;
 
 
     public PeerManager(DataManager dataManager, int port) {
@@ -37,6 +38,9 @@ public class PeerManager {
 
         //-------TEMP LOAD BALANCE!---------
         ArrayList<StreamerClient> clients = new ArrayList<>(Arrays.asList(peers.values().toArray(new StreamerClient[]{})));
+        if (primaryNode != null) {
+            clients.add(primaryNode);
+        }
         Random gen = new Random();
 
         int idFlag = 0;
@@ -57,6 +61,9 @@ public class PeerManager {
         return Chunk.newBuilder().setBuf(ByteString.EMPTY).setId(idFlag).build();
     }
 
+    protected void setPrimary(String primaryAddr) {
+        primaryNode = new StreamerClient(primaryAddr,getPeerInfo());
+    }
 
     public void addPeer(String uri) {
 
