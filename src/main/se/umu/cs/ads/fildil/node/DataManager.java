@@ -6,6 +6,7 @@ import se.umu.cs.ads.fildil.proto.utils.ChunkUtils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,7 +63,7 @@ public class DataManager {
      * @return chunk
      */
     public Chunk getChunk(int id) {
-        if(id >= endOfStreamID ) {
+        if(endOfStreamID != FLAG_END_OF_STREAM_NOT_REACHED && id >= endOfStreamID ) {
             return ChunkUtils.createEndOfStreamChunk();
         } else if (!data.containsKey(id)) {
             return ChunkUtils.createNonExistantChunk();
@@ -84,17 +85,25 @@ public class DataManager {
      * @throws InterruptedException
      */
     protected Chunk getChunkBlocking(int id) throws InterruptedException {
-        blockingIDs.putIfAbsent(id, new Object());
-        Object lock = blockingIDs.get(id);
+//        blockingIDs.putIfAbsent(id, new Object());
+//        Object lock = blockingIDs.get(id);
+//
+//        synchronized (lock) {
+//            Chunk ret = getChunk(id);
+//            while (ret.getId() == ChunkUtils.FLAG_CHUNK_NO_EXISTS) {
+//                lock.wait();
+//                ret = getChunk(id);
+//            }
+//            return ret;
+//        }
 
-        synchronized (lock) {
-            Chunk ret = getChunk(id);
-            while (ret.getId() == ChunkUtils.FLAG_CHUNK_NO_EXISTS) {
-                lock.wait();
+        Chunk ret = getChunk(id);
+        while (ret.getId() == ChunkUtils.FLAG_CHUNK_NO_EXISTS) {
+                Thread.sleep(1000);
                 ret = getChunk(id);
             }
-            return ret;
-        }
+
+        return ret;
     }
 
     /**

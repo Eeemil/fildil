@@ -93,7 +93,6 @@ public class PeerNode extends Node {
         for(int i = 0; i < 3; i++) {
             Thread t = new Thread(this::readStream);
             t.start();
-
         }
 
     }
@@ -111,7 +110,7 @@ public class PeerNode extends Node {
 
                 switch (chunk.getId()) {
                     case ChunkUtils.FLAG_END_OF_STREAM:
-                        dataManager.setEndOfStreamID(chunk.getId());
+                        dataManager.setEndOfStreamID(idsToFetch[i]);
                         LOGGER.info("Got end of stream for ID " + idsToFetch[i]);
                         return;
                     case ChunkUtils.FLAG_CHUNK_NO_EXISTS:
@@ -140,7 +139,9 @@ public class PeerNode extends Node {
                 int i = 0;
                 for(;;i++) {
                     try {
+
                         Chunk c = dataManager.getChunkBlocking(i);
+//                        System.out.println(c.getId());
                         System.out.write(c.getBuf().toByteArray());
                     } catch (InvalidProtocolBufferException e) {
                         e.printStackTrace();
