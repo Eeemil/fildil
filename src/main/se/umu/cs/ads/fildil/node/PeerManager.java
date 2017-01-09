@@ -114,7 +114,7 @@ public class PeerManager {
 
         }
 
-        //If no chunk found then return non existant
+        //If no chunk found then return chunk as non existant
         return ChunkUtils.createNonExistantChunk();
     }
 
