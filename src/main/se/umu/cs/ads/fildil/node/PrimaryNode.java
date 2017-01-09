@@ -95,9 +95,10 @@ public class PrimaryNode extends Node {
                 if (cnt % 1000 == 0) {
                     LOGGER.finer("Status: read " + (cnt*DataManager.CHUNK_SIZE+bytesRead) + " bytes...");
                 }
+
             }
 
-            dataManager.setEndOfStreamID(cnt);
+            dataManager.setEndOfStreamID(++cnt);
 
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE,"Could not read path " + path.toString(),e);
