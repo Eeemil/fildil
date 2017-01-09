@@ -3,13 +3,12 @@ package se.umu.cs.ads.fildil.node;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import se.umu.cs.ads.fildil.proto.autogen.Chunk;
-import se.umu.cs.ads.fildil.proto.autogen.ChunkRequest;
+import se.umu.cs.ads.fildil.proto.utils.ChunkUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -17,12 +16,10 @@ import java.util.logging.Logger;
  */
 public class DataManager {
 
-    public static final int FLAG_NO_CHUNK = -1;
-    public static final int FLAG_END_OF_STREAM = -2;
     public static final int FLAG_END_OF_STREAM_NOT_REACHED = -4;
 
     private static final Logger LOGGER = Logger.getLogger(DataManager.class.getName());
-    private final Map<Integer,byte[]> data = new HashMap<>();
+    private final Map<Integer,byte[]> data = new ConcurrentHashMap<>();
     private final AtomicInteger dataSize = new AtomicInteger(0);
     private int highestID = 0;
     private int endOfStreamID = FLAG_END_OF_STREAM_NOT_REACHED;
@@ -62,37 +59,19 @@ public class DataManager {
      * @return chunk
      */
     public Chunk getChunk(int id) {
-        Chunk chunk = null;
-        Chunk.Builder chunkBuilder = Chunk.newBuilder();
-
-
-        synchronized (data) {
-            if(id < data.size()) {
-                byte[] buf = data.get(id);
-                try {
-                    if(buf != null) {
-                        chunk = Chunk.parseFrom(buf);
-                    }
-                } catch (InvalidProtocolBufferException e) {
-                    chunk = null;
-                }
-            }
+        if(id >= endOfStreamID ) {
+            return ChunkUtils.createEndOfStreamChunk();
+        } else if (!data.containsKey(id)) {
+            return ChunkUtils.createNonExistantChunk();
         }
 
-        if (chunk == null) {
-            int idFlag = 0;
-            if(id >= endOfStreamID) {
-                idFlag = FLAG_END_OF_STREAM;
-            } else {
-                idFlag = FLAG_NO_CHUNK;
-            }
-            LOGGER.info("Trying to retrieve non-existing chunk");
-            chunkBuilder.setId(idFlag);
-            chunkBuilder.setBuf(ByteString.EMPTY);
-            chunk = chunkBuilder.build();
+        byte[] buf = data.get(id);
+        try {
+            return Chunk.parseFrom(buf);
+        } catch (InvalidProtocolBufferException e) {
+            LOGGER.log(Level.SEVERE,"Could not parse chunk from data", e);
         }
-
-        return chunk;
+        return null; //Should never happen
     }
 
     /**
@@ -101,19 +80,17 @@ public class DataManager {
      */
     public void addChunk(Chunk chunk) {
         int id = chunk.getId();
-        byte[] buf =  null;
         synchronized (data) {
             if(!data.containsKey(chunk.getId())) {
-                data.put(chunk.getId(),chunk.toByteArray());
+                byte[] buf = chunk.toByteArray();
+                data.put(chunk.getId(),buf);
                 highestID = highestID < id ? id:highestID;
+                dataSize.addAndGet(buf.length);
             } else {
                 LOGGER.warning("Trying to add chunk with ID " + id + ", but chunk is already added");
                 return;
             }
         }
-
-        buf = chunk.toByteArray();
-        dataSize.addAndGet(buf.length);
     }
 
     /**

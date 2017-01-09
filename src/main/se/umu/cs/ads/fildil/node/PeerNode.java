@@ -1,6 +1,7 @@
 package se.umu.cs.ads.fildil.node;
 
 import se.umu.cs.ads.fildil.proto.autogen.Chunk;
+import se.umu.cs.ads.fildil.proto.utils.ChunkUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -106,11 +107,11 @@ public class PeerNode extends Node {
                 Chunk chunk = peerManager.getChunk(idsToFetch[i]);
 
                 switch (chunk.getId()) {
-                    case DataManager.FLAG_END_OF_STREAM:
+                    case ChunkUtils.FLAG_END_OF_STREAM:
                         dataManager.setEndOfStreamID(chunk.getId());
                         LOGGER.info("Got end of stream for ID " + idsToFetch[i]);
                         return;
-                    case DataManager.FLAG_NO_CHUNK:
+                    case ChunkUtils.FLAG_CHUNK_NO_EXISTS:
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException e) {
