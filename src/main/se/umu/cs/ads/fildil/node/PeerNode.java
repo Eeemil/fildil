@@ -154,7 +154,7 @@ public class PeerNode extends Node {
      * @return true if a chunk that has an end of stream has been found.
      */
     private boolean isEndOfStream() {
-       return dataManager.getEndOfStreamID() == 0;
+       return dataManager.getEndOfStreamID() == dataManager.FLAG_END_OF_STREAM_NOT_REACHED;
     }
 
 }

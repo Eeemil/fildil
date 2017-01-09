@@ -19,36 +19,48 @@ public class DataManager {
 
     public static final int FLAG_NO_CHUNK = -1;
     public static final int FLAG_END_OF_STREAM = -2;
+    public static final int FLAG_END_OF_STREAM_NOT_REACHED = -4;
 
     private static final Logger LOGGER = Logger.getLogger(DataManager.class.getName());
     private final Map<Integer,byte[]> data = new HashMap<>();
     private final AtomicInteger dataSize = new AtomicInteger(0);
     private int highestID = 0;
-    private int endOfStreamID = 0;
+    private int endOfStreamID = FLAG_END_OF_STREAM_NOT_REACHED;
     public static final int CHUNK_SIZE = 1024;
 
 
     /**
-     * @return the chunk of the highest sequence number that has been received
+     * @return the highest chunk id
      */
-    public Chunk getHighestChunk() {
-        int highest;
-        return getChunk(getHighestId());
-    }
-
     protected int getHighestId() {
         return highestID;
     }
 
+    /**
+     * @return the end of stream ID
+     */
     public int getEndOfStreamID() {
         return endOfStreamID;
     }
 
-    public void setEndOfStreamID(int endOfStreamID) {
+    /**
+     * @param endOfStreamID the id AFTER the last chunk
+     */
+    public synchronized void setEndOfStreamID(int endOfStreamID) {
+        if (endOfStreamID > this.endOfStreamID &&
+                this.endOfStreamID != FLAG_END_OF_STREAM_NOT_REACHED) {
+            LOGGER.warning("Trying to set end of stream ID to a higher ID than previously set: " + this.endOfStreamID + "->" + endOfStreamID + ", ignoring...");
+            //Todo: peerManager may be trying to set end of stream ID to higher and higher numbers, check this
+            return;
+        }
         this.endOfStreamID = endOfStreamID;
     }
 
-
+    /**
+     * Returns a chunk if existent, by given id
+     * @param id chunk id
+     * @return chunk
+     */
     public Chunk getChunk(int id) {
         Chunk chunk = null;
         Chunk.Builder chunkBuilder = Chunk.newBuilder();
@@ -83,6 +95,10 @@ public class DataManager {
         return chunk;
     }
 
+    /**
+     * Adds a chunk
+     * @param chunk
+     */
     public void addChunk(Chunk chunk) {
         int id = chunk.getId();
         byte[] buf =  null;
@@ -100,7 +116,9 @@ public class DataManager {
         dataSize.addAndGet(buf.length);
     }
 
-
+    /**
+     * @return the total data size stored
+     */
     public int getTotalDataSize() {
         return dataSize.get();
     }
