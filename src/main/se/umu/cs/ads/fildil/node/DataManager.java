@@ -40,7 +40,11 @@ public class DataManager {
         return highestID;
     }
 
-    public void setEndOfStream(int endOfStreamID) {
+    public int getEndOfStreamID() {
+        return endOfStreamID;
+    }
+
+    public void setEndOfStreamID(int endOfStreamID) {
         this.endOfStreamID = endOfStreamID;
     }
 

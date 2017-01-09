@@ -97,7 +97,7 @@ public class PrimaryNode extends Node {
                 }
             }
 
-            dataManager.setEndOfStream(cnt);
+            dataManager.setEndOfStreamID(cnt);
 
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE,"Could not read path " + path.toString(),e);

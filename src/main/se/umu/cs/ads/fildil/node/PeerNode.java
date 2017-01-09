@@ -12,12 +12,11 @@ import java.util.logging.Logger;
 public class PeerNode extends Node {
     private static final Logger LOGGER = Logger.getLogger(PeerNode.class.getName());
     private final static String FLAG_PRIMARY_ADDR = "-prim";
+    private final int CHUNKS_PER_THREAD = 10;
 
     private PeerManager peerManager;
-    private String primAddr;
-    private final Object cntLock = new Object();
-    private int  idTaskCnt =  0;
-    private boolean endOfStream = false;
+    private int idCounter =  0;
+
 
     public static void main(String[] args) {
 
@@ -100,7 +99,7 @@ public class PeerNode extends Node {
     private void readStream() {
 
         int[] tasks;
-        while ((tasks = getTasks()) != null){
+        while ((tasks = getPendingChunkIDs()) != null){
 
 
             for(int i = 0; i < tasks.length;) {
@@ -124,8 +123,7 @@ public class PeerNode extends Node {
                 }
 
                 if (chunk.getId() == DataManager.FLAG_END_OF_STREAM) {
-                    setEndOfStream(true);
-                    dataManager.setEndOfStream(chunk.getId());
+                    dataManager.setEndOfStreamID(chunk.getId());
                     break;
                 }
             }
@@ -136,44 +134,27 @@ public class PeerNode extends Node {
      * updates the queue by adding new incremented id:es if end of stream hasn't been found.
      * @retrun empty if there's no more work or array of id:es.
      */
-    private int[] getTasks() {
+    private synchronized int[] getPendingChunkIDs() {
 
-        if(!isEndOfStream()) {
-            //add random number
-            synchronized (cntLock) {
-//                Random gen = new Random();
-//                int incValue = gen.ints(idTaskCnt,10);
-                int incValue = 10;
-                int[] tasks = new int[incValue];
-                int id;
-                int i;
-                for(id = idTaskCnt, i = 0; id < (idTaskCnt+incValue); id++, i++) {
-                    tasks[i] = id;
-                }
-                idTaskCnt = id;
-                return tasks;
-            }
+        if (isEndOfStream()) {
+            return null;
         }
 
-        return null;
+        int[] chunkIDs = new int[CHUNKS_PER_THREAD];
+        int id;
+        int i;
+        for(id = idCounter, i = 0; id < (idCounter +CHUNKS_PER_THREAD); id++, i++) {
+            chunkIDs[i] = id;
+        }
+        idCounter = id;
+        return chunkIDs;
     }
 
     /**
      * @return true if a chunk that has an end of stream has been found.
      */
     private boolean isEndOfStream() {
-        synchronized (cntLock) {
-            return endOfStream;
-        }
-    }
-
-    /**
-     * @param b
-     */
-    private void setEndOfStream(boolean b) {
-        synchronized (cntLock) {
-            endOfStream = b;
-        }
+       return dataManager.getEndOfStreamID() == 0;
     }
 
 }
