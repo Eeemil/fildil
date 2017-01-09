@@ -4,6 +4,7 @@ import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -98,33 +99,32 @@ public class PeerNode extends Node {
      */
     private void readStream() {
 
-        int[] tasks;
-        while ((tasks = getPendingChunkIDs()) != null){
+        int[] idsToFetch;
+        while ((idsToFetch = getPendingChunkIDs()) != null){
 
+            for(int i = 0; i < idsToFetch.length;) {
+                Chunk chunk = peerManager.getChunk(idsToFetch[i]);
 
-            for(int i = 0; i < tasks.length;) {
-                Chunk chunk = peerManager.getChunk(tasks[i]);
-
-                if(chunk.getId() != DataManager.FLAG_NO_CHUNK) {
-                    dataManager.addChunk(chunk);
-                    LOGGER.finer("Got package: " + tasks[i]);
-                    i++;
-
-                    if(tasks[i] % 1000 == 0) {
-                        LOGGER.finer("Got package: " + tasks[i]);
-                    }
-
-                } else {
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                if (chunk.getId() == DataManager.FLAG_END_OF_STREAM) {
-                    dataManager.setEndOfStreamID(chunk.getId());
-                    break;
+                switch (chunk.getId()) {
+                    case DataManager.FLAG_END_OF_STREAM:
+                        dataManager.setEndOfStreamID(chunk.getId());
+                        LOGGER.info("Got end of stream for ID " + idsToFetch[i]);
+                        return;
+                    case DataManager.FLAG_NO_CHUNK:
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            LOGGER.log(Level.SEVERE, "Terminated while waiting for retrying to refetch a chunk", e);
+                        }
+                        break;
+                    default:
+                        dataManager.addChunk(chunk);
+                        LOGGER.finer("Got package: " + idsToFetch[i]);
+                        i++;
+                        if(idsToFetch[i] % 1000 == 0) {
+                            LOGGER.finer("Got package: " + idsToFetch[i]);
+                        }
+                        break;
                 }
             }
         }
