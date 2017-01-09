@@ -2,7 +2,6 @@ package se.umu.cs.ads.fildil.node;
 
 import com.google.protobuf.ByteString;
 import se.umu.cs.ads.fildil.proto.autogen.Chunk;
-import se.umu.cs.ads.fildil.proto.autogen.ChunkOrBuilder;
 import se.umu.cs.ads.fildil.proto.autogen.PeerInfo;
 
 import java.util.*;
@@ -34,31 +33,21 @@ public class PeerManager {
         return peerInfoBuilder.build();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Chunk getChunk(int id) {
 
-        //-------TEMP LOAD BALANCE!---------
-        ArrayList<StreamerClient> clients = new ArrayList<>(Arrays.asList(peers.values().toArray(new StreamerClient[]{})));
+        List<StreamerClient>clients = null;
+        clients = Arrays.asList(peers.values().toArray(new StreamerClient[]{}));
+
         if (primaryNode != null) {
             clients.add(primaryNode);
         }
-        Random gen = new Random();
 
-        int idFlag = 0;
-        //find client that has chunk
-        while(!clients.isEmpty()) {
-            int index = gen.nextInt(clients.size());
-            StreamerClient client = clients.get(index);
-            clients.remove(index);
-            Chunk chunk = client.requestChunk(id);
-            if(chunk.getId()>= 0) {
-                return client.requestChunk(id);
-            } else {
-                idFlag = chunk.getId();
-            }
-        }
-        //---- END OF TEMP LOAD BALANCE!----------
-
-        return Chunk.newBuilder().setBuf(ByteString.EMPTY).setId(idFlag).build();
+        return randLoadBalance(clients,id);
     }
 
     protected void setPrimary(String primaryAddr) {
@@ -86,4 +75,30 @@ public class PeerManager {
             addPeer(uri);
         }
     }
+
+    /**
+     *
+     * @param clients
+     * @return
+     */
+    private Chunk randLoadBalance(List<StreamerClient> clients, int id) {
+        Random gen = new Random();
+
+        int idFlag = 0;
+        //find client that has chunk
+        while(!clients.isEmpty()) {
+            int index = gen.nextInt(clients.size());
+            StreamerClient client = clients.get(index);
+            clients.remove(index);
+            Chunk chunk = client.requestChunk(id);
+            if(chunk.getId()>= 0) {
+                return client.requestChunk(id);
+            } else {
+                idFlag = chunk.getId();
+            }
+        }
+
+        return Chunk.newBuilder().setBuf(ByteString.EMPTY).setId(idFlag).build();
+    }
+
 }

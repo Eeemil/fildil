@@ -41,6 +41,7 @@ public class PeerNode extends Node {
         //Finding peers based on arguments
         int port = new Integer(args[0]);
         PeerNode peerNode = new PeerNode(peers,port);
+
         if (primAddr != null) {
             peerNode.setPrimary(primAddr);
         }
@@ -84,7 +85,6 @@ public class PeerNode extends Node {
      * @throws InterruptedException
      */
     public void startReadingStream() throws InterruptedException {
-        //Multiple threads start here
 
         //TEMP!
         for(int i = 0; i < 3; i++) {
