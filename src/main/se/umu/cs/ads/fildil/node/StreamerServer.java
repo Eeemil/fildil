@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by emil on 2016-12-30.
+ * Class for managing server responsibilities within the peer network
  */
 public class StreamerServer extends StreamerGrpc.StreamerImplBase {
     private final DataManager dataManager;
@@ -28,6 +28,10 @@ public class StreamerServer extends StreamerGrpc.StreamerImplBase {
 
     }
 
+    /**
+     * Starts sharing chunks on the peer network
+     * @throws IOException
+     */
     public void start() throws IOException {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> stop()));
         LOGGER.info("Starting node server...");
@@ -35,6 +39,9 @@ public class StreamerServer extends StreamerGrpc.StreamerImplBase {
         LOGGER.info("Node server started.");
     }
 
+    /**
+     * Stops sharing chunks
+     */
     public void stop() {
         if(!server.isShutdown()) {
             LOGGER.info("Shutting down server...");

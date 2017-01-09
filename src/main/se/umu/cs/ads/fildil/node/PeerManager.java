@@ -28,13 +28,16 @@ public class PeerManager {
         peerInfoBuilder.setUuid(uuid.toString());
     }
 
+    /**
+     * @return up-to-date information about the current peer
+     */
     protected PeerInfo getPeerInfo() {
         peerInfoBuilder.setHighestChunk(dataManager.getHighestId());
         return peerInfoBuilder.build();
     }
 
     /**
-     *
+     * Retrieves a chunk from a random peer
      * @param id
      * @return
      */
@@ -50,10 +53,18 @@ public class PeerManager {
         return randLoadBalance(clients,id);
     }
 
+    /**
+     * Set the primary peer address, if a primary node is known.
+     * @param primaryAddr
+     */
     protected void setPrimary(String primaryAddr) {
         primaryNode = new StreamerClient(primaryAddr,getPeerInfo());
     }
 
+    /**
+     * Adds a single peer
+     * @param uri to peer
+     */
     public void addPeer(String uri) {
 
         PeerInfo myInfo = getPeerInfo();
@@ -70,6 +81,10 @@ public class PeerManager {
         LOGGER.info("Added peer " + peer.uuid.toString());
     }
 
+    /**
+     * Adds a set of peer from a list of URI:s
+     * @param uris
+     */
     protected void addPeers(ArrayList<String> uris) {
         for(String uri:uris) {
             addPeer(uri);
@@ -77,7 +92,7 @@ public class PeerManager {
     }
 
     /**
-     *
+     * Gets a random peer
      * @param clients
      * @return
      */
