@@ -1,8 +1,8 @@
 package se.umu.cs.ads.fildil.node;
 
-import com.google.protobuf.ByteString;
 import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 import se.umu.cs.ads.fildil.proto.autogen.PeerInfo;
+import se.umu.cs.ads.fildil.proto.utils.ChunkUtils;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -50,7 +50,7 @@ public class PeerManager {
             clients.add(primaryNode);
         }
 
-        return randLoadBalance(clients,id);
+        return randomLoadBalance(clients,id);
     }
 
     /**
@@ -92,28 +92,30 @@ public class PeerManager {
     }
 
     /**
-     * Gets a random peer
-     * @param clients
-     * @return
+     * Return chunk from a random suitable peer
+     * @param clients that are currently active
+     * @return chunk
      */
-    private Chunk randLoadBalance(List<StreamerClient> clients, int id) {
+    private Chunk randomLoadBalance(List<StreamerClient> clients, int id) {
         Random gen = new Random();
 
-        int idFlag = 0;
-        //find client that has chunk
+        //find client that has chunk else remove them from list
         while(!clients.isEmpty()) {
             int index = gen.nextInt(clients.size());
+
             StreamerClient client = clients.get(index);
             clients.remove(index);
+
             Chunk chunk = client.requestChunk(id);
-            if(chunk.getId()>= 0) {
-                return client.requestChunk(id);
-            } else {
-                idFlag = chunk.getId();
+            if(chunk.getId() >= 0
+                    || chunk.getId() == ChunkUtils.FLAG_END_OF_STREAM) {
+                return chunk;
             }
+
         }
 
-        return Chunk.newBuilder().setBuf(ByteString.EMPTY).setId(idFlag).build();
+        //If no chunk found then return non existant
+        return ChunkUtils.createNonExistantChunk();
     }
 
 }
