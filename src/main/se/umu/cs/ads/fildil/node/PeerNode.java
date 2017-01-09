@@ -1,5 +1,6 @@
 package se.umu.cs.ads.fildil.node;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 import se.umu.cs.ads.fildil.proto.utils.ChunkUtils;
 
@@ -57,14 +58,15 @@ public class PeerNode extends Node {
         }
 
         System.err.println("Running");
-        while (true) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                System.err.println("Exiting...");
-                return;
-            }
-        }
+//        while (true) {
+            peerNode.writeToStdout();
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                System.err.println("Exiting...");
+//                return;
+//            }
+//        }
     }
 
     /**
@@ -91,6 +93,7 @@ public class PeerNode extends Node {
         for(int i = 0; i < 3; i++) {
             Thread t = new Thread(this::readStream);
             t.start();
+
         }
 
     }
@@ -121,14 +124,34 @@ public class PeerNode extends Node {
                     default:
                         dataManager.addChunk(chunk);
                         LOGGER.finer("Got package: " + idsToFetch[i]);
-                        i++;
+
                         if(idsToFetch[i] % 1000 == 0) {
                             LOGGER.finer("Got package: " + idsToFetch[i]);
                         }
+                        i++;
                         break;
                 }
             }
         }
+    }
+
+    //Extends this, and write to stdout
+    public void writeToStdout() {
+                int i = 0;
+                for(;;i++) {
+                    try {
+                        Chunk c = dataManager.getChunkBlocking(i);
+                        System.out.write(c.getBuf().toByteArray());
+                    } catch (InvalidProtocolBufferException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
     }
 
     /**
@@ -144,7 +167,7 @@ public class PeerNode extends Node {
         int[] chunkIDs = new int[CHUNKS_PER_THREAD];
         int id;
         int i;
-        for(id = idCounter, i = 0; id < (idCounter +CHUNKS_PER_THREAD); id++, i++) {
+        for(id = idCounter, i = 0; id < (idCounter + CHUNKS_PER_THREAD); id++, i++) {
             chunkIDs[i] = id;
         }
         idCounter = id;
@@ -155,7 +178,7 @@ public class PeerNode extends Node {
      * @return true if a chunk that has an end of stream has been found.
      */
     private boolean isEndOfStream() {
-       return dataManager.getEndOfStreamID() == dataManager.FLAG_END_OF_STREAM_NOT_REACHED;
+       return dataManager.getEndOfStreamID() != dataManager.FLAG_END_OF_STREAM_NOT_REACHED;
     }
 
 }

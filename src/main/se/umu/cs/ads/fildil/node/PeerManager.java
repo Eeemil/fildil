@@ -4,6 +4,7 @@ import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 import se.umu.cs.ads.fildil.proto.autogen.PeerInfo;
 import se.umu.cs.ads.fildil.proto.utils.ChunkUtils;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -43,8 +44,8 @@ public class PeerManager {
      */
     public Chunk getChunk(int id) {
 
-        List<StreamerClient>clients = null;
-        clients = Arrays.asList(peers.values().toArray(new StreamerClient[]{}));
+        ArrayList<StreamerClient> clients = null;
+        clients = new ArrayList<>(Arrays.asList(peers.values().toArray(new StreamerClient[]{})));
 
         if (primaryNode != null) {
             clients.add(primaryNode);
@@ -117,5 +118,10 @@ public class PeerManager {
         //If no chunk found then return chunk as non existant
         return ChunkUtils.createNonExistantChunk();
     }
+
+        // Tries to fetch from peeers that have the highest chunk
+        // private highestChunkAlgorithm()
+
+    // private Chunk
 
 }
