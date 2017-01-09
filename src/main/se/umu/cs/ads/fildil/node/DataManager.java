@@ -1,6 +1,5 @@
 package se.umu.cs.ads.fildil.node;
 
-import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 import se.umu.cs.ads.fildil.proto.utils.ChunkUtils;
@@ -24,6 +23,10 @@ public class DataManager {
     private int highestID = 0;
     private int endOfStreamID = FLAG_END_OF_STREAM_NOT_REACHED;
     public static final int CHUNK_SIZE = 1024;
+
+    private Map<Integer, Object> blockingIDs = new ConcurrentHashMap<>();
+
+
 
 
     /**
@@ -75,6 +78,26 @@ public class DataManager {
     }
 
     /**
+     * Gets chunk when it is available
+     * @param id
+     * @return
+     * @throws InterruptedException
+     */
+    protected Chunk getChunkBlocking(int id) throws InterruptedException {
+        blockingIDs.putIfAbsent(id, new Object());
+        Object lock = blockingIDs.get(id);
+
+        synchronized (lock) {
+            Chunk ret = getChunk(id);
+            while (ret.getId() == ChunkUtils.FLAG_CHUNK_NO_EXISTS) {
+                lock.wait();
+                ret = getChunk(id);
+            }
+            return ret;
+        }
+    }
+
+    /**
      * Adds a chunk
      * @param chunk
      */
@@ -86,6 +109,9 @@ public class DataManager {
                 data.put(chunk.getId(),buf);
                 highestID = highestID < id ? id:highestID;
                 dataSize.addAndGet(buf.length);
+                if (blockingIDs.containsKey(id)) {
+                    blockingIDs.get(id).notify();
+                }
             } else {
                 LOGGER.warning("Trying to add chunk with ID " + id + ", but chunk is already added");
                 return;
