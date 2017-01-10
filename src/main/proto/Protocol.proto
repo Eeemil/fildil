@@ -20,8 +20,9 @@ message Chunk {
 message PeerInfo {
     int32 highestChunk= 1;
     string uuid = 2;
+    string address = 3;
     //<uuid, address:port>
-    map<string, string> peers = 3;
+    map<string, string> peers = 4;
 }
 
 message ChunkRequest {
