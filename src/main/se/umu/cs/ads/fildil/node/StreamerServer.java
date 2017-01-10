@@ -67,9 +67,10 @@ public class StreamerServer extends StreamerGrpc.StreamerImplBase {
     @Override
     public void poll(PeerInfo request, StreamObserver<PeerInfo> responseObserver) {
         //todo: not sure if it is sane to add every peer
-        //TODO Might change back to the map as argument.
+        //TODO Might change back to the map as argument. .... dont...just dont
         String[] uris = request.getPeersMap().values().toArray(new String[]{});
         peerManager.addPeers(new ArrayList<String>(Arrays.asList(uris)));
+        System.out.println("Address: " + uris[0]);
 
         responseObserver.onNext(peerManager.getPeerInfo());
         responseObserver.onCompleted();
@@ -82,10 +83,4 @@ public class StreamerServer extends StreamerGrpc.StreamerImplBase {
         responseObserver.onCompleted();
     }
 
-    @Override
-    public void receiveChunk(Chunk request, StreamObserver<ReceiveChunkReply> responseObserver) {
-        dataManager.addChunk(request);
-        responseObserver.onNext(ReceiveChunkReply.getDefaultInstance());
-        responseObserver.onCompleted();
-    }
 }

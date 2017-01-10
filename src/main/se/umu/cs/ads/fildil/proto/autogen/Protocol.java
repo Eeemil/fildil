@@ -34,16 +34,6 @@ public final class Protocol {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_ChunkRequest_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_Empty_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_Empty_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ReceiveChunkReply_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ReceiveChunkReply_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -54,16 +44,15 @@ public final class Protocol {
   static {
     java.lang.String[] descriptorData = {
       "\n\016Protocol.proto\" \n\005Chunk\022\n\n\002id\030\001 \001(\005\022\013\n" +
-      "\003buf\030\002 \001(\014\"\201\001\n\010PeerInfo\022\024\n\014highestChunk\030" +
-      "\001 \001(\005\022\014\n\004uuid\030\002 \001(\t\022#\n\005peers\030\003 \003(\0132\024.Pee" +
-      "rInfo.PeersEntry\032,\n\nPeersEntry\022\013\n\003key\030\001 " +
-      "\001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"\032\n\014ChunkRequest\022\n" +
-      "\n\002id\030\001 \001(\005\"\007\n\005Empty\"\023\n\021ReceiveChunkReply" +
-      "2\201\001\n\010Streamer\022\'\n\014requestChunk\022\r.ChunkReq" +
-      "uest\032\006.Chunk\"\000\022\036\n\004poll\022\t.PeerInfo\032\t.Peer" +
-      "Info\"\000\022,\n\014receiveChunk\022\006.Chunk\032\022.Receive" +
-      "ChunkReply\"\000B0\n\"se.umu.cs.ads.fildil.pro",
-      "to.autogenB\010ProtocolP\001b\006proto3"
+      "\003buf\030\002 \001(\014\"\222\001\n\010PeerInfo\022\024\n\014highestChunk\030" +
+      "\001 \001(\005\022\014\n\004uuid\030\002 \001(\t\022\017\n\007address\030\003 \001(\t\022#\n\005" +
+      "peers\030\004 \003(\0132\024.PeerInfo.PeersEntry\032,\n\nPee" +
+      "rsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"" +
+      "\032\n\014ChunkRequest\022\n\n\002id\030\001 \001(\0052S\n\010Streamer\022" +
+      "\'\n\014requestChunk\022\r.ChunkRequest\032\006.Chunk\"\000" +
+      "\022\036\n\004poll\022\t.PeerInfo\032\t.PeerInfo\"\000B0\n\"se.u" +
+      "mu.cs.ads.fildil.proto.autogenB\010Protocol" +
+      "P\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -88,7 +77,7 @@ public final class Protocol {
     internal_static_PeerInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_PeerInfo_descriptor,
-        new java.lang.String[] { "HighestChunk", "Uuid", "Peers", });
+        new java.lang.String[] { "HighestChunk", "Uuid", "Address", "Peers", });
     internal_static_PeerInfo_PeersEntry_descriptor =
       internal_static_PeerInfo_descriptor.getNestedTypes().get(0);
     internal_static_PeerInfo_PeersEntry_fieldAccessorTable = new
@@ -101,18 +90,6 @@ public final class Protocol {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ChunkRequest_descriptor,
         new java.lang.String[] { "Id", });
-    internal_static_Empty_descriptor =
-      getDescriptor().getMessageTypes().get(3);
-    internal_static_Empty_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_Empty_descriptor,
-        new java.lang.String[] { });
-    internal_static_ReceiveChunkReply_descriptor =
-      getDescriptor().getMessageTypes().get(4);
-    internal_static_ReceiveChunkReply_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ReceiveChunkReply_descriptor,
-        new java.lang.String[] { });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

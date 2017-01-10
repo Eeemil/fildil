@@ -23,11 +23,21 @@ public interface PeerInfoOrBuilder extends
       getUuidBytes();
 
   /**
+   * <code>optional string address = 3;</code>
+   */
+  java.lang.String getAddress();
+  /**
+   * <code>optional string address = 3;</code>
+   */
+  com.google.protobuf.ByteString
+      getAddressBytes();
+
+  /**
    * <pre>
    *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, string&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 4;</code>
    */
   int getPeersCount();
   /**
@@ -35,7 +45,7 @@ public interface PeerInfoOrBuilder extends
    *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, string&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 4;</code>
    */
   boolean containsPeers(
       java.lang.String key);
@@ -50,7 +60,7 @@ public interface PeerInfoOrBuilder extends
    *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, string&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 4;</code>
    */
   java.util.Map<java.lang.String, java.lang.String>
   getPeersMap();
@@ -59,7 +69,7 @@ public interface PeerInfoOrBuilder extends
    *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, string&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 4;</code>
    */
 
   java.lang.String getPeersOrDefault(
@@ -70,7 +80,7 @@ public interface PeerInfoOrBuilder extends
    *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, string&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 4;</code>
    */
 
   java.lang.String getPeersOrThrow(

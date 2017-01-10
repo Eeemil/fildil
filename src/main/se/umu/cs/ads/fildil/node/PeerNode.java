@@ -5,6 +5,7 @@ import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 import se.umu.cs.ads.fildil.proto.utils.ChunkUtils;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,7 +47,13 @@ public class PeerNode extends Node {
 
         //Finding peers based on arguments
         int port = new Integer(args[0]);
-        PeerNode peerNode = new PeerNode(peers,port);
+        PeerNode peerNode = null;
+        try {
+            peerNode = new PeerNode(peers,port);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
 
         if (primAddr != null) {
             peerNode.setPrimary(primAddr);
@@ -74,7 +81,7 @@ public class PeerNode extends Node {
      * Node fetching from other nodes
      * @param peers address to peer, on form such as "localhost:3124"
      */
-    public PeerNode (ArrayList<String> peers, int port) {
+    public PeerNode (ArrayList<String> peers, int port) throws UnknownHostException {
         super(port);
         peerManager = new PeerManager(dataManager,port);
         peerManager.addPeers(peers);
@@ -166,8 +173,6 @@ public class PeerNode extends Node {
                         e.printStackTrace();
                     }
                 }
-
-
     }
 
     /**

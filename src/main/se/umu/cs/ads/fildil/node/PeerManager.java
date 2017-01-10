@@ -4,6 +4,8 @@ import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 import se.umu.cs.ads.fildil.proto.autogen.PeerInfo;
 import se.umu.cs.ads.fildil.proto.utils.ChunkUtils;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -14,6 +16,7 @@ import java.util.logging.Logger;
 public class PeerManager {
     private static final Logger LOGGER = Logger.getLogger(PeerManager.class.getName());
     public final UUID uuid = UUID.randomUUID();
+    public final String addr;
     private DataManager dataManager;
     protected final int port;
     private PeerInfo.Builder peerInfoBuilder;
@@ -21,12 +24,16 @@ public class PeerManager {
     private StreamerClient primaryNode = null;
 
 
-    public PeerManager(DataManager dataManager, int port) {
+
+    public PeerManager(DataManager dataManager, int port) throws UnknownHostException {
         this.port = port;//Do I need port here?
         this.dataManager = dataManager;
         this.peers = new ConcurrentHashMap<>();
         peerInfoBuilder = PeerInfo.newBuilder();
         peerInfoBuilder.setUuid(uuid.toString());
+        addr = InetAddress.getLocalHost().getHostAddress() + ":" + port;
+        peerInfoBuilder.setAddress(addr);
+        peerInfoBuilder.putPeers(uuid.toString(),addr);
     }
 
     /**
@@ -72,14 +79,21 @@ public class PeerManager {
      */
     public void addPeer(String uri) {
 
+        if(uri.equals(addr)) {
+            System.out.println("Not adding myself");
+            return;
+        }
+
         PeerInfo myInfo = getPeerInfo();
         //Todo: for report? Maybe only send partial peer list (to minimize overhead)
         StreamerClient peer = new StreamerClient(uri, myInfo);
+        System.out.println("Address: " + uri);
 
         if (peers.containsKey(peer.uuid.toString())) {
             LOGGER.info("Trying to add already-added peer " + peer.uuid.toString() + ", skipping...");
             return;
         }
+
 
         peers.put(peer.uuid.toString(), peer);
         peerInfoBuilder.putPeers(peer.uuid.toString(),uri);
@@ -136,7 +150,7 @@ public class PeerManager {
             ret = client.requestChunk(id);
         }catch(io.grpc.StatusRuntimeException e ) {
             String uuid = client.uuid.toString();
-            peers.remove(uuid);
+            removePeer(uuid);
             if(primaryNode != null && primaryNode.uuid.toString().equals(uuid)) {
                 primaryNode = null;
             }
@@ -146,4 +160,21 @@ public class PeerManager {
         return ret;
     }
 
+    /**
+     * Remove peer from both peers and peerInfo.
+     * @param uuid
+     */
+    private void removePeer(String uuid) {
+        peers.remove(uuid);
+        Map<String,String> infoPeers = new HashMap<>();
+        String[] uuids = peers.keySet().toArray(new String[]{});
+
+        for(String u:uuids) {
+            infoPeers.put(u,peers.get(uuid).addr);
+        }
+
+        infoPeers.put(this.uuid.toString(),this.addr);
+        peerInfoBuilder.putAllPeers(infoPeers);
+
+    }
 }

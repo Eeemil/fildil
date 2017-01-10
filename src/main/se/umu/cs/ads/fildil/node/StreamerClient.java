@@ -21,7 +21,9 @@ public class StreamerClient {
     private final StreamerGrpc.StreamerBlockingStub client;
     private int highestChunk;
     public final UUID uuid;
+    public final String addr;
     private PeerInfo peerInfo;
+
 
     /**
      * Initialice a client connection
@@ -37,11 +39,9 @@ public class StreamerClient {
         client = StreamerGrpc.newBlockingStub(channel);
         PeerInfo otherInfo = client.poll(myInfo);
         uuid = UUID.fromString(otherInfo.getUuid());
+        addr = otherInfo.getAddress();
         this.peerInfo = otherInfo;
         this.highestChunk = otherInfo.getHighestChunk();
-
-        //Todo: do anything with the returned peers?
-        //otherInfo.getPeersMap()
     }
 
     /**

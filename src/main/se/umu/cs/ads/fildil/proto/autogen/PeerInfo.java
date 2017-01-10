@@ -17,6 +17,7 @@ public  final class PeerInfo extends
   private PeerInfo() {
     highestChunk_ = 0;
     uuid_ = "";
+    address_ = "";
   }
 
   @java.lang.Override
@@ -56,10 +57,16 @@ public  final class PeerInfo extends
             break;
           }
           case 26: {
-            if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            address_ = s;
+            break;
+          }
+          case 34: {
+            if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
               peers_ = com.google.protobuf.MapField.newMapField(
                   PeersDefaultEntryHolder.defaultEntry);
-              mutable_bitField0_ |= 0x00000004;
+              mutable_bitField0_ |= 0x00000008;
             }
             com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
             peers__ = input.readMessage(
@@ -88,7 +95,7 @@ public  final class PeerInfo extends
   protected com.google.protobuf.MapField internalGetMapField(
       int number) {
     switch (number) {
-      case 3:
+      case 4:
         return internalGetPeers();
       default:
         throw new RuntimeException(
@@ -146,7 +153,41 @@ public  final class PeerInfo extends
     }
   }
 
-  public static final int PEERS_FIELD_NUMBER = 3;
+  public static final int ADDRESS_FIELD_NUMBER = 3;
+  private volatile java.lang.Object address_;
+  /**
+   * <code>optional string address = 3;</code>
+   */
+  public java.lang.String getAddress() {
+    java.lang.Object ref = address_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      address_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>optional string address = 3;</code>
+   */
+  public com.google.protobuf.ByteString
+      getAddressBytes() {
+    java.lang.Object ref = address_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      address_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int PEERS_FIELD_NUMBER = 4;
   private static final class PeersDefaultEntryHolder {
     static final com.google.protobuf.MapEntry<
         java.lang.String, java.lang.String> defaultEntry =
@@ -177,7 +218,7 @@ public  final class PeerInfo extends
    *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, string&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 4;</code>
    */
 
   public boolean containsPeers(
@@ -197,7 +238,7 @@ public  final class PeerInfo extends
    *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, string&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 4;</code>
    */
 
   public java.util.Map<java.lang.String, java.lang.String> getPeersMap() {
@@ -208,7 +249,7 @@ public  final class PeerInfo extends
    *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, string&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 4;</code>
    */
 
   public java.lang.String getPeersOrDefault(
@@ -224,7 +265,7 @@ public  final class PeerInfo extends
    *&lt;uuid, address:port&gt;
    * </pre>
    *
-   * <code>map&lt;string, string&gt; peers = 3;</code>
+   * <code>map&lt;string, string&gt; peers = 4;</code>
    */
 
   public java.lang.String getPeersOrThrow(
@@ -256,12 +297,15 @@ public  final class PeerInfo extends
     if (!getUuidBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, uuid_);
     }
+    if (!getAddressBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, address_);
+    }
     com.google.protobuf.GeneratedMessageV3
       .serializeStringMapTo(
         output,
         internalGetPeers(),
         PeersDefaultEntryHolder.defaultEntry,
-        3);
+        4);
   }
 
   public int getSerializedSize() {
@@ -276,6 +320,9 @@ public  final class PeerInfo extends
     if (!getUuidBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, uuid_);
     }
+    if (!getAddressBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, address_);
+    }
     for (java.util.Map.Entry<java.lang.String, java.lang.String> entry
          : internalGetPeers().getMap().entrySet()) {
       com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
@@ -284,7 +331,7 @@ public  final class PeerInfo extends
           .setValue(entry.getValue())
           .build();
       size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, peers__);
+          .computeMessageSize(4, peers__);
     }
     memoizedSize = size;
     return size;
@@ -306,6 +353,8 @@ public  final class PeerInfo extends
         == other.getHighestChunk());
     result = result && getUuid()
         .equals(other.getUuid());
+    result = result && getAddress()
+        .equals(other.getAddress());
     result = result && internalGetPeers().equals(
         other.internalGetPeers());
     return result;
@@ -322,6 +371,8 @@ public  final class PeerInfo extends
     hash = (53 * hash) + getHighestChunk();
     hash = (37 * hash) + UUID_FIELD_NUMBER;
     hash = (53 * hash) + getUuid().hashCode();
+    hash = (37 * hash) + ADDRESS_FIELD_NUMBER;
+    hash = (53 * hash) + getAddress().hashCode();
     if (!internalGetPeers().getMap().isEmpty()) {
       hash = (37 * hash) + PEERS_FIELD_NUMBER;
       hash = (53 * hash) + internalGetPeers().hashCode();
@@ -424,7 +475,7 @@ public  final class PeerInfo extends
     protected com.google.protobuf.MapField internalGetMapField(
         int number) {
       switch (number) {
-        case 3:
+        case 4:
           return internalGetPeers();
         default:
           throw new RuntimeException(
@@ -435,7 +486,7 @@ public  final class PeerInfo extends
     protected com.google.protobuf.MapField internalGetMutableMapField(
         int number) {
       switch (number) {
-        case 3:
+        case 4:
           return internalGetMutablePeers();
         default:
           throw new RuntimeException(
@@ -470,6 +521,8 @@ public  final class PeerInfo extends
 
       uuid_ = "";
 
+      address_ = "";
+
       internalGetMutablePeers().clear();
       return this;
     }
@@ -497,6 +550,7 @@ public  final class PeerInfo extends
       int to_bitField0_ = 0;
       result.highestChunk_ = highestChunk_;
       result.uuid_ = uuid_;
+      result.address_ = address_;
       result.peers_ = internalGetPeers();
       result.peers_.makeImmutable();
       result.bitField0_ = to_bitField0_;
@@ -546,6 +600,10 @@ public  final class PeerInfo extends
       }
       if (!other.getUuid().isEmpty()) {
         uuid_ = other.uuid_;
+        onChanged();
+      }
+      if (!other.getAddress().isEmpty()) {
+        address_ = other.address_;
         onChanged();
       }
       internalGetMutablePeers().mergeFrom(
@@ -672,6 +730,75 @@ public  final class PeerInfo extends
       return this;
     }
 
+    private java.lang.Object address_ = "";
+    /**
+     * <code>optional string address = 3;</code>
+     */
+    public java.lang.String getAddress() {
+      java.lang.Object ref = address_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        address_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>optional string address = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getAddressBytes() {
+      java.lang.Object ref = address_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        address_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>optional string address = 3;</code>
+     */
+    public Builder setAddress(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      address_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional string address = 3;</code>
+     */
+    public Builder clearAddress() {
+      
+      address_ = getDefaultInstance().getAddress();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional string address = 3;</code>
+     */
+    public Builder setAddressBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      address_ = value;
+      onChanged();
+      return this;
+    }
+
     private com.google.protobuf.MapField<
         java.lang.String, java.lang.String> peers_;
     private com.google.protobuf.MapField<java.lang.String, java.lang.String>
@@ -703,7 +830,7 @@ public  final class PeerInfo extends
      *&lt;uuid, address:port&gt;
      * </pre>
      *
-     * <code>map&lt;string, string&gt; peers = 3;</code>
+     * <code>map&lt;string, string&gt; peers = 4;</code>
      */
 
     public boolean containsPeers(
@@ -723,7 +850,7 @@ public  final class PeerInfo extends
      *&lt;uuid, address:port&gt;
      * </pre>
      *
-     * <code>map&lt;string, string&gt; peers = 3;</code>
+     * <code>map&lt;string, string&gt; peers = 4;</code>
      */
 
     public java.util.Map<java.lang.String, java.lang.String> getPeersMap() {
@@ -734,7 +861,7 @@ public  final class PeerInfo extends
      *&lt;uuid, address:port&gt;
      * </pre>
      *
-     * <code>map&lt;string, string&gt; peers = 3;</code>
+     * <code>map&lt;string, string&gt; peers = 4;</code>
      */
 
     public java.lang.String getPeersOrDefault(
@@ -750,7 +877,7 @@ public  final class PeerInfo extends
      *&lt;uuid, address:port&gt;
      * </pre>
      *
-     * <code>map&lt;string, string&gt; peers = 3;</code>
+     * <code>map&lt;string, string&gt; peers = 4;</code>
      */
 
     public java.lang.String getPeersOrThrow(
@@ -773,7 +900,7 @@ public  final class PeerInfo extends
      *&lt;uuid, address:port&gt;
      * </pre>
      *
-     * <code>map&lt;string, string&gt; peers = 3;</code>
+     * <code>map&lt;string, string&gt; peers = 4;</code>
      */
 
     public Builder removePeers(
@@ -795,7 +922,7 @@ public  final class PeerInfo extends
      *&lt;uuid, address:port&gt;
      * </pre>
      *
-     * <code>map&lt;string, string&gt; peers = 3;</code>
+     * <code>map&lt;string, string&gt; peers = 4;</code>
      */
     public Builder putPeers(
         java.lang.String key,
@@ -810,7 +937,7 @@ public  final class PeerInfo extends
      *&lt;uuid, address:port&gt;
      * </pre>
      *
-     * <code>map&lt;string, string&gt; peers = 3;</code>
+     * <code>map&lt;string, string&gt; peers = 4;</code>
      */
 
     public Builder putAllPeers(

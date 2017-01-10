@@ -4,6 +4,7 @@ import io.grpc.ManagedChannel;
 import se.umu.cs.ads.fildil.proto.autogen.*;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -18,7 +19,7 @@ public abstract class Node {
     protected final DataManager dataManager = new DataManager();
     protected final PeerManager peerManager;
 
-    protected Node(int port) {
+    protected Node(int port) throws UnknownHostException {
         peerManager = new PeerManager(dataManager, port);
         networkManager = new NetworkManager(dataManager, peerManager);
     }

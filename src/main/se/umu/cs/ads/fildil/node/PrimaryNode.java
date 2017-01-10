@@ -6,6 +6,7 @@ import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.UnknownHostException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.logging.Level;
@@ -44,7 +45,7 @@ public class PrimaryNode extends Node {
      * Primary node, fetching from primary source
      * @param source
      */
-    public PrimaryNode (Path source, int port) {
+    public PrimaryNode (Path source, int port) throws UnknownHostException {
         super(port);
         Thread t = new Thread(() -> fillStream(source));
         t.start();
