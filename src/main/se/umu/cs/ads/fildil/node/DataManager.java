@@ -102,9 +102,6 @@ public class DataManager {
         while (ret.getId() == ChunkUtils.FLAG_CHUNK_NO_EXISTS) {
                 Thread.sleep(1000);
                 ret = getChunk(id);
-            System.out.println("Hello!");
-            System.out.println(id);
-            System.out.println(endOfStreamID);
             }
 
         return ret;
