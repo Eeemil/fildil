@@ -98,8 +98,7 @@ public class PrimaryNode extends Node {
 
             }
 
-            dataManager.setEndOfStreamID(++cnt);
-
+            dataManager.setEndOfStreamID(cnt);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE,"Could not read path " + path.toString(),e);
             stop();

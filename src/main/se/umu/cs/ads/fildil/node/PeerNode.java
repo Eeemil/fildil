@@ -15,14 +15,16 @@ import java.util.logging.Logger;
 public class PeerNode extends Node {
     private static final Logger LOGGER = Logger.getLogger(PeerNode.class.getName());
     private final static String FLAG_PRIMARY_ADDR = "-prim";
+    private final static String FLAG_NO_STREAM = "-nostream";
     private final int CHUNKS_PER_THREAD = 10;
+
 
     private PeerManager peerManager;
     private int idCounter =  0;
 
 
     public static void main(String[] args) {
-
+        Boolean shouldStream = true;
         if(args.length == 0) {
             System.err.println("Usage: port ["+FLAG_PRIMARY_ADDR+" addr:port] [addr:port]... [addr:port]");
             System.exit(0);
@@ -34,6 +36,8 @@ public class PeerNode extends Node {
                 if(args[i].equals(FLAG_PRIMARY_ADDR)) {
                     i++;
                     primAddr = args[i];
+                } else if (args[i].equals(FLAG_NO_STREAM)) {
+                    shouldStream = false;
                 } else {
                     peers.add(args[i]);
                 }
@@ -57,9 +61,11 @@ public class PeerNode extends Node {
             e.printStackTrace();
         }
 
-        System.err.println("Running");
-//        while (true) {
+        if (shouldStream) {
             peerNode.writeToStdout();
+        } else {
+            peerNode.printStats();
+        }
 //            try {
 //                Thread.sleep(1000);
 //            } catch (InterruptedException e) {
@@ -111,7 +117,6 @@ public class PeerNode extends Node {
                 switch (chunk.getId()) {
                     case ChunkUtils.FLAG_END_OF_STREAM:
                         dataManager.setEndOfStreamID(idsToFetch[i]);
-                        LOGGER.info("Got end of stream for ID " + idsToFetch[i]);
                         return;
                     case ChunkUtils.FLAG_CHUNK_NO_EXISTS:
                         try {
@@ -133,6 +138,23 @@ public class PeerNode extends Node {
             }
         }
     }
+
+    public void printStats() {
+        Chunk c = null;
+        int i = 0;
+        do {
+            try {
+                long t1 = System.currentTimeMillis();
+                c = dataManager.getChunkBlocking(i++);
+                long t2 = System.currentTimeMillis();
+                System.out.println("#" + i + ":\t" + (t2-t1) + " ms");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } while (c.getId() != ChunkUtils.FLAG_END_OF_STREAM);
+
+    }
+
 
     //Extends this, and write to stdout
     public void writeToStdout() {

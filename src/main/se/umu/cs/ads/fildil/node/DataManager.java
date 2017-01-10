@@ -54,6 +54,7 @@ public class DataManager {
             //Todo: peerManager may be trying to set end of stream ID to higher and higher numbers, check this
             return;
         }
+        LOGGER.info("Setting end of stream to " + endOfStreamID);
         this.endOfStreamID = endOfStreamID;
     }
 
@@ -101,6 +102,9 @@ public class DataManager {
         while (ret.getId() == ChunkUtils.FLAG_CHUNK_NO_EXISTS) {
                 Thread.sleep(1000);
                 ret = getChunk(id);
+            System.out.println("Hello!");
+            System.out.println(id);
+            System.out.println(endOfStreamID);
             }
 
         return ret;
