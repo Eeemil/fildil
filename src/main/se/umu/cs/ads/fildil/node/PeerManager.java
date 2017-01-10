@@ -48,7 +48,6 @@ public class PeerManager {
         clients = new ArrayList<>(Arrays.asList(peers.values().toArray(new StreamerClient[]{})));
 
         if (primaryNode != null) {
-            System.out.println("Adding node!!!");
             clients.add(primaryNode);
         }
 

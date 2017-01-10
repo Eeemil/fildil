@@ -1,5 +1,6 @@
 package se.umu.cs.ads.fildil.node;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 import se.umu.cs.ads.fildil.proto.utils.ChunkUtils;
 
