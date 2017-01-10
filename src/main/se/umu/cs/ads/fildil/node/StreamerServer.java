@@ -8,6 +8,7 @@ import se.umu.cs.ads.fildil.proto.autogen.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -68,9 +69,10 @@ public class StreamerServer extends StreamerGrpc.StreamerImplBase {
     public void poll(PeerInfo request, StreamObserver<PeerInfo> responseObserver) {
         //todo: not sure if it is sane to add every peer
         //TODO Might change back to the map as argument. .... dont...just dont
-        String[] uris = request.getPeersMap().values().toArray(new String[]{});
-        peerManager.addPeers(new ArrayList<String>(Arrays.asList(uris)));
-        System.out.println("Address: " + uris[0]);
+
+        Map<String, String> map = request.getPeersMap();
+        peerManager.addPeers
+                (map);
 
         responseObserver.onNext(peerManager.getPeerInfo());
         responseObserver.onCompleted();

@@ -20,7 +20,6 @@ public class PeerNode extends Node {
     private final int CHUNKS_PER_THREAD = 10;
 
 
-    private PeerManager peerManager;
     private int idCounter =  0;
 
 
@@ -50,8 +49,8 @@ public class PeerNode extends Node {
         PeerNode peerNode = null;
         try {
             peerNode = new PeerNode(peers,port);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE,"Could not start node", e);
             System.exit(1);
         }
 
@@ -60,10 +59,7 @@ public class PeerNode extends Node {
         }
 
         try {
-            peerNode.start();
             peerNode.startReadingStream();
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -82,10 +78,13 @@ public class PeerNode extends Node {
      * Node fetching from other nodes
      * @param peers address to peer, on form such as "localhost:3124"
      */
-    public PeerNode (ArrayList<String> peers, int port) throws UnknownHostException {
+    public PeerNode (ArrayList<String> peers, int port) throws IOException {
         super(port);
-        peerManager = new PeerManager(dataManager,port);
-        peerManager.addPeers(peers);
+        start();
+        for (String uri :
+                peers) {
+            peerManager.addPeer(uri);
+        }
     }
 
     private void setPrimary(String primAddr) {

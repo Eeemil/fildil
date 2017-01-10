@@ -12,13 +12,10 @@ import java.util.UUID;
 public class NetworkManager {
     private final DataManager dataManager;
     private final StreamerServer server;
-    private final Hashtable<UUID,PeerManager> peers;
 
     public NetworkManager(DataManager dataManager, PeerManager peerManager) {
         this.dataManager = dataManager;
         this.server = new StreamerServer(dataManager,peerManager);
-
-        peers = new Hashtable<>();
     }
 
     public void startStreaming() throws IOException {

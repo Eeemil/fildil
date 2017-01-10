@@ -20,7 +20,7 @@ public class PeerManager {
     private DataManager dataManager;
     protected final int port;
     private PeerInfo.Builder peerInfoBuilder;
-    private ConcurrentHashMap<String, StreamerClient> peers;
+    private ConcurrentHashMap<UUID, StreamerClient> peers;
     private StreamerClient primaryNode = null;
 
 
@@ -74,40 +74,48 @@ public class PeerManager {
     }
 
     /**
-     * Adds a single peer
+     * Adds a single peer, ensures that the peer hasn't already been added by uuid
+     * @param uuid uuid to the peer
      * @param uri to peer
      */
-    public void addPeer(String uri) {
+    public void addPeer(String uuid, String uri) {
 
         if(uri.equals(addr)) {
-            System.out.println("Not adding myself");
+            LOGGER.warning("Trying to add myself, why?");
             return;
         }
 
+        if (peers.containsKey(UUID.fromString(uuid))) {
+            LOGGER.info("Trying to add already-added peer " + uuid.toString() + ", skipping...");
+            return;
+        }
+        addPeer(uri);
+
+    }
+
+    /**
+     * Adds a peer
+     * @param uri uri to peer
+     */
+    protected void addPeer (String uri) {
         PeerInfo myInfo = getPeerInfo();
         //Todo: for report? Maybe only send partial peer list (to minimize overhead)
         StreamerClient peer = new StreamerClient(uri, myInfo);
         System.out.println("Address: " + uri);
-
-        if (peers.containsKey(peer.uuid.toString())) {
-            LOGGER.info("Trying to add already-added peer " + peer.uuid.toString() + ", skipping...");
-            return;
-        }
-
-
-        peers.put(peer.uuid.toString(), peer);
+        peers.put(peer.uuid, peer);
         peerInfoBuilder.putPeers(peer.uuid.toString(),uri);
         LOGGER.info("Added peer " + peer.uuid.toString());
     }
-
     /**
      * Adds a set of peer from a list of URI:s
-     * @param uris
+     * @param peers
      */
-    protected void addPeers(ArrayList<String> uris) {
-        for(String uri:uris) {
-            addPeer(uri);
+    protected void addPeers(Map<String,String> peers) {
+        for (Map.Entry<String,String> peerEntry:
+                peers.entrySet()) {
+            addPeer(peerEntry.getKey(),peerEntry.getValue());
         }
+
     }
 
     /**
@@ -138,7 +146,7 @@ public class PeerManager {
 
 
     /**
-     *  Tries to retrive a specific chunk from client, if connection fails client will
+     *  Tries to retrieve a specific chunk from client, if connection fails client will
      *  be removed from peers.
      * @param client to request the chunk from
      * @param id for the chunk
@@ -149,8 +157,7 @@ public class PeerManager {
         try {
             ret = client.requestChunk(id);
         }catch(io.grpc.StatusRuntimeException e ) {
-            String uuid = client.uuid.toString();
-            removePeer(uuid);
+            peerInfoBuilder.removePeers(client.uuid.toString());
             if(primaryNode != null && primaryNode.uuid.toString().equals(uuid)) {
                 primaryNode = null;
             }
@@ -160,21 +167,4 @@ public class PeerManager {
         return ret;
     }
 
-    /**
-     * Remove peer from both peers and peerInfo.
-     * @param uuid
-     */
-    private void removePeer(String uuid) {
-        peers.remove(uuid);
-        Map<String,String> infoPeers = new HashMap<>();
-        String[] uuids = peers.keySet().toArray(new String[]{});
-
-        for(String u:uuids) {
-            infoPeers.put(u,peers.get(uuid).addr);
-        }
-
-        infoPeers.put(this.uuid.toString(),this.addr);
-        peerInfoBuilder.putAllPeers(infoPeers);
-
-    }
 }
