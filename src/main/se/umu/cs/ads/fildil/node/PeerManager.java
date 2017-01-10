@@ -80,17 +80,23 @@ public class PeerManager {
      */
     public void addPeer(String uuid, String uri) {
 
+        UUID peerID = UUID.fromString(uuid);
+
         if(uri.equals(addr)) {
             LOGGER.warning("Trying to add myself, why?");
             return;
         }
 
-        if (peers.containsKey(UUID.fromString(uuid))) {
+        if (peers.containsKey(peerID)) {
             LOGGER.info("Trying to add already-added peer " + uuid.toString() + ", skipping...");
             return;
         }
-        addPeer(uri);
 
+        StreamerClient peer = new StreamerClient(uri, peerID);
+        peers.put(peerID, peer);
+        peerInfoBuilder.putPeers(peerID.toString(),uri);
+        peer.updateInfo(getPeerInfo());
+        LOGGER.info("Added peer " + peerID.toString());
     }
 
     /**
@@ -101,10 +107,9 @@ public class PeerManager {
         PeerInfo myInfo = getPeerInfo();
         //Todo: for report? Maybe only send partial peer list (to minimize overhead)
         StreamerClient peer = new StreamerClient(uri, myInfo);
-        System.out.println("Address: " + uri);
         peers.put(peer.uuid, peer);
         peerInfoBuilder.putPeers(peer.uuid.toString(),uri);
-        LOGGER.info("Added peer " + peer.uuid.toString());
+
     }
     /**
      * Adds a set of peer from a list of URI:s

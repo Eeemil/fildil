@@ -19,14 +19,14 @@ public class StreamerClient {
     public final String uri;
     private final ManagedChannel channel;
     private final StreamerGrpc.StreamerBlockingStub client;
-    private int highestChunk;
+    private int highestChunk = -1;
     public final UUID uuid;
     public final String addr;
-    private PeerInfo peerInfo;
+    private PeerInfo peerInfo = null;
 
 
     /**
-     * Initialice a client connection
+     * Initialize a client connection
      * @param uri address to peer, on form such as "localhost:3124"
      * @param myInfo information corresponding to the peer contacting the other peer (for mutual exchange of information)
      */
@@ -42,6 +42,17 @@ public class StreamerClient {
         addr = otherInfo.getAddress();
         this.peerInfo = otherInfo;
         this.highestChunk = otherInfo.getHighestChunk();
+    }
+
+    public StreamerClient(String uri, UUID uuid) {
+        this.uuid = uuid;
+        this.uri = uri;
+        this.channel = ManagedChannelBuilder.forTarget(uri)
+                .usePlaintext(true)
+                .idleTimeout(10, TimeUnit.SECONDS)
+                .build();
+        client = StreamerGrpc.newBlockingStub(channel);
+        addr = uri;
     }
 
     /**
