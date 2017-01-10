@@ -4,8 +4,8 @@ import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 import se.umu.cs.ads.fildil.proto.autogen.PeerInfo;
 import se.umu.cs.ads.fildil.proto.utils.ChunkUtils;
 
-import java.lang.reflect.Array;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 /**
@@ -17,14 +17,14 @@ public class PeerManager {
     private DataManager dataManager;
     protected final int port;
     private PeerInfo.Builder peerInfoBuilder;
-    private Hashtable<UUID, StreamerClient> peers;
+    private ConcurrentHashMap<UUID, StreamerClient> peers;
     private StreamerClient primaryNode = null;
 
 
     public PeerManager(DataManager dataManager, int port) {
         this.port = port;//Do I need port here?
         this.dataManager = dataManager;
-        this.peers = new Hashtable<>();
+        this.peers = new ConcurrentHashMap<>();
         peerInfoBuilder = PeerInfo.newBuilder();
         peerInfoBuilder.setUuid(uuid.toString());
     }
@@ -48,10 +48,20 @@ public class PeerManager {
         clients = new ArrayList<>(Arrays.asList(peers.values().toArray(new StreamerClient[]{})));
 
         if (primaryNode != null) {
+            System.out.println("Adding node!!!");
             clients.add(primaryNode);
         }
 
-        return randomLoadBalance(clients,id);
+        Chunk ret = null;
+        try {
+            ret = randomLoadBalance(clients,id);
+        }catch(io.grpc.StatusRuntimeException e) {
+            LOGGER.info("Client disconnected!");
+            //Remove user from client list
+            return null;
+        }
+
+        return ret;
     }
 
     /**
@@ -101,13 +111,12 @@ public class PeerManager {
         Random gen = new Random();
 
         //find client that has chunk else remove them from list
-        while(!clients.isEmpty()) {
+        while(clients.size() > 0) {
             int index = gen.nextInt(clients.size());
 
-            StreamerClient client = clients.get(index);
+            Chunk chunk = getChunkFromClient(clients.get(index),id);
             clients.remove(index);
 
-            Chunk chunk = client.requestChunk(id);
             if(chunk.getId() >= 0
                     || chunk.getId() == ChunkUtils.FLAG_END_OF_STREAM) {
                 return chunk;
@@ -119,9 +128,29 @@ public class PeerManager {
         return ChunkUtils.createNonExistantChunk();
     }
 
-        // Tries to fetch from peeers that have the highest chunk
-        // private highestChunkAlgorithm()
 
-    // private Chunk
+    /**
+     *  Tries to retrive a specific chunk from client, if connection fails client will
+     *  be removed from peers.
+     * @param client to request the chunk from
+     * @param id for the chunk
+     * @return chunk for given id.
+     */
+    private Chunk getChunkFromClient(StreamerClient client, int id) {
+        Chunk ret = ChunkUtils.createNonExistantChunk();
+        try {
+            ret = client.requestChunk(id);
+        }catch(io.grpc.StatusRuntimeException e ) {
+            String uuuid = client.getPeerInfo().getUuid();
+            peers.remove(uuuid);
+            if(primaryNode != null && primaryNode.getPeerInfo().getUuid().equals(uuuid)) {
+                primaryNode = null;
+            }
+            LOGGER.info("Client disconnected: " + uuuid);
+
+        }catch (NullPointerException e){}
+
+        return ret;
+    }
 
 }

@@ -1,6 +1,5 @@
 package se.umu.cs.ads.fildil.node;
 
-import com.google.protobuf.InvalidProtocolBufferException;
 import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 import se.umu.cs.ads.fildil.proto.utils.ChunkUtils;
 
@@ -62,17 +61,12 @@ public class PeerNode extends Node {
         }
 
         if (shouldStream) {
+            LOGGER.info("Writing to stdout");
             peerNode.writeToStdout();
         } else {
             peerNode.printStats();
         }
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                System.err.println("Exiting...");
-//                return;
-//            }
-//        }
+
     }
 
     /**
@@ -163,7 +157,6 @@ public class PeerNode extends Node {
                     try {
 
                         Chunk c = dataManager.getChunkBlocking(i);
-//                        System.out.println(c.getId());
                         System.out.write(c.getBuf().toByteArray());
                     } catch (InvalidProtocolBufferException e) {
                         e.printStackTrace();
