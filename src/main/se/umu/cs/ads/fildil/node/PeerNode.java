@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public class PeerNode extends Node {
     private static final Logger LOGGER = Logger.getLogger(PeerNode.class.getName());
     private final static String FLAG_PRIMARY_ADDR = "-prim";
-    private final static String FLAG_NO_STREAM = "-nostream";
+    private final static String FLAG_NO_VIDEO = "-novideo";
     private final int CHUNKS_PER_THREAD = 10;
 
 
@@ -24,7 +24,7 @@ public class PeerNode extends Node {
 
 
     public static void main(String[] args) {
-        Boolean shouldStream = true;
+        Boolean playVideo = true;
         if(args.length == 0) {
             System.err.println("Usage: port ["+FLAG_PRIMARY_ADDR+" addr:port] [addr:port]... [addr:port]");
             System.exit(0);
@@ -36,8 +36,8 @@ public class PeerNode extends Node {
                 if(args[i].equals(FLAG_PRIMARY_ADDR)) {
                     i++;
                     primAddr = args[i];
-                } else if (args[i].equals(FLAG_NO_STREAM)) {
-                    shouldStream = false;
+                } else if (args[i].equals(FLAG_NO_VIDEO)) {
+                    playVideo = false;
                 } else {
                     peers.add(args[i]);
                 }
@@ -61,10 +61,11 @@ public class PeerNode extends Node {
             e.printStackTrace();
         }
 
-        if (shouldStream) {
-            LOGGER.info("Writing to stdout");
+        if (playVideo) {
+            LOGGER.info("Writing video stream to stdout");
             peerNode.writeToStdout();
         } else {
+            LOGGER.info("Writing statistics to stdout");
             peerNode.printStats();
         }
 

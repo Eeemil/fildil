@@ -6,7 +6,6 @@ import se.umu.cs.ads.fildil.proto.utils.ChunkUtils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +24,7 @@ public class DataManager {
     private int endOfStreamID = FLAG_END_OF_STREAM_NOT_REACHED;
     public static final int CHUNK_SIZE = 1024;
 
-    private Map<Integer, Object> blockingIDs = new ConcurrentHashMap<>();
+    private Map<Integer, Object> chunklocks = new ConcurrentHashMap<>();
 
 
 
@@ -86,25 +85,19 @@ public class DataManager {
      * @throws InterruptedException
      */
     protected Chunk getChunkBlocking(int id) throws InterruptedException {
-//        blockingIDs.putIfAbsent(id, new Object());
-//        Object lock = blockingIDs.get(id);
-//
-//        synchronized (lock) {
-//            Chunk ret = getChunk(id);
-//            while (ret.getId() == ChunkUtils.FLAG_CHUNK_NO_EXISTS) {
-//                lock.wait();
-//                ret = getChunk(id);
-//            }
-//            return ret;
-//        }
+        chunklocks.putIfAbsent(id, new Object());
+        Object lock = chunklocks.get(id);
 
-        Chunk ret = getChunk(id);
-        while (ret.getId() == ChunkUtils.FLAG_CHUNK_NO_EXISTS) {
-                Thread.sleep(1000);
+        synchronized (lock) {
+
+            Chunk ret = getChunk(id);
+            while (ret.getId() == ChunkUtils.FLAG_CHUNK_NO_EXISTS) {
+                lock.wait();
+                LOGGER.finer("Released chunklock");
                 ret = getChunk(id);
             }
-
-        return ret;
+            return ret;
+        }
     }
 
     /**
@@ -119,8 +112,11 @@ public class DataManager {
                 data.put(chunk.getId(),buf);
                 highestID = highestID < id ? id:highestID;
                 dataSize.addAndGet(buf.length);
-                if (blockingIDs.containsKey(id)) {
-                    blockingIDs.get(id).notify();
+                if (chunklocks.containsKey(id)) {
+                    Object lock = chunklocks.get(id);
+                    synchronized (lock) {
+                        lock.notifyAll();
+                    }
                 }
             } else {
                 LOGGER.warning("Trying to add chunk with ID " + id + ", but chunk is already added");
