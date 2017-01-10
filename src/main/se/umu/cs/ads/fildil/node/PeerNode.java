@@ -156,13 +156,12 @@ public class PeerNode extends Node {
                 int i = 0;
                 for(;;i++) {
                     try {
-
                         Chunk c = dataManager.getChunkBlocking(i);
-                        System.out.write(c.getBuf().toByteArray());
-                    } catch (InvalidProtocolBufferException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+//                        System.out.write(c.getBuf().toByteArray());
+//                    } catch (InvalidProtocolBufferException e) {
+//                        e.printStackTrace();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

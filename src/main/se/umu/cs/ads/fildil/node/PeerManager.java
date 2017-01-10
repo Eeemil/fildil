@@ -17,7 +17,7 @@ public class PeerManager {
     private DataManager dataManager;
     protected final int port;
     private PeerInfo.Builder peerInfoBuilder;
-    private ConcurrentHashMap<UUID, StreamerClient> peers;
+    private ConcurrentHashMap<String, StreamerClient> peers;
     private StreamerClient primaryNode = null;
 
 
@@ -52,13 +52,8 @@ public class PeerManager {
         }
 
         Chunk ret = null;
-        try {
-            ret = randomLoadBalance(clients,id);
-        }catch(io.grpc.StatusRuntimeException e) {
-            LOGGER.info("Client disconnected!");
-            //Remove user from client list
-            return null;
-        }
+        ret = randomLoadBalance(clients,id);
+
 
         return ret;
     }
@@ -81,12 +76,12 @@ public class PeerManager {
         //Todo: for report? Maybe only send partial peer list (to minimize overhead)
         StreamerClient peer = new StreamerClient(uri, myInfo);
 
-        if (peers.containsKey(peer.uuid)) {
+        if (peers.containsKey(peer.uuid.toString())) {
             LOGGER.info("Trying to add already-added peer " + peer.uuid.toString() + ", skipping...");
             return;
         }
 
-        peers.put(peer.uuid, peer);
+        peers.put(peer.uuid.toString(), peer);
         peerInfoBuilder.putPeers(peer.uuid.toString(),uri);
         LOGGER.info("Added peer " + peer.uuid.toString());
     }
@@ -140,14 +135,13 @@ public class PeerManager {
         try {
             ret = client.requestChunk(id);
         }catch(io.grpc.StatusRuntimeException e ) {
-            String uuuid = client.getPeerInfo().getUuid();
-            peers.remove(uuuid);
-            if(primaryNode != null && primaryNode.getPeerInfo().getUuid().equals(uuuid)) {
+            String uuid = client.uuid.toString();
+            peers.remove(uuid);
+            if(primaryNode != null && primaryNode.uuid.toString().equals(uuid)) {
                 primaryNode = null;
             }
-            LOGGER.info("Client disconnected: " + uuuid);
-
-        }catch (NullPointerException e){}
+            LOGGER.info("Client disconnected: " + uuid);
+        } catch (NullPointerException e){}
 
         return ret;
     }
