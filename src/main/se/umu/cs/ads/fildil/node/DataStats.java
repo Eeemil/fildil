@@ -17,16 +17,19 @@ public class DataStats {
     private AtomicInteger recievedChunksCounter = new AtomicInteger(0);
     private AtomicInteger sentChunksCounter = new AtomicInteger(0);
 
-    private ArrayList<ChunkStat> chunkStats = new ArrayList<>();
+    private AtomicInteger recivedBytes;
+    private AtomicInteger sentBytes;
 
+    private ArrayList<ChunkStat> chunkStatsSent = new ArrayList<>();
+    private ArrayList<ChunkStat> chunkStatsReceived = new ArrayList<>();
 
     public static DataStats getInstance() {
         return dataStats;
     }
 
     public void addChunkData(int size, long t1, long t2) {
-        ChunkStat stat = new ChunkStat(size,t2-t1);
-        chunkStats.add(stat);
+        ChunkStat stat = new ChunkStat(t2-t1);
+//        chunkStats.add(stat);
     }
 
     public void incrementMissCounter() {
@@ -51,11 +54,9 @@ public class DataStats {
     }
 
     private class ChunkStat {
-        private int size;
         private long time;
 
-        public ChunkStat(int size, long time) {
-            this.size = size;
+        public ChunkStat(long time) {
             this.time = time;
         }
 
@@ -63,9 +64,6 @@ public class DataStats {
             return time;
         }
 
-        public int getSize() {
-            return size;
-        }
 
     }
 
