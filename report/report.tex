@@ -162,24 +162,6 @@ discussed in greater detail. Finally, the performance of Fildil is evaluated in
 \autoref{sec:results}. This document is ended with \autoref{sec:discussion}
 which presents our conclusions, improvements and experiences from the project.
 
-\subsection{Goals}
-\label{sec:goals}
-
-The application has been designed with the following goals in mind:
-
-\begin{description}
-\item[Robustness] The system should be able to \emph{automatically} handle
-  increase of nodes(i.e computers collaborating on providing the service).
-\item[Extensibility] To the extent it is possible, new features should be able
-  to be added to Fildil without having to redesign earlier components.
-\item[Load balancing/consistent QoS] Fildil should be able to adapt to spikes in
-  load in order to provide a consistent Quality of Service.
-\item [Multiple streamer and viewer clients] The system should support multiple
-  streaming clients as well as multiple viewer clients.
-\end{description}
-
-
-
 \subsection{Terminology}
 \label{sec:terminology}
 
@@ -201,6 +183,41 @@ The following terminology is used throughout the report.
   does not generate any chunks on its own, it merely downloads chunks and
   uploads them to other \emph{peer nodes} on request.
 \end{description}
+
+\subsection{Goals}
+\label{sec:goals}
+
+The application has been designed with the following goals in mind:
+
+\begin{description}
+\item[Robustness] The system should be able to \emph{automatically} handle
+  increase of nodes(i.e computers collaborating on providing the service).
+\item[Extensibility] To the extent it is possible, new features should be able
+  to be added to Fildil without having to redesign earlier components.
+\item[Load balancing/consistent QoS] Fildil should be able to adapt to spikes in
+  load in order to provide a consistent Quality of Service.
+\item [Multiple streamer and viewer clients] The system should support multiple
+  streaming clients as well as multiple viewer clients.
+\end{description}
+
+In Fildil, every node joining the streaming network polls one (or more) existing
+nodes to get a list of the existing node's peers. In that manner, a joining node
+may recursively poll peers within the streaming network to build knowledge of
+the streaming network. Simultaneously, the polled peers gets knowledge of a
+joining node. 
+
+This automatic organization scheme has been implemented in accordance with the
+\emph{robustness}-goal, and the \emph{multiple streamer and viewer client}
+goal.
+
+Google Protocol Buffers has been used for designing the service with
+GRPC. However, with the existing protocol buffer and the operations designed for
+the service, it would be possible to implement Fildil in other languages without
+too much effort. This is in accordance with the \emph{extensibility}-goal.
+
+Fildil splits the video source into chunks, and the complete streaming network
+shares the responsibility of distributing the chunks. This is thought to fulfil
+the \emph{load balancing/consistent QoS} goal.
 
 \subsection{Building \& running}
 \label{sec:building-running}
