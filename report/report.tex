@@ -25,6 +25,8 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \newtheorem{definition}{Definition}
 \usepackage{float}
 \usepackage{footmisc} % Use symbols instead of numbers for footnotes
@@ -328,9 +330,53 @@ message ReceiveChunkReply {}
 
 \subsection{Node discovery}
 
-As mentioned in \autoref{sec:protobuf}, nodes may poll each others.
+As mentioned in \autoref{sec:protobuf}, nodes may poll each others to
+gain information about the streaming network. For node discovery, a
+node \textbf{A} may poll a node \textbf{B} for \textbf{A} to gain
+information of the peers of \textbf{B}.
 
-%TODO: insert algorithm
+Peers are added in a greedy fashion, where a node adds a peer as soon
+as the existence of the peer becomes known to the peer, see Algorithm
+\autoref{alg:peerextract} and Algorithm \autoref{alg:onpoll}. For
+example, when joining, a node needs to get information about at least
+one other node in the streaming network. The joining node then asks
+for the peers of the existing node, and recursively asks the peers for
+their peers and so on.
+
+\begin{algorithm}
+  \caption{Greedy peer extraction scheme}
+  \label{alg:peerextract}
+  \begin{algorithmic}[1]
+    \Procedure{connect}{$u$}\Comment{$u$ - uri to a node in the streaming network}
+    \State $n \gets$poll($u$)\Comment{Gets information about the node $n$}
+    \If{connection successful}
+    \State addPeer($n$)
+    \State $l \gets$getPeers($n$)
+    \ForAll{$p$ in $l$}
+    \If{$p$ is unknown to the current node}
+    \State connect($a$)
+    \EndIf
+    \EndFor
+    \Else
+    \State \Return
+    \EndIf
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{Performed when being polled by a node $n$}
+  \label{alg:onpoll}
+  \begin{algorithmic}[1]
+    \Procedure{onPoll}{$n$}\Comment{$n$ - information about the polling node}
+    \If{$n$ is a unknown to the current node}
+    \State $u\gets$URI($n$)
+    \State connect($u$)
+    \EndIf
+    \State \Return the current nodes information
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
 
 \subsection{Splitting and sharing chunks}
 
