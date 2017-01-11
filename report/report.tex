@@ -329,6 +329,7 @@ message ReceiveChunkReply {}
 \end{figure}
 
 \subsection{Node discovery}
+\label{sec:node-discovery}
 
 As mentioned in \autoref{sec:protobuf}, nodes may poll each others to
 gain information about the streaming network. For node discovery, a
@@ -461,6 +462,33 @@ Throughout the project, FFMpeg has been set to use any streaming
 encoding. These settings can probably be fine-tuned to our application
 though, e.g. by generating a stream in chunks of the same size as
 Fildil internally uses, for improving the QoS.
+
+\subsubsection{Scalable peer management}
+
+As seen in \autoref{sec:node-discovery}, peers are greedily added to a
+node whenever a node gains knowledge of a new node. The information
+stored about each peer is not much: an integer for the highest chunk
+number, 128-bit UUID:s and a URI string. This might not be suitable
+for a stream shared by millions of users, especially if every peer is
+to be probed from time to time in order to determine suitable peers to
+download from.
+
+We can probably keep record of only a fraction of the total number of
+nodes in the streaming network and still keep the network stable.
+
+One method of doing that while still providing a good quality of
+service for all, is to only keep a list of ``good peers''. This list
+should perhaps be a logarithmic function of an estimate of the total
+number of peers (determined statistically by crawling through the
+streaming network).
+
+A drawback of the proposed scheme above would perhaps be that nodes
+with bad connection would have a hard time getting suitable peers if
+nodes only should add peers with good performance. However, even
+though it is unlikely that the bad node will be added as a peer by
+``good nodes'', the bad nodes may still add the good nodes as peers
+and pull chunks from them even though the good nodes wont add the bad
+peer back.
 
 \newpage
 
