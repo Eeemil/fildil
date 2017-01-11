@@ -169,7 +169,7 @@ The following terminology is used throughout the report.
 
 \begin{description}
 \item[Video source] the source used to generate the streaming data. For example,
-  \texttt{ffmpeg} reading a video file could be a video source.
+  \texttt{FFmpeg} reading a video file could be a video source.
 \item[Chunk] A data packet containing a small part of the streamed
   content, with metadata.
 \item[Node] Any participant of the \emph{streaming network}: downloading and/or
@@ -216,7 +216,7 @@ the service, it would be possible to implement Fildil in other languages without
 too much effort. This is in accordance with the \emph{extensibility}-goal.
 
 Fildil splits the video source into chunks, and the complete streaming network
-shares the responsibility of distributing the chunks. This is thought to fulfil
+shares the responsibility of distributing the chunks. This is thought to fulfill
 the \emph{load balancing/consistent QoS} goal.
 
 \subsection{Building \& running}
@@ -232,7 +232,7 @@ The following prerequisites exists for building and running Fildil:
     Environment 1.8.0\_25-b17} has been used.
 \item[Maven] In order to build Fildil, Maven is required. \texttt{Maven 3.0.5}
   has been used during development.
-\item[FFmpeg] Fildil uses FFmpeg for reading a video source. \texttt{ffmpeg
+\item[FFmpeg] Fildil uses FFmpeg for reading a video source. \texttt{FFmpeg
     3.2-2~bpo8+2, built with gcc 4.9.2 (Debian 4.9.2-10)} has been used
   during testing. \textbf{FFmpeg is only a prerequisite for primary nodes}.
 \item[POSIX-compliant OS] Pipes are used for communication between Fildil and
