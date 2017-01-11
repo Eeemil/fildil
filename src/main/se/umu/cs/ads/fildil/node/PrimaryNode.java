@@ -19,7 +19,7 @@ public class PrimaryNode extends Node {
     private static final Logger LOGGER = Logger.getLogger(PrimaryNode.class.getName());
 
     public static void main(String[] args) throws IOException {
-        String DEFAULT_PATH = "movie/valve.mp4";
+        String DEFAULT_PATH = "~eeemil/Public/Sintel.mkv";
         String uri;
         if (args.length == 0) {
             System.err.println("No arguments specified, using default path");
@@ -27,7 +27,7 @@ public class PrimaryNode extends Node {
         } else {
             uri = args[0];
         }
-        Path path = FileSystems.getDefault().getPath("movie/valve.mp4");
+        Path path = FileSystems.getDefault().getPath("/Home/staff/eeemil/Public/Sintel.mkv");
         LOGGER.info("Path: " + path.toString());
         PrimaryNode node = new PrimaryNode(path, 8100);
         node.start();

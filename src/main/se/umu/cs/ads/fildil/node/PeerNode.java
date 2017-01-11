@@ -5,7 +5,6 @@ import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 import se.umu.cs.ads.fildil.proto.utils.ChunkUtils;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -114,7 +113,11 @@ public class PeerNode extends Node {
         while ((idsToFetch = getPendingChunkIDs()) != null){
 
             for(int i = 0; i < idsToFetch.length;) {
+                long t1 = System.currentTimeMillis();
                 Chunk chunk = peerManager.getChunk(idsToFetch[i]);
+                int size = chunk.toByteArray().length;
+
+                long t2 = System.currentTimeMillis();
 
                 switch (chunk.getId()) {
                     case ChunkUtils.FLAG_END_OF_STREAM:
@@ -126,9 +129,17 @@ public class PeerNode extends Node {
                         } catch (InterruptedException e) {
                             LOGGER.log(Level.SEVERE, "Terminated while waiting for retrying to refetch a chunk", e);
                         }
+
+                        DataStats.getInstance().chunkStatReceived(size,t1,t2);
+                        DataStats.getInstance().printAverageBandwidthDown(t2);
+
                         break;
                     default:
                         dataManager.addChunk(chunk);
+
+                        DataStats.getInstance().chunkStatReceived(size,t1,t2);
+                        DataStats.getInstance().printAverageBandwidthDown(t2);
+
                         LOGGER.finer("Got package: " + idsToFetch[i]);
 
                         if(idsToFetch[i] % 1000 == 0) {
@@ -164,11 +175,11 @@ public class PeerNode extends Node {
                 for(;;i++) {
                     try {
                         Chunk c = dataManager.getChunkBlocking(i);
-//                        System.out.write(c.getBuf().toByteArray());
-//                    } catch (InvalidProtocolBufferException e) {
-//                        e.printStackTrace();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
+                        System.out.write(c.getBuf().toByteArray());
+                    } catch (InvalidProtocolBufferException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

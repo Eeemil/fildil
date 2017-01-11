@@ -164,6 +164,7 @@ public class PeerManager {
         }catch(io.grpc.StatusRuntimeException e ) {
             peerInfoBuilder.removePeers(client.uuid.toString());
             peers.remove(client.uuid);
+
             if(primaryNode != null && primaryNode.uuid.toString().equals(uuid)) {
                 primaryNode = null;
             }

@@ -23,12 +23,30 @@ public class Video {
      */
     public Video (String src) throws IOException {
         List<String> command = new ArrayList<>();
+//        command.add("ffmpeg");
+//        command.add("-i");
+//        command.add(src);
+//        command.add("-f");
+//        command.add("asf");
+//        command.add("-");
+
         command.add("ffmpeg");
         command.add("-i");
         command.add(src);
         command.add("-f");
-        command.add("asf");
+        command.add("avi");
+        command.add("-c:v");
+        command.add("mpeg4");
+        command.add("-b:v");
+        command.add("4000k");
+        command.add("-c:a");
+        command.add("libmp3lame");
+        command.add("-b:a");
+        command.add("320k");
         command.add("-");
+
+//        ffmpeg -i ~eeemil/Public/Sintel.mkv -f avi -c:v mpeg4 -b:v 4000k -c:a libmp3lame -b:a 320k -
+
 
         LOGGER.info("Starting FFMPEG: \"" + String.join(" ",command) + "\"");
         process = new ProcessBuilder(command).start();

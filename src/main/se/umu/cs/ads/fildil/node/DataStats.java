@@ -1,12 +1,10 @@
 package se.umu.cs.ads.fildil.node;
 
-import se.umu.cs.ads.fildil.proto.autogen.Chunk;
-
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by c12ton on 1/10/17.
+ * Collects a variety of data for....
  */
 public class DataStats {
     private static DataStats dataStats = new DataStats();
@@ -17,19 +15,30 @@ public class DataStats {
     private AtomicInteger recievedChunksCounter = new AtomicInteger(0);
     private AtomicInteger sentChunksCounter = new AtomicInteger(0);
 
-    private AtomicInteger recivedBytes;
-    private AtomicInteger sentBytes;
+    private final ArrayList<ChunkStat> chunkStatsSent = new ArrayList<>();
+    private final ArrayList<ChunkStat> chunkStatsReceived = new ArrayList<>();
 
-    private ArrayList<ChunkStat> chunkStatsSent = new ArrayList<>();
-    private ArrayList<ChunkStat> chunkStatsReceived = new ArrayList<>();
+    private final long startTime = System.currentTimeMillis();
+
 
     public static DataStats getInstance() {
         return dataStats;
     }
 
-    public void addChunkData(int size, long t1, long t2) {
-        ChunkStat stat = new ChunkStat(t2-t1);
-//        chunkStats.add(stat);
+    //todo list the time the chunk as they arrive or list the time by the order we view them.
+
+    public void chunkStatSent(int size, long t1, long t2) {
+        ChunkStat stat = new ChunkStat(size,t2-t1);
+        synchronized (chunkStatsSent) {
+            chunkStatsSent.add(stat);
+        }
+    }
+
+    public void chunkStatReceived(int size, long t1, long t2) {
+        ChunkStat stat = new ChunkStat(size,t2-t1);
+        synchronized (chunkStatsReceived) {
+            chunkStatsReceived.add(stat);
+        }
     }
 
     public void incrementMissCounter() {
@@ -53,18 +62,51 @@ public class DataStats {
         return null;
     }
 
+
+    public void printAverageBandwidthDown(long t2) {
+
+        long elapsedTime = (t2 - startTime);
+        long totTime = 0;
+        long numberOfBits= 0;
+
+        synchronized (chunkStatsReceived) {
+            for (ChunkStat stat : chunkStatsReceived) {
+                totTime += stat.getTime();
+                numberOfBits += stat.getSize();
+            }
+        }
+        numberOfBits *= 8;
+
+        double speed = (((double) numberOfBits)/(1000*1000)) / (((double) totTime)/1000);
+        System.out.printf("elapsed time: %d  download: %.6f  Mbit/s\n", elapsedTime, speed);
+    }
+
+    public void printMissedChunks(long t2) {
+        long elapsedTime = (t2 - startTime);
+        System.out.printf("elapsed time: %d missed chunks: %d", elapsedTime,missCounter);
+    }
+
+    public void printHitChunks(long t2) {
+        long elapsedTime = (t2 - startTime);
+        System.out.printf("elapsed time: %d hit chunks: %d", elapsedTime, hitCounter);
+    }
+
+
     private class ChunkStat {
         private long time;
+        private int size;
 
-        public ChunkStat(long time) {
+        public ChunkStat(int size, long time) {
             this.time = time;
+            this.size = size;
         }
 
         public long getTime() {
             return time;
         }
 
-
+        public int getSize() {
+            return size;
+        }
     }
-
 }
