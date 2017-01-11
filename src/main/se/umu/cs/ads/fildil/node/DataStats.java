@@ -1,6 +1,9 @@
 package se.umu.cs.ads.fildil.node;
 
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -92,7 +95,9 @@ public class DataStats {
         numberOfBits *= 8;
 
         double speed = (((double) numberOfBits)/(1000*1000)) / (((double) totTime)/1000);
-        bandwidthStatDurations.add(new BandwidthStat(elapsedTime,speed));
+        synchronized (bandwidthStatDurations) {
+            bandwidthStatDurations.add(new BandwidthStat(elapsedTime,speed));
+        }
     }
 
     /**
@@ -109,21 +114,28 @@ public class DataStats {
         }
     }
 
-    public void printQoSStat() {
+    public void writeQoSStat() throws FileNotFoundException, UnsupportedEncodingException {
+        PrintWriter writer = new PrintWriter("QoSStats", "UTF-8");
         synchronized (qoSStats) {
             for (int i = 0; i < qoSStats.size(); i++) {
                 QoSStat stat = qoSStats.get(i);
-                System.out.printf("#QoS# id: %d time: %d\n", i, stat.time);
+                //ID Time
+                writer.printf("%d %d\n", stat.getId(), stat.getTime());
             }
+            writer.close();
         }
     }
 
-    public void printDownloadBandwidth() {
+    public void writeDownloadBandwidthStats() throws FileNotFoundException, UnsupportedEncodingException {
+        PrintWriter write = new PrintWriter("BandwidthStats","UTF-8");
+//        System.out.println("Printing ");
         synchronized (bandwidthStatDurations) {
             for(BandwidthStat stat:bandwidthStatDurations) {
-                System.out.printf("#Bandwidht# time: %d ms download: %.6f  Mbit/s\n", stat.getElapsedTime(), stat.getSpeed());
+                //Elapsed time speed
+                write.printf("%d %.4f\n", stat.getElapsedTime(), stat.getSpeed());
             }
         }
+        write.close();
     }
 
     public void printMissedChunks(long t2) {
@@ -135,7 +147,6 @@ public class DataStats {
         long elapsedTime = (t2 - startTime);
         System.out.printf("elapsed time: %d hit chunks: %d", elapsedTime, hitCounter);
     }
-
 
 
     /**

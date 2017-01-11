@@ -4,8 +4,9 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 import se.umu.cs.ads.fildil.proto.utils.ChunkUtils;
 
-import javax.xml.crypto.Data;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -126,6 +127,8 @@ public class PeerNode extends Node {
                 switch (chunk.getId()) {
                     case ChunkUtils.FLAG_END_OF_STREAM:
                         dataManager.setEndOfStreamID(idsToFetch[i]);
+                        dataManager.addChunk(chunk);
+                        LOGGER.info("End of stream reached");
                         return;
                     case ChunkUtils.FLAG_CHUNK_NO_EXISTS:
                         try {
@@ -154,7 +157,6 @@ public class PeerNode extends Node {
         int i = 0;
         do {
             try {
-
                 long t1 = System.currentTimeMillis();
                 c = dataManager.getChunkBlocking(i++);
                 long t2 = System.currentTimeMillis();
@@ -164,6 +166,17 @@ public class PeerNode extends Node {
             }
         } while (c.getId() != ChunkUtils.FLAG_END_OF_STREAM);
 
+        //Write to file
+        LOGGER.info("Writing statistics to file");
+        try {
+            DataStats.getInstance().writeQoSStat();
+            DataStats.getInstance().writeDownloadBandwidthStats();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("Done writing statistics");
     }
 
 

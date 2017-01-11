@@ -95,6 +95,9 @@ public class DataManager {
                 lock.wait();
                 LOGGER.finer("Released chunklock");
                 ret = getChunk(id);
+                if(id >= endOfStreamID && endOfStreamID != FLAG_END_OF_STREAM_NOT_REACHED ) {
+                    return ChunkUtils.createEndOfStreamChunk();
+                }
             }
             return ret;
         }
