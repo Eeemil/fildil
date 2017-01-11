@@ -21,6 +21,6 @@ ninetyninePrctile = prctile(sortedTime,99);
 %strFifty = ['Median: ' num2str(fiftyPrctile)];
 %strNinteyFive = ['
 dim = [0.2 0.5 0.3 0.3];
-strFifty = num2str(fiftyPrctile);
-prctileStr = {strcat('Median: ',num2str(fiftyPrctile)), strcat('95 percentile: ', num2str(ninetyfivePrctile)),strcat('99 percentile: ', num2str(ninetyninePrctile))};
+str = 
+prctileStr = {'Median:' num2str(fiftyPrctile)'', '95 percentile: ' num2str(ninetyfivePrctile),'99 percentile: ' num2str(ninetyninePrctile)};
 annotation('textbox',dim,'String',prctileStr,'FitBoxToText','on');
