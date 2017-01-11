@@ -162,6 +162,21 @@ public class PeerManager {
         return ChunkUtils.createNonExistantChunk();
     }
 
+    /**
+     *
+     * @param clients
+     * @param id
+     * @return
+     */
+    private Chunk roundRobinAlgorihtm(List<StreamerClient> clients, int id) {
+        while(clients.size() > 0) {
+            for(int i = 0 ; i < clients.size(); i++) {
+
+            }
+        }
+//        clients.get(0).addr
+        return null;
+    }
 
     /**
      *  Tries to retrieve a specific chunk from client, if connection fails client will

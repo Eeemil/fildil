@@ -17,6 +17,10 @@ public class DataStats {
 
     private final ArrayList<ChunkStat> chunkStatsSent = new ArrayList<>();
     private final ArrayList<ChunkStat> chunkStatsReceived = new ArrayList<>();
+    private final ArrayList<ChunkStat> chunkQoSStats = new ArrayList<>();
+
+    private final ArrayList<BandwidthStat> bandwidthStatDurations = new ArrayList<>();
+
 
     private final long startTime = System.currentTimeMillis();
 
@@ -27,14 +31,20 @@ public class DataStats {
 
     //todo list the time the chunk as they arrive or list the time by the order we view them.
 
-    public void chunkStatSent(int size, long t1, long t2) {
+    public void chunkStatSent(int size, int id, long t1, long t2) {
         ChunkStat stat = new ChunkStat(size,t2-t1);
         synchronized (chunkStatsSent) {
             chunkStatsSent.add(stat);
         }
     }
 
-    public void chunkStatReceived(int size, long t1, long t2) {
+    /**
+     *
+     * @param size of chunk
+     * @param t1
+     * @param t2
+     */
+    public void addStatChunkReceived(int size, long t1, long t2) {
         ChunkStat stat = new ChunkStat(size,t2-t1);
         synchronized (chunkStatsReceived) {
             chunkStatsReceived.add(stat);
@@ -63,7 +73,10 @@ public class DataStats {
     }
 
 
-    public void printAverageBandwidthDown(long t2) {
+    /**
+     * @param t2 the time when chunk was retrieved
+     */
+    public void addStatBandwidthDuration(long t2) {
 
         long elapsedTime = (t2 - startTime);
         long totTime = 0;
@@ -78,8 +91,43 @@ public class DataStats {
         numberOfBits *= 8;
 
         double speed = (((double) numberOfBits)/(1000*1000)) / (((double) totTime)/1000);
-        System.out.printf("elapsed time: %d  download: %.6f  Mbit/s\n", elapsedTime, speed);
+//        System.out.printf("elapsed time: %d  download: %.6f  Mbit/s\n", elapsedTime, speed);
+        bandwidthStatDurations.add(new BandwidthStat(elapsedTime,speed));
     }
+
+    /**
+     *
+     * @param size of the chunk
+     * @param t1
+     * @param t2
+     */
+    public void addStatQoS(int size, long t1, long t2) {
+        long time = t2 - t1;
+
+        ChunkStat stat = new ChunkStat(size,time);
+        synchronized (chunkQoSStats) {
+            chunkQoSStats.add(stat);
+        }
+    }
+
+    public void printQoSStat() {
+        synchronized (chunkQoSStats) {
+            for (int i = 0; i < chunkQoSStats.size(); i++) {
+                ChunkStat stat = chunkQoSStats.get(i);
+                System.out.printf("#QoS# id: %d time: %d\n", i, stat.time);
+            }
+        }
+    }
+
+    public void printDownloadBandwidth() {
+        synchronized (bandwidthStatDurations) {
+            for(BandwidthStat stat:bandwidthStatDurations) {
+                System.out.printf("#Bandwidht# time: %d ms download: %.6f  Mbit/s\n", stat.elapsedTime, stat.getSpeed());
+            }
+        }
+    }
+
+
 
     public void printMissedChunks(long t2) {
         long elapsedTime = (t2 - startTime);
@@ -92,6 +140,32 @@ public class DataStats {
     }
 
 
+
+    /**
+     * Stores average speed for a duration.
+     */
+    private class BandwidthStat {
+        private long elapsedTime;
+        private double speed;
+
+        public BandwidthStat(long elapsedTime, double speed) {
+            this.elapsedTime = elapsedTime;
+            this.speed = speed;
+        }
+
+        public long getElapsedTime() {
+            return elapsedTime;
+        }
+
+        public double getSpeed() {
+            return speed;
+        }
+
+    }
+
+    /**
+     * Stores time of retrieval and it's size
+     */
     private class ChunkStat {
         private long time;
         private int size;

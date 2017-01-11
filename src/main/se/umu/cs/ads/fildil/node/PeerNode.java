@@ -4,6 +4,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 import se.umu.cs.ads.fildil.proto.utils.ChunkUtils;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -17,7 +18,6 @@ public class PeerNode extends Node {
     private final static String FLAG_PRIMARY_ADDR = "-prim";
     private final static String FLAG_NO_VIDEO = "-novideo";
     private final int CHUNKS_PER_THREAD = 10;
-
 
     private int idCounter =  0;
 
@@ -113,11 +113,15 @@ public class PeerNode extends Node {
         while ((idsToFetch = getPendingChunkIDs()) != null){
 
             for(int i = 0; i < idsToFetch.length;) {
+
                 long t1 = System.currentTimeMillis();
                 Chunk chunk = peerManager.getChunk(idsToFetch[i]);
-                int size = chunk.toByteArray().length;
-
                 long t2 = System.currentTimeMillis();
+
+                int size = chunk.toByteArray().length;
+                DataStats.getInstance().addStatChunkReceived(size,t1,t2);
+                DataStats.getInstance().addStatBandwidthDuration(t2);
+
 
                 switch (chunk.getId()) {
                     case ChunkUtils.FLAG_END_OF_STREAM:
@@ -130,16 +134,9 @@ public class PeerNode extends Node {
                             LOGGER.log(Level.SEVERE, "Terminated while waiting for retrying to refetch a chunk", e);
                         }
 
-                        DataStats.getInstance().chunkStatReceived(size,t1,t2);
-                        DataStats.getInstance().printAverageBandwidthDown(t2);
-
                         break;
                     default:
                         dataManager.addChunk(chunk);
-
-                        DataStats.getInstance().chunkStatReceived(size,t1,t2);
-                        DataStats.getInstance().printAverageBandwidthDown(t2);
-
                         LOGGER.finer("Got package: " + idsToFetch[i]);
 
                         if(idsToFetch[i] % 1000 == 0) {
@@ -160,7 +157,8 @@ public class PeerNode extends Node {
                 long t1 = System.currentTimeMillis();
                 c = dataManager.getChunkBlocking(i++);
                 long t2 = System.currentTimeMillis();
-                System.out.println("#" + c.getId() + ":\t" + (t2-t1) + " ms");
+
+                DataStats.getInstance().addStatQoS(c.toByteArray().length,t1,t2);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -169,7 +167,6 @@ public class PeerNode extends Node {
     }
 
 
-    //Extends this, and write to stdout
     public void writeToStdout() {
                 int i = 0;
                 for(;;i++) {
