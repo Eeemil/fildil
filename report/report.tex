@@ -260,7 +260,27 @@ Forrest, run!
 \section{Design: decentralized peer to peer streaming}
 \label{sec:design}
 
-COOL STUFF!
+In this section, overall design of the system is explained.
+ %todo: write better introduction
+
+\subsection{Splitting and sharing chunks}
+
+The core mechanic of Fildil is splitting the video stream into chunks
+and letting the nodes in the streaming network share the chunks among
+themselves. 
+
+The primary node may for example split 10 seconds of a video stream
+into three chunks such that the peer nodes \emph{1}, \emph{2} and
+\emph{3} receives the chunks \emph{A}, \emph{B} and \emph{C}. The peer
+nodes may then exchange the chunks among themselves, \emph{1}
+sends \emph{A} to \emph{2} and \emph{3} while \emph{2} sends \emph{B}
+to \emph{1} and \emph{3}, and finally \emph{3} sends \emph{C} to
+\emph{1} and \emph{2}.
+
+This is similar to the \emph{torrent} protocol. The purpose of this
+technique is to provide load balancing, see \autoref{sec:goals}.
+
+%todo: Add a descriptive torrenting figure
 
 \subsection{Service definition}
 \label{sec:protobuf}
@@ -344,6 +364,9 @@ one other node in the streaming network. The joining node then asks
 for the peers of the existing node, and recursively asks the peers for
 their peers and so on.
 
+This mechanism has been added to ensure the goals of robustness and
+managing multiple clients, see \autoref{sec:goals}.
+
 \begin{algorithm}
   \caption{Greedy peer extraction scheme}
   \label{alg:peerextract}
@@ -378,12 +401,6 @@ their peers and so on.
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
-
-\subsection{Splitting and sharing chunks}
-
-SPLIT IT, SHARE IT
-
-%TODO: insert algorithm
 
 \section{System architecture}
 \label{sec:system}
