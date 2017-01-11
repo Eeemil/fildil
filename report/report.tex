@@ -295,6 +295,8 @@ Fildil scores over 9000
 \section{Discussion}
 \label{sec:discussion}
 
+\subsection{Project experiences}
+
 \subsection{Improvements}
 
 \subsubsection{Data storage}
@@ -323,6 +325,18 @@ be very large in size:
   and add complexity to our test environment, while only adding the benefit of
   needing to store less data in memory.
 \end{enumerate}
+
+\subsubsection{Investigate video streaming encodings}
+
+Throughout the project, \emph{FFMpeg} has been used to convert a video
+source to raw bytes in some kind of streaming media encoding. Fildil
+is agnostic to what kind of data is supplied by FFMpeg. However,
+FFMPeg could probably use a more suitable streaming codec.
+
+Throughout the project, FFMpeg has been set to use any streaming
+encoding. These settings can probably be fine-tuned to our application
+though, e.g. by generating a stream in chunks of the same size as
+Fildil internally uses, for improving the QoS.
 
 \newpage
 
