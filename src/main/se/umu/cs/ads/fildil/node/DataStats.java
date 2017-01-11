@@ -33,9 +33,6 @@ public class DataStats {
         return dataStats;
     }
 
-    private DataStats() {
-        String addres;
-    }
 
     //todo list the time the chunk as they arrive or list the time by the order we view them.
 

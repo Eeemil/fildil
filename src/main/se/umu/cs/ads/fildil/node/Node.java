@@ -1,11 +1,8 @@
 package se.umu.cs.ads.fildil.node;
 
-import io.grpc.ManagedChannel;
-import se.umu.cs.ads.fildil.proto.autogen.*;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
@@ -21,6 +18,7 @@ public abstract class Node {
 
     protected Node(int port) throws UnknownHostException {
         peerManager = new PeerManager(dataManager, port);
+        LOGGER.info("UUID: " + peerManager.uuid);
         networkManager = new NetworkManager(dataManager, peerManager);
     }
 

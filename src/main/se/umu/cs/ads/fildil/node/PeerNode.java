@@ -58,11 +58,13 @@ public class PeerNode extends Node {
             peerNode.setPrimary(primAddr);
         }
 
+
         try {
             peerNode.startReadingStream();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
 
         if (playVideo) {
             LOGGER.info("Writing video stream to stdout");
@@ -72,6 +74,13 @@ public class PeerNode extends Node {
             peerNode.printStats();
         }
 
+        while(true) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -80,6 +89,7 @@ public class PeerNode extends Node {
      */
     public PeerNode (ArrayList<String> peers, int port) throws IOException {
         super(port);
+
         start();
         for (String uri :
                 peers) {
@@ -177,6 +187,8 @@ public class PeerNode extends Node {
             e.printStackTrace();
         }
         LOGGER.info("Done writing statistics");
+
+
     }
 
 

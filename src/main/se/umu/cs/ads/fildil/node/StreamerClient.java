@@ -47,7 +47,6 @@ public class StreamerClient {
     public StreamerClient(String uri, UUID uuid) {
         this.uuid = uuid;
         this.uri = uri;
-        System.out.println(uri);
         this.channel = ManagedChannelBuilder.forTarget(uri)
                 .usePlaintext(true)
                 .idleTimeout(10, TimeUnit.SECONDS)
