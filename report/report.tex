@@ -261,11 +261,33 @@ Forrest, run!
 COOL STUFF!
 
 \subsection{Service definition}
+\label{sec:protobuf}
 
 Each node in Fildil has a high level API as a webservice. The service
 is defined using Google's Protocol Buffer (see
 \autoref{fig:protobuf}), with automatically generated gRPC
-bindings.
+bindings. The service can perform the following operations:
+
+\begin{description}
+\item[poll] A node, \textbf{A}, may send a poll request to another
+  node, \textbf{B}. \textbf{A} sends along information it knows about
+  the streaming network, and \textbf{B} replies with information it
+  knows about the streaming network. The poll operation is used for
+  nodes to be able to self-organize within the network, e.g. for
+  getting knowledge of available nodes to download from when joining a
+  streaming network.
+\item[requestChunk] This is the core operation for downloading chunks
+  of the stream. It simply requests a chunk with a specific ID, and
+  gets a proper chunk back if it exists.
+\end{description}
+
+The service definition is purposely left quite primitive. We have
+aimed Fildil to be extensible (see \autoref{sec:goals}) and we have
+therefore not added functionality until we absolutely needed it: it is
+often possible to add fields or operation to a protocol definition
+without big problems once the service is stable and in use. However,
+removing and/or changing existing fields or operations breaks
+compatibility with services running the old version.
 
 \begin{figure}[H]
 \begin{minted}[frame=single]{protobuf}
@@ -304,13 +326,9 @@ message ReceiveChunkReply {}
 \label{fig:protobuf}
 \end{figure}
 
-STREAMER!
-
-%TODO: insert protobuf
-
 \subsection{Node discovery}
 
-INFINITE LOOP OF DISCOVERY
+As mentioned in \autoref{sec:protobuf}, nodes may poll each others.
 
 %TODO: insert algorithm
 
