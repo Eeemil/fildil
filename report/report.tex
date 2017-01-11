@@ -146,9 +146,42 @@
 
 \section{Introduction}
 
-Fildil is great
+This document is a project report for the development of \emph{Fildil}, a video
+streaming application designed to be scalable by splitting load between everyone
+interested in the stream in a peer to peer manner.
+
+This section contains a number of subsections: in \autoref{sec:goals} you may
+read more extensible about the problems Fildil is supposed to solve,
+\autoref{sec:terminology} contains a definite guide to the terminology used
+throughout this report and \autoref{sec:building-running} consists of
+instructions on using the application.
+
+\autoref{sec:design} presents the high-level design philosophies for building
+Fildil, e.g. algorithms. In \autoref{sec:system}, the actual implementation is
+discussed in greater detail. Finally, the performance of Fildil is evaluated in
+\autoref{sec:results}. This document is ended with \autoref{sec:discussion}
+which presents our conclusions, improvements and experiences from the project.
+
+\subsection{Goals}
+\label{sec:goals}
+
+The application has been designed with the following goals in mind:
+
+\begin{description}
+\item[Robustness] The system should be able to \emph{automatically} handle
+  increase of nodes(i.e computers collaborating on providing the service).
+\item[Extensibility] To the extent it is possible, new features should be able
+  to be added to Fildil without having to redesign earlier components.
+\item[Load balancing/consistent QoS] Fildil should be able to adapt to spikes in
+  load in order to provide a consistent Quality of Service.
+\item [Multiple streamer and viewer clients] The system should support multiple
+  streaming clients as well as multiple viewer clients.
+\end{description}
+
+
 
 \subsection{Terminology}
+\label{sec:terminology}
 
 The following terminology is used throughout the report.
 
@@ -170,6 +203,7 @@ The following terminology is used throughout the report.
 \end{description}
 
 \subsection{Building \& running}
+\label{sec:building-running}
 
 \subsubsection{Prerequisites}
 
@@ -205,10 +239,12 @@ Run,
 Forrest, run!
 
 \section{Design: decentralized peer to peer streaming}
+\label{sec:design}
 
 Hello
 
 \section{System architecture}
+\label{sec:system}
 
 It was built by using code
 
@@ -231,6 +267,7 @@ with Node A will see that Node A has changed UUID, and will then dismiss all old
 information about Node A.
 
 \section{Results}
+\label{sec:results}
 
 The results are in
 
@@ -238,9 +275,12 @@ The results are in
 
 Fildil scores over 9000
 
-\section{Improvements}
+\section{Discussion}
+\label{sec:discussion}
 
-\subsection{Data storage}
+\subsection{Improvements}
+
+\subsubsection{Data storage}
 \label{sec:storage-improvements}
 
 In the current implementation of Fildil, the complete stream is downloaded from
