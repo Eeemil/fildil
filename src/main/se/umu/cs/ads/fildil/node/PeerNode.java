@@ -160,7 +160,7 @@ public class PeerNode extends Node {
                 long t1 = System.currentTimeMillis();
                 c = dataManager.getChunkBlocking(i++);
                 long t2 = System.currentTimeMillis();
-                System.out.println("#" + i + ":\t" + (t2-t1) + " ms");
+                System.out.println("#" + c.getId() + ":\t" + (t2-t1) + " ms");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
