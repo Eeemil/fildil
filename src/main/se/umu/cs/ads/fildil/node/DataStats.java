@@ -33,6 +33,10 @@ public class DataStats {
         return dataStats;
     }
 
+    private DataStats() {
+        String addres;
+    }
+
     //todo list the time the chunk as they arrive or list the time by the order we view them.
 
     public void chunkStatSent(int size, int id, long t1, long t2) {
@@ -114,8 +118,8 @@ public class DataStats {
         }
     }
 
-    public void writeQoSStat() throws FileNotFoundException, UnsupportedEncodingException {
-        PrintWriter writer = new PrintWriter("QoSStats", "UTF-8");
+    public void writeQoSStat(String uuuid) throws FileNotFoundException, UnsupportedEncodingException {
+        PrintWriter writer = new PrintWriter("QoSStats_"+uuuid, "UTF-8");
         synchronized (qoSStats) {
             for (int i = 0; i < qoSStats.size(); i++) {
                 QoSStat stat = qoSStats.get(i);
@@ -126,9 +130,8 @@ public class DataStats {
         }
     }
 
-    public void writeDownloadBandwidthStats() throws FileNotFoundException, UnsupportedEncodingException {
-        PrintWriter write = new PrintWriter("BandwidthStats","UTF-8");
-//        System.out.println("Printing ");
+    public void writeDownloadBandwidthStats(String uuid) throws FileNotFoundException, UnsupportedEncodingException {
+        PrintWriter write = new PrintWriter("BandwidthStatsIP_"+uuid,"UTF-8");
         synchronized (bandwidthStatDurations) {
             for(BandwidthStat stat:bandwidthStatDurations) {
                 //Elapsed time speed

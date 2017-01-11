@@ -169,8 +169,8 @@ public class PeerNode extends Node {
         //Write to file
         LOGGER.info("Writing statistics to file");
         try {
-            DataStats.getInstance().writeQoSStat();
-            DataStats.getInstance().writeDownloadBandwidthStats();
+            DataStats.getInstance().writeQoSStat(peerManager.uuid.toString());
+            DataStats.getInstance().writeDownloadBandwidthStats(peerManager.uuid.toString());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
