@@ -1,5 +1,6 @@
 package se.umu.cs.ads.fildil.node;
 
+
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,7 +18,7 @@ public class DataStats {
 
     private final ArrayList<ChunkStat> chunkStatsSent = new ArrayList<>();
     private final ArrayList<ChunkStat> chunkStatsReceived = new ArrayList<>();
-    private final ArrayList<ChunkStat> chunkQoSStats = new ArrayList<>();
+    private final ArrayList<QoSStat> qoSStats = new ArrayList<>();
 
     private final ArrayList<BandwidthStat> bandwidthStatDurations = new ArrayList<>();
 
@@ -91,29 +92,27 @@ public class DataStats {
         numberOfBits *= 8;
 
         double speed = (((double) numberOfBits)/(1000*1000)) / (((double) totTime)/1000);
-//        System.out.printf("elapsed time: %d  download: %.6f  Mbit/s\n", elapsedTime, speed);
         bandwidthStatDurations.add(new BandwidthStat(elapsedTime,speed));
     }
 
     /**
-     *
-     * @param size of the chunk
+     * Stores the time and id of a chunk.
      * @param t1
      * @param t2
      */
-    public void addStatQoS(int size, long t1, long t2) {
+    public void addStatQoS(int id, long t1, long t2) {
         long time = t2 - t1;
 
-        ChunkStat stat = new ChunkStat(size,time);
-        synchronized (chunkQoSStats) {
-            chunkQoSStats.add(stat);
+        QoSStat stat = new QoSStat(id,time);
+        synchronized (qoSStats) {
+            qoSStats.add(stat);
         }
     }
 
     public void printQoSStat() {
-        synchronized (chunkQoSStats) {
-            for (int i = 0; i < chunkQoSStats.size(); i++) {
-                ChunkStat stat = chunkQoSStats.get(i);
+        synchronized (qoSStats) {
+            for (int i = 0; i < qoSStats.size(); i++) {
+                QoSStat stat = qoSStats.get(i);
                 System.out.printf("#QoS# id: %d time: %d\n", i, stat.time);
             }
         }
@@ -122,12 +121,10 @@ public class DataStats {
     public void printDownloadBandwidth() {
         synchronized (bandwidthStatDurations) {
             for(BandwidthStat stat:bandwidthStatDurations) {
-                System.out.printf("#Bandwidht# time: %d ms download: %.6f  Mbit/s\n", stat.elapsedTime, stat.getSpeed());
+                System.out.printf("#Bandwidht# time: %d ms download: %.6f  Mbit/s\n", stat.getElapsedTime(), stat.getSpeed());
             }
         }
     }
-
-
 
     public void printMissedChunks(long t2) {
         long elapsedTime = (t2 - startTime);
@@ -162,7 +159,6 @@ public class DataStats {
         }
 
     }
-
     /**
      * Stores time of retrieval and it's size
      */
@@ -181,6 +177,27 @@ public class DataStats {
 
         public int getSize() {
             return size;
+        }
+    }
+
+    /**
+     * Stores information about the time to retrive and it's id
+     */
+    private class QoSStat {
+        private long time;
+        private int id;
+
+        public QoSStat(int id, long time) {
+            this.time = time;
+            this.id   = id;
+        }
+
+        public long getTime() {
+            return time;
+        }
+
+        public int getId() {
+            return id;
         }
     }
 }

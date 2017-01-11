@@ -154,11 +154,13 @@ public class PeerNode extends Node {
         int i = 0;
         do {
             try {
+
                 long t1 = System.currentTimeMillis();
                 c = dataManager.getChunkBlocking(i++);
                 long t2 = System.currentTimeMillis();
 
-                DataStats.getInstance().addStatQoS(c.toByteArray().length,t1,t2);
+                DataStats.getInstance().addStatQoS(c.getId(),t1,t2);
+                DataStats.getInstance().printQoSStat();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
