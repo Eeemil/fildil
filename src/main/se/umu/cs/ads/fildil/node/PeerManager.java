@@ -1,5 +1,6 @@
 package se.umu.cs.ads.fildil.node;
 
+import io.grpc.StatusRuntimeException;
 import se.umu.cs.ads.fildil.proto.autogen.Chunk;
 import se.umu.cs.ads.fildil.proto.autogen.PeerInfo;
 import se.umu.cs.ads.fildil.proto.utils.ChunkUtils;
@@ -8,6 +9,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -83,7 +85,7 @@ public class PeerManager {
         UUID peerID = UUID.fromString(uuid);
 
         if(uri.equals(addr)) {
-            LOGGER.warning("Trying to add myself, why?");
+            LOGGER.fine("Trying to add myself, why?");
             return;
         }
 
@@ -92,11 +94,18 @@ public class PeerManager {
             return;
         }
 
-        StreamerClient peer = new StreamerClient(uri, peerID);
-        peers.put(peerID, peer);
-        peerInfoBuilder.putPeers(peerID.toString(),uri);
-        peer.updateInfo(getPeerInfo());
-        LOGGER.info("Added peer " + peerID.toString());
+        StreamerClient peer = null;
+        try {
+            peer = new StreamerClient(uri, peerID);
+            peers.put(peerID, peer);
+            peerInfoBuilder.putPeers(peerID.toString(),uri);
+            peer.updateInfo(getPeerInfo());
+            LOGGER.info("Added peer " + peerID.toString());
+        } catch (StatusRuntimeException e) {
+            peers.remove(peerID);
+            peerInfoBuilder.removePeers(peerID.toString());
+            LOGGER.log(Level.WARNING,"Tried to add bad client " + uri, e);
+        }
     }
 
     /**
@@ -106,10 +115,14 @@ public class PeerManager {
     protected void addPeer (String uri) {
         PeerInfo myInfo = getPeerInfo();
         //Todo: for report? Maybe only send partial peer list (to minimize overhead)
-        StreamerClient peer = new StreamerClient(uri, myInfo);
-        peers.put(peer.uuid, peer);
-        peerInfoBuilder.putPeers(peer.uuid.toString(),uri);
-
+        StreamerClient peer = null;
+        try {
+            peer = new StreamerClient(uri, myInfo);
+            peers.put(peer.uuid, peer);
+            peerInfoBuilder.putPeers(peer.uuid.toString(),uri);
+        } catch (StatusRuntimeException e) {
+            LOGGER.log(Level.WARNING,"Tried to add bad client " + uri, e);
+        }
     }
     /**
      * Adds a set of peer from a list of URI:s

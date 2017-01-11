@@ -36,10 +36,10 @@ public class StreamerClient {
                 .usePlaintext(true)
                 .idleTimeout(10, TimeUnit.SECONDS)
                 .build();
-        client = StreamerGrpc.newBlockingStub(channel);
+        this.client = StreamerGrpc.newBlockingStub(channel);
         PeerInfo otherInfo = client.poll(myInfo);
-        uuid = UUID.fromString(otherInfo.getUuid());
-        addr = otherInfo.getAddress();
+        this.uuid = UUID.fromString(otherInfo.getUuid());
+        this.addr = otherInfo.getAddress();
         this.peerInfo = otherInfo;
         this.highestChunk = otherInfo.getHighestChunk();
     }
@@ -47,6 +47,7 @@ public class StreamerClient {
     public StreamerClient(String uri, UUID uuid) {
         this.uuid = uuid;
         this.uri = uri;
+        System.out.println(uri);
         this.channel = ManagedChannelBuilder.forTarget(uri)
                 .usePlaintext(true)
                 .idleTimeout(10, TimeUnit.SECONDS)
