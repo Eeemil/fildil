@@ -31,6 +31,7 @@
 \usepackage{float}
 \usepackage{footmisc} % Use symbols instead of numbers for footnotes
 \usepackage{csquotes}
+\usepackage{placeins}
 \usepackage{hyperref}
 \hypersetup{
   colorlinks = true, % Colours links instead of ugly boxes
@@ -447,11 +448,73 @@ managing multiple clients, see \autoref{sec:goals}.
   \end{algorithmic}
 \end{algorithm}
 
+\FloatBarrier
+
 \section{System architecture}
 \label{sec:system}
 
-It was built by using code
-%Todo: expand on this
+Fildil is built using \texttt{Java 8}. We use \texttt{gRPC} for protocol
+buffer-supported remote procedure calls. This section will describe the major
+parts of the system.
+
+In \autoref{fig:src} an overview of the source tree can be found. A few packages
+to note are:
+
+\begin{description}
+\item[se.umu.cs.ads.fildil.node] this is a package for the main streaming logic
+  where the schemes described in \autoref{sec:design} are implemented.
+\item[se.umu.cs.ads.fildil.proto.utils] contain various helper functionality for
+  ease of use of the automatically generated code.
+\item[se.umu.cs.ads.fildil.proto.autogen] this is a package for automatically
+  generated gRPC-code from the protocol buffer service description in
+  \texttt{main.proto}.
+\item[se.umu.cs.ads.fildil] contains everything not directly linked to the
+  streaming logic or gRPC
+\end{description}
+
+
+\begin{figure}[H]
+\begin{Verbatim}[frame=single]
+src
+|-- main
+`   |-- proto
+    |   `-- Protocol.proto
+    `-- se
+        `-- umu
+            `-- cs
+                `-- ads
+                    `-- fildil
+                        |-- Main.java
+                        |-- node
+                        |   |-- DataManager.java
+                        |   |-- DataStats.java
+                        |   |-- NetworkManager.java
+                        |   |-- Node.java
+                        |   |-- PeerManager.java
+                        |   |-- PeerNode.java
+                        |   |-- PrimaryNode.java
+                        |   |-- StreamerClient.java
+                        |   `-- StreamerServer.java
+                        |-- proto
+                        |   |-- autogen
+                        |   |   |-- Chunk.java
+                        |   |   |-- ChunkOrBuilder.java
+                        |   |   |-- ChunkRequest.java
+                        |   |   |-- ChunkRequestOrBuilder.java
+                        |   |   |-- PeerInfo.java
+                        |   |   |-- PeerInfoOrBuilder.java
+                        |   |   |-- Protocol.java
+                        |   |   `-- StreamerGrpc.java
+                        |   `-- utils
+                        |       `-- ChunkUtils.java
+                        `-- Video.java
+\end{Verbatim}
+\caption{Overview of the source tree}
+\label{fig:src}
+\end{figure}
+
+\subsection{Notable components}
+
 
 \subsection{Managing errors}
 
