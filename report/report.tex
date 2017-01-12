@@ -657,15 +657,38 @@ scale, we have not been able to make other measurements.
 \section{Discussion}
 \label{sec:discussion}
 
+Fildil is a proof of concept peer to peer streaming network. From the findings
+presented in \autoref{sec:results}, it seems to be a viable solution for at
+least streaming within a LAN. We've not had the opportunity to use a suitable
+test environment for testing as streaming globally, there are probably some
+geographic constraints that could be utilized for smarter global streaming.
+
+There are a number of improvements that may be introduced to fildil, most of
+them are presented in \autoref{sec:improvements}.
+
 \subsection{Project experiences}
 
-%Todo: working by distance - experiences? What did we do good? What did we do bad?
+Time management is vital for the project, we had our issues in the beginning
+with getting the time to work togheter, but eventually we managed to adopt and
+get things done.
+
+As usual, the vision we had in the beginning of the project, have drifted a
+bit, but that's to be expected. But togheter we managed to overcome the issues
+that araised and adjust idée so it could work.
 
 \subsection{Improvements}
+\label{sec:improvements}
 
 There are some ideas that could provide a significant improvement of Fildil, but
 has been left out for not being viable within the project scope or not
 sufficiently significant in regard to the project requirements.
+
+\subsubsection{Fine tuning settings}
+
+There are a number of settings within Fildil that we have not had the time to
+tune, such as chunk size. Optimal chunk size is probably different depending on
+the underlying network, however, Fildil could perhaps use techniques to adapt to
+network limitations automatically.
 
 \subsubsection{Data storage}
 \label{sec:storage-improvements}
