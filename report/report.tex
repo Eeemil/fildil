@@ -515,6 +515,32 @@ src
 
 \subsection{Notable components}
 
+\subsubsection*{DataManager}
+DataManager manages storage of the data, linking the data to chunk ID's. The
+DataManager also records statistics (using \emph{DataStats}) on download speeds.
+
+\subsubsection*{NetworkManager}
+
+The NetworkManager acts as a bridge between the node logic and network
+functionality, e.g. using gRPC.
+
+\subsubsection*{PeerNode}
+
+A node capable of downloading chunks from other peers within the streaming
+network. Caches the chunk data received as explained in
+\autoref{sec:filling-buffers} and plays them back in order for the video playing
+application.
+
+\subsubsection*{PrimaryNode}
+
+The main class used for reading a video source for putting the source into
+chunks on a streaming network. Differs from the \emph{PeerNode} in that it does
+not need to download any data, it only uploads data.
+
+\subsubsection*{PeerManager}
+
+Manages peer relation logic: manages connecting, probing and adding peers. It is
+also used by \emph{PeerNode} to get a suitable candidate to download from.
 
 \subsection{Managing errors}
 
@@ -534,6 +560,21 @@ This is solved by assigning a UUID to each node on startup. Nodes communicating
 with Node A will see that Node A has changed UUID, and will then dismiss all old
 information about Node A.
 
+\subsubsection{Protecting against network congestion at PrimaryNode}
+
+We need to protect the primary nodes as much as possible from crashes and
+unavailability, as it is the source of the content.
+
+The node discovery algorithm (see \autoref{sec:node-discovery}) would make every
+node aware of each other. Combined with the algorithm for choosing peers
+(\autoref{sec:choosing-peers}) this would make the primary node a suitable
+candidate for download for all peers.
+
+We've therefore chosen to (optionally) exclude the primary node from being
+shared to other nodes. A peer node may then only get knowledge of the primary
+node if that information is supplied on the command line during launch of the
+application.
+
 \section{Results}
 \label{sec:results}
 
@@ -551,8 +592,6 @@ Fildil scores over 9000
 \subsection{Project experiences}
 
 %Todo: working by distance - experiences? What did we do good? What did we do bad?
-
-
 
 \subsection{Improvements}
 
