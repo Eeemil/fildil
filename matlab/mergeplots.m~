@@ -1,0 +1,11 @@
+% Merge plots BandWidth
+BandWidthOne = hgload('~/edu/5DV153/assignments/project/matlab/Bandwidth/valve/BandwidthStats1prim1peer.fig');
+BandWidthTwo = hgload('~/edu/5DV153/assignments/project/matlab/Bandwidth/valve/BandwidthStatsIP_f2c56c9d-9c8d-4f29-a13f-4d8463725974.fig');
+BadnWidthThree = hgload('~/edu/5DV153/assignments/project/matlab/Bandwidth/valve/BandwidthStatsIP_eaab5754-2e45-41db-8fbf-5a51f4fde6f9.fig');
+
+figure
+h(1)=subplot(1,2,1);
+h(2)=subplot(1,2,2);
+
+copyobj(allchild(get(c,'CurrentAxes')),h(1));
+copyobj(allchild(get(k,'CurrentAxes')),h(2));

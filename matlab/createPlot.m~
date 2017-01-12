@@ -63,18 +63,31 @@ importedData(3) = importdata('~/edu/5DV153/assignments/project/matlab/Bandwidth/
 
 
 figure
-hold on;
 for i = 1:length(importedData)
     d = importedData(i);
     time = d.data(:,1);
     speed = d.data(:,2);
-   
     plot(time,speed);
+    hold on;
 end
 title('Bandwidth benchmark'),xlabel('ms'), ylabel('Mbit/s');
-hold off;
-legend('single primary',titels(2),titels(1));
+legend(tit
 
+
+
+%---- bandwidth-----
+dataOne = importdata('~/edu/5DV153/assignments/project/matlab/Bandwidth/valve/BandwidthStats1prim1peer',delimiterIn,headerlinesIn);
+dataTwo = importdata('~/edu/5DV153/assignments/project/matlab/Bandwidth/valve/BandwidthStatsIP_f2c56c9d-9c8d-4f29-a13f-4d8463725974',delimiterIn,headerlinesIn);
+dataThree = importdata('~/edu/5DV153/assignments/project/matlab/Bandwidth/valve/BandwidthStatsIP_4c9b28e8-25bf-42c8-89fa-ca3bf545c4e5',delimiterIn,headerlinesIn);
+
+timeOne = dataOne.data(:,1);
+speedOne = dataOne.data(:,2);
+
+timeTwo = dataTwo.data(:,1);
+speedTwo = dataTwo.data(:,2);
+
+timeThree = dataThree.data(:,1);
+speedThree = dataThree.data(:,2);
 
 %figure 
 
