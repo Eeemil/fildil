@@ -247,20 +247,34 @@ The following prerequisites exists for building and running Fildil:
 \end{description}
 
 \subsubsection{Compiling Fildil}
-
-mvn package
-%todo: more information
+From the root of the project directory, give the following command.\\
+\texttt{mvn install}\\
+\\
+This will generate the file target/fildil-1.0-jar-with-dependencies.jar\\
+If this would not work, a precompiled jar, \texttt{fildil.jar}, is provided in
+the project root for running.
 
 \subsubsection{Running a primary node}
-
-Run,
-%todo: add instructions
-
+A working jar file is located at project/fildil.jar \\
+To run a server give the following command:\\
+\texttt{java -cp java -cp fildil.jar se.umu.cs.ads.fildil.node.PrimaryNode [videosrc]}\\
+\\
+The arguments:\\
+\\
+\texttt{videosrc - the full path to the video}\\
+The server will start at port 8100. \\
+\\
 \subsubsection{Running a peer node}
-
-Forrest, run!
-%todo: add instructions - remember flag information
-
+To run a client give the following command:\\
+\texttt{java -cp fildil.jar se.umu.cs.ads.fildil.node.PeerNode port [-prim addr:port] [addr:port]... [addr:port]}\\
+\\
+The arguments:\\
+\texttt{port - supply an available port number}\\
+\\
+\texttt{ [-prim addr:port] - optional flag for giving the address to the primary node}\\
+\\
+\texttt{[addr:port] - address to another peer node}\\
+\\
 
 \section{Design: decentralized peer to peer streaming}
 \label{sec:design}
