@@ -578,13 +578,67 @@ application.
 \section{Results}
 \label{sec:results}
 
-The results are in
-%Todo: add the results
+In this section, results of using Fildil is presented.
+
+All tests has been performed in the computer lab in MA426 at Umeå University
+during nighttime when no users has been logged in on the computers. The
+computers has Intel core i5-4570, has 16 GB memory running on a LAN with 100
+Mbit/s ethernet connections on a gigabit switch.
+
+
+\subsection{User tests}
+
+Throughout the development of Fildil, since we got streaming from one-to-one
+working we have never had problems with sluggish (bad QoS) video playback or
+such.
+
+The largest test on this area involved streaming from one computer to 16
+simultaneously from one source on a ~30 Mb stream. Apart from a 2 second
+sluggish start, the streaming network seemed to have organized itself properly
+and the playback on all computers went by smoothly.
 
 \subsection{Benchmarks}
+\label{sec:benchmarks}
 
-Fildil scores over 9000
-%Todo: remove the lies, add the truths
+From \autoref{fig:download-speeds}, one can see that there seems to be an added
+benefit of more sources to download from.
+
+\autoref{fig:response-times} shows the waiting time for each chunk of data when
+reading them in order. As expected, we can often read the next chunk instantly
+(as they are pre-cached, see \autoref{sec:filling-buffers}) and thus the waiting
+time is 0.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth, height=\textwidth]{bandwidth-complete-nodes.png}
+\caption{Download speeds in relation to amount of sources, 1 source, 2 sources
+  and 4 sources total.}
+\label{fig:download-speeds}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth, height=\textwidth]{unordered-complete-nodes.png}
+\caption{Response times for reading chunks from start to finish in order on a
+  ~100 MB stream. You can see the response time distribution in
+  \autoref{fig:response-time-distribution}}
+\label{fig:response-times}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth, height=\textwidth]{ordered-complete-nodes.png}
+\caption{Response time \textbf{distribution} for reading chunks from start to
+  finish in order on a ~20 MB stream}
+\label{fig:response-time-distribution}
+\end{figure}
+
+\subsection{Error sources}
+
+All our testing has been performed within a low-latency and stable environment,
+and the data collected in \autoref{sec:benchmarks} may look otherwise in a real
+world scenario. Due to lack of suitable testing environments at an appropriate
+scale, we have not been able to make other measurements.
 
 \section{Discussion}
 \label{sec:discussion}
