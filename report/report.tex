@@ -352,6 +352,47 @@ message ReceiveChunkReply {}
 \label{fig:protobuf}
 \end{figure}
 
+\subsection{Pre-caching video player buffer ahead of time}
+\label{sec:filling-buffers}
+
+For watching a stream, you would need to read the chunks in order with chunk 0,
+chunk 1, chunk 2 etc. However, we don't need to download the chunks in that
+order. A node in Fildil downloads multiple chunks in parallel without waiting
+for the earlier chunks to be received, while still possibly waiting for an
+earlier chunk.
+
+For example, while waiting for chunk 128, we may already have downloaded chunks
+129-140. So when chunk 128 arrives, the next chunks already exists in
+memory. This means that we can quickly refill the buffer of the video playing
+application\footnote{VLC has been used during development of Fildil} if it got
+depleted while waiting for chunk 128.
+
+This improves buffering and thus provides a more consistent quality of service.
+
+\subsection{Choosing a peer to download from}
+\label{sec:choosing-peers}
+
+Peers share information about the highest chunk ID that they've yet receive when
+polled. There is no guarantee that a node that announces it has chunk with a
+certain ID also has all chunks with a lower ID (see
+\autoref{sec:filling-buffers}), but it may be used as an estimate in that
+purpose anyway. We can for example know for sure that we should not contact a
+node with highest chunk ID 10 if we need the chunk with ID 10000.
+
+By choosing a download candidate at random from peers with higher values for
+highest received chunk IDs, we get a good enough scheme for finding suitable
+candidates.
+
+For a long-running stream split into billions of large chunks however, it would
+be unlikely that every peer keeps all streaming data from the beginning of the
+stream to the end. If Fildil were to introduce better memory management to
+tackle that problem, the peer-choosing scheme would need to be altered. This
+could be done by introducing a second value, ``minimum chunk ID'', such that a
+node can see what ranges of chunks a peer has.
+
+By choosing different peers each time, we try to reduce peaks and congestion in
+network load.
+
 \subsection{Node discovery}
 \label{sec:node-discovery}
 
@@ -415,7 +456,7 @@ It was built by using code
 \subsection{Managing errors}
 
 \subsubsection{Node crash}
-%Todo: Expand on this
+
 If a node crashes, all information about that node should be discarded from all
 other nodes. This is easy enough if a node that crashes never comes
 back. However, problems can occur if the following situation comes up:
